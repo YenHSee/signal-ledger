@@ -1,0 +1,11 @@
+{
+  "name": "@stock-analyst/api-types",
+  "version": "1.0.0",
+  "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "echo 'Build types here later'",
+    "lint": "echo 'Lint types'"
+  }
+}
