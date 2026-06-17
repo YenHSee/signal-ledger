@@ -1,27 +1,36 @@
 from tools.alpha_vantage import get_stock_data
-from agents.first_agent import executor
+from agents.market_analyst import executor, parser
 from core.cache_manager import save_to_cache, load_from_cache
 from utils.storage import save_analysis_report
 
-def run_pipeline(ticker: str):
-    print(f"🚀 开始分析股票: {ticker}")
-    data = get_stock_data(ticker)
+def analyze_ticker(ticker: str):
+    print(f"\n🚀 终端请求：开始深度调查 {ticker}")
     
-    if data:
-        print("🤖 AI 正在推理分析...")
-        prompt_text = f"""
-        请分析 {ticker} 的基本面，基于以下数据: {str(data)[:2000]}
-        请直接给出 Buy/Hold/Sell 建议及分析理由。
-        """
-        result = executor.invoke({"input": prompt_text})
-        
-        print("\n✅ 分析完成，输出结论:")
-        # print(result["output"])
-        save_analysis_report(ticker, result["output"], data)
-        print("\n🎉 分析已完成并存入 JSON!")
-    else:
-        print("❌ 获取数据失败，无法进行分析。")
+    result = executor.invoke({
+        "input": f"客户想要投资 {ticker}，请动用工具帮我做一份尽职调查报告。"
+    })
+    
+    try:
+        # 1. 强制解析 AI 输出为结构化 Pydantic 对象
+        final_parsed_obj = parser.parse(result["output"])
+        # 将 Pydantic 对象转换为普通的 Python 字典，方便后面存 JSON
+        final_json_dict = final_parsed_obj.dict() 
+    except Exception as e:
+        print(f"❌ 解析失败: {e}")
+        return {"error": "AI 输出解析失败"}
+
+    # 2. 提取底层数据
+    raw_data = load_from_cache(ticker) 
+    if not raw_data:
+        raw_data = {"status": "unlisted", "note": f"No public financial data available for {ticker} (Alternative data used)."}
+
+    # 3. ⭐️ 先保存到硬盘！(这里把解析好的字典传过去)
+    save_analysis_report(ticker, final_json_dict, raw_data)
+    print(f"✅ {ticker} 研报已生成！")
+
+    # 4. ⭐️ 最后再 return 给后端 API (Node.js)，让它发给前端
+    return final_json_dict
 
 if __name__ == "__main__":
-    target_ticker = "NVDA"
-    run_pipeline(target_ticker)
+    analyze_ticker("NVDA")
+    # analyze_ticker("SpaceX")
