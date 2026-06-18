@@ -5,6 +5,7 @@ from core.llm_factory import get_llm
 from tools.tool_registry import get_all_tools
 from pydantic import BaseModel, Field
 from datetime import datetime # ⭐️ 必须引入
+from core.llm_factory import get_llm, ModelTier
 
 class InvestmentReport(BaseModel):
     conclusion: str = Field(description="必须是 BUY, HOLD 或 SELL")
@@ -16,7 +17,9 @@ class InvestmentReport(BaseModel):
 
 def create_analyst_agent():
     """初始化并返回一个配置好的金融分析师 Agent Executor"""
-    llm = get_llm()
+    # llm = get_llm()
+    # llm = get_llm(tier=ModelTier.NORMAL, temperature=0.3)
+    llm = get_llm(tier=ModelTier.LOCAL, temperature=0.3)
     tools = get_all_tools()
     
     # ⭐️ 必须先定义 parser！
