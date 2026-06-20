@@ -54,6 +54,7 @@ def init_tables():
         print(f"✅ 成功连接到数据库: {config.DB_NAME}")
 
         # 2. 编写创建 company_overview 表的 SQL
+        # ⚠️ 已添加确实的 TrailingPE, ForwardPE 等字段
         create_overview_sql = """
         CREATE TABLE IF NOT EXISTS company_overview (
             symbol VARCHAR(10) PRIMARY KEY,
@@ -72,10 +73,6 @@ def init_tables():
             latest_quarter DATE,
             market_capitalization BIGINT,
             ebitda BIGINT,
-            revenue_ttm BIGINT,
-            gross_profit_ttm BIGINT,
-            shares_outstanding BIGINT,
-            shares_float BIGINT,
             pe_ratio NUMERIC(10, 4),
             peg_ratio NUMERIC(10, 4),
             book_value NUMERIC(10, 4),
@@ -87,6 +84,8 @@ def init_tables():
             operating_margin_ttm NUMERIC(10, 4),
             return_on_assets_ttm NUMERIC(10, 4),
             return_on_equity_ttm NUMERIC(10, 4),
+            revenue_ttm BIGINT,
+            gross_profit_ttm BIGINT,
             diluted_eps_ttm NUMERIC(10, 4),
             quarterly_earnings_growth_yoy NUMERIC(10, 4),
             quarterly_revenue_growth_yoy NUMERIC(10, 4),
@@ -107,6 +106,8 @@ def init_tables():
             week_52_low NUMERIC(10, 4),
             day_50_moving_average NUMERIC(10, 4),
             day_200_moving_average NUMERIC(10, 4),
+            shares_outstanding BIGINT,
+            shares_float BIGINT,
             percent_insiders NUMERIC(10, 4),
             percent_institutions NUMERIC(10, 4),
             dividend_date DATE,
