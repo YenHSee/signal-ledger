@@ -3,9 +3,40 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-class Config:
-    ALPHA_VANTAGE_API_KEY = os.getenv("ALPHA_VANTAGE_API_KEY")
-    if not ALPHA_VANTAGE_API_KEY:
-        raise ValueError("❌ 错误: 未找到 ALPHA_VANTAGE_API_KEY，请检查 .env 文件")
+class AppConfig:
+    @property
+    def ALPHA_VANTAGE_API_KEY(self):
+        key = os.getenv("ALPHA_VANTAGE_API_KEY")
+        if not key:
+            raise ValueError("❌ 错误: 未找到 ALPHA_VANTAGE_API_KEY，请检查 .env 文件")
+        return key
     
-    MODEL_PROVIDER = os.getenv("MODEL_PROVIDER", "ollama")
+    @property
+    def MODEL_PROVIDER(self):
+        return os.getenv("MODEL_PROVIDER", "ollama")
+
+    @property
+    def DB_USER(self):
+        return os.getenv("DB_USER", "postgres")
+
+    @property
+    def DB_PASSWORD(self):
+        pwd = os.getenv("DB_PASSWORD")
+        if not pwd:
+            raise ValueError("❌ 错误: 未找到数据库密码 DB_PASSWORD，请检查 .env 文件")
+        return pwd
+
+    @property
+    def DB_HOST(self):
+        return os.getenv("DB_HOST", "127.0.0.1")
+
+    @property
+    def DB_PORT(self):
+        return os.getenv("DB_PORT", "5432")
+
+    @property
+    def DB_NAME(self):
+        return os.getenv("DB_NAME", "stock_analyst")
+
+# 在底部实例化一个配置对象，导出给其他文件使用
+config = AppConfig()

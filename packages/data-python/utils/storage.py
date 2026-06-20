@@ -1,18 +1,14 @@
 import json
 import os
+import sys
 from datetime import datetime
 import psycopg2
 from psycopg2 import Error
 from dotenv import load_dotenv
 
-load_dotenv()
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-DB_USER = os.getenv("DB_USER", "postgres")
-DB_PASSWORD = os.getenv("DB_PASSWORD")
-DB_HOST = os.getenv("DB_HOST", "127.0.0.1")
-DB_PORT = os.getenv("DB_PORT", "5432")
-DB_NAME = os.getenv("DB_NAME", "stock_analyst")
-
+from config import config
 
 def save_analysis_report(ticker: str, analysis_output: dict, raw_data: dict):
     """将分析结果和原始数据存为一个结构化的 JSON 文件"""
@@ -46,18 +42,16 @@ def init_tables():
     connection = None
     cursor = None
     try:
-        if not DB_PASSWORD:
-            raise ValueError("❌ 找不到数据库密码！请检查 data-python 目录下是否创建了 .env 文件，并正确设置了 DB_PASSWORD。")
         # 1. 直接连接到 stock_analyst
         connection = psycopg2.connect(
-            user=DB_USER,
-            password=DB_PASSWORD,
-            host=DB_HOST,
-            port=DB_PORT,
-            database=DB_NAME
+            user=config.DB_USER,
+            password=config.DB_PASSWORD,
+            host=config.DB_HOST,
+            port=config.DB_PORT,
+            database=config.DB_NAME
         )
         cursor = connection.cursor()
-        print(f"✅ 成功连接到数据库: {DB_NAME}")
+        print(f"✅ 成功连接到数据库: {config.DB_NAME}")
 
         # 2. 编写创建 company_overview 表的 SQL
         create_overview_sql = """

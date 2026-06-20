@@ -1,6 +1,6 @@
 import requests
 import yfinance as yf  # ⭐️ 引入免费的雅虎财经库
-from config import Config
+from config import config
 from core.cache_manager import save_to_cache, load_from_cache
 
 def get_stock_data(ticker: str):
@@ -13,7 +13,7 @@ def get_stock_data(ticker: str):
     print(f"🌐 [API 请求] 正在获取 {ticker} 的基本面与实时报价...")
     
     # 2. 获取冷数据：基本面 (Alpha Vantage - 省着用)
-    overview_url = f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={ticker}&apikey={Config.ALPHA_VANTAGE_API_KEY}"
+    overview_url = f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={ticker}&apikey={config.ALPHA_VANTAGE_API_KEY}"
     overview_data = requests.get(overview_url).json()
 
     if "Note" in overview_data or "Information" in overview_data or not overview_data:
