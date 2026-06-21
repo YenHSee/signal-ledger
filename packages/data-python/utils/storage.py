@@ -7,10 +7,9 @@ from psycopg2 import Error
 from dotenv import load_dotenv
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 from config import config
 from utils.data_transformer import transform_alpha_to_db
-
+from tools.alpha_vantage import get_company_overview
 
 def save_analysis_report(ticker: str, analysis_output: dict, raw_data: dict):
     """将分析结果和原始数据存为一个结构化的 JSON 文件"""
@@ -156,7 +155,7 @@ def init_tables():
             print("🔌 PostgreSQL 连接已安全关闭。")
 
 
-def insert_company_overview(raw_json: dict):
+def insert_company_overview(raw_json):
     """接收原始 JSON，内部调用 transformer 清洗，并存入数据库"""
     
     clean_data = transform_alpha_to_db(raw_json)
@@ -236,3 +235,5 @@ def insert_company_overview(raw_json: dict):
         
 if __name__ == "__main__":
     init_tables()
+    overview_data = get_company_overview("NVDA")
+    insert_company_overview(overview_data)
