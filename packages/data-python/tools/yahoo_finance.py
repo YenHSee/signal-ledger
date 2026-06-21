@@ -1,37 +1,39 @@
 import yfinance as yf
 
-def get_daily_prices(symbol: str, period="1mo"):
+def get_daily_prices(ticker: str, period="1mo"):
     """
     通过 yfinance 获取股票的每日历史价格。
     """
-    symbol = symbol.upper() # 养成好习惯：无论传进来什么，都转成大写
-    print(f"📈 正在通过 yfinance 获取 {symbol} 的历史股价 (周期: {period})...")
+    # 1. 这里的 ticker 永远是纯文本字符串 "NVDA"
+    ticker = ticker.upper() 
+    print(f"📈 正在通过 yfinance 获取 {ticker} 的历史股价 (周期: {period})...")
     
     try:
-        ticker = yf.Ticker(symbol)
+        # 🌟 修复关键：起个新名字叫 yf_stock，千万不要覆盖原来的 ticker！
+        yf_stock = yf.Ticker(ticker) 
         
-        # 🌟 关键修复 1：强制关闭自动复权，这样才能同时拿到 Close 和 Adj Close
-        hist = ticker.history(period=period, auto_adjust=False)
+        # 使用 yf_stock 去获取数据
+        hist = yf_stock.history(period=period, auto_adjust=False)
         
         if hist.empty:
-            print(f"⚠️ 未能获取到 {symbol} 的价格数据，请检查股票代码是否正确。")
+            print(f"⚠️ 未能获取到 {ticker} 的价格数据，请检查股票代码是否正确。")
             return None
 
         prices_list = []
         
         for date, row in hist.iterrows():
             prices_list.append({
-                "symbol": symbol,  # 🌟 关键修复 2：手动把股票代码塞进字典！
+                "symbol": ticker, 
                 "trade_date": date.strftime("%Y-%m-%d"),
                 "open_price": round(float(row["Open"]), 4),
                 "high_price": round(float(row["High"]), 4),
                 "low_price": round(float(row["Low"]), 4),
                 "close_price": round(float(row["Close"]), 4),
-                "adjusted_close": round(float(row["Adj Close"]), 4), # 🌟 获取独立的复权价
+                "adjusted_close": round(float(row["Adj Close"]), 4), 
                 "volume": int(row["Volume"])
             })
             
-        print(f"✅ 成功获取 {len(prices_list)} 天的 {symbol} 股价数据！")
+        print(f"✅ 成功获取 {len(prices_list)} 天的 {ticker} 股价数据！")
         return prices_list
 
     except Exception as e:
