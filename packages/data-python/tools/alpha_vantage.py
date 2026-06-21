@@ -16,7 +16,7 @@ def get_company_overview(ticker: str):
     ticker = ticker.upper()
     
     # 1. 检查缓存
-    cached_data = load_from_cache(ticker) # 假设你哥哥的函数里区分了数据类型，如果没区分就先这样
+    cached_data = load_from_cache(ticker)
     # 严谨一点：确认缓存里真的是 Overview 数据，而不是昨天存的旧版混合数据
     if cached_data and "PERatio" in cached_data:
         print(f"⚡ [缓存命中] 正在使用本地基本面数据: {ticker}")

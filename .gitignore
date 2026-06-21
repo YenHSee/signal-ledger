@@ -14,6 +14,7 @@ venv/
 env/
 .pytest_cache/
 .poetry/
+data-python/data_cache/
 
 .DS_Store
 .vscode/

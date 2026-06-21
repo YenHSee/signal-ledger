@@ -9,6 +9,8 @@ from dotenv import load_dotenv
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from config import config
+from utils.data_transformer import transform_alpha_to_db
+
 
 def save_analysis_report(ticker: str, analysis_output: dict, raw_data: dict):
     """将分析结果和原始数据存为一个结构化的 JSON 文件"""
@@ -153,5 +155,84 @@ def init_tables():
             connection.close()
             print("🔌 PostgreSQL 连接已安全关闭。")
 
+
+def insert_company_overview(raw_json: dict):
+    """接收原始 JSON，内部调用 transformer 清洗，并存入数据库"""
+    
+    clean_data = transform_alpha_to_db(raw_json)
+    if not clean_data:
+        print("❌ 错误: 原始数据清洗后为空，放弃写入数据库")
+        return False
+
+    symbol = clean_data["symbol"]
+    print(f"🔄 正在将清洗后的 {symbol} 基本面数据同步至 PostgreSQL...")
+
+    connection = None
+    cursor = None
+    try:
+        connection = psycopg2.connect(
+            user=config.DB_USER,
+            password=config.DB_PASSWORD,
+            host=config.DB_HOST,
+            port=config.DB_PORT,
+            database=config.DB_NAME
+        )
+        cursor = connection.cursor()
+
+        upsert_sql = """
+        INSERT INTO company_overview (
+            symbol, asset_type, name, description, cik, exchange, currency, country, 
+            sector, industry, address, official_site, fiscal_year_end, latest_quarter, 
+            market_capitalization, ebitda, pe_ratio, peg_ratio, book_value, 
+            dividend_per_share, dividend_yield, eps, revenue_per_share_ttm, 
+            profit_margin, operating_margin_ttm, return_on_assets_ttm, return_on_equity_ttm, 
+            revenue_ttm, gross_profit_ttm, diluted_eps_ttm, quarterly_earnings_growth_yoy, 
+            quarterly_revenue_growth_yoy, analyst_target_price, analyst_rating_strong_buy, 
+            analyst_rating_buy, analyst_rating_hold, analyst_rating_sell, analyst_rating_strong_sell, 
+            trailing_pe, forward_pe, price_to_sales_ratio_ttm, price_to_book_ratio, 
+            ev_to_revenue, ev_to_ebitda, beta, week_52_high, week_52_low, 
+            day_50_moving_average, day_200_moving_average, shares_outstanding, shares_float, 
+            percent_insiders, percent_institutions, dividend_date, ex_dividend_date, last_updated
+        ) VALUES (
+            %(symbol)s, %(asset_type)s, %(name)s, %(description)s, %(cik)s, %(exchange)s, %(currency)s, %(country)s, 
+            %(sector)s, %(industry)s, %(address)s, %(official_site)s, %(fiscal_year_end)s, %(latest_quarter)s, 
+            %(market_capitalization)s, %(ebitda)s, %(pe_ratio)s, %(peg_ratio)s, %(book_value)s, 
+            %(dividend_per_share)s, %(dividend_yield)s, %(eps)s, %(revenue_per_share_ttm)s, 
+            %(profit_margin)s, %(operating_margin_ttm)s, %(return_on_assets_ttm)s, %(return_on_equity_ttm)s, 
+            %(revenue_ttm)s, %(gross_profit_ttm)s, %(diluted_eps_ttm)s, %(quarterly_earnings_growth_yoy)s, 
+            %(quarterly_revenue_growth_yoy)s, %(analyst_target_price)s, %(analyst_rating_strong_buy)s, 
+            %(analyst_rating_buy)s, %(analyst_rating_hold)s, %(analyst_rating_sell)s, %(analyst_rating_strong_sell)s, 
+            %(trailing_pe)s, %(forward_pe)s, %(price_to_sales_ratio_ttm)s, %(price_to_book_ratio)s, 
+            %(ev_to_revenue)s, %(ev_to_ebitda)s, %(beta)s, %(week_52_high)s, %(week_52_low)s, 
+            %(day_50_moving_average)s, %(day_200_moving_average)s, %(shares_outstanding)s, %(shares_float)s, 
+            %(percent_insiders)s, %(percent_institutions)s, %(dividend_date)s, %(ex_dividend_date)s, CURRENT_TIMESTAMP
+        )
+        ON CONFLICT (symbol) 
+        DO UPDATE SET 
+            asset_type = EXCLUDED.asset_type, name = EXCLUDED.name, description = EXCLUDED.description,
+            exchange = EXCLUDED.exchange, sector = EXCLUDED.sector, industry = EXCLUDED.industry,
+            latest_quarter = EXCLUDED.latest_quarter, market_capitalization = EXCLUDED.market_capitalization,
+            ebitda = EXCLUDED.ebitda, pe_ratio = EXCLUDED.pe_ratio, peg_ratio = EXCLUDED.peg_ratio,
+            eps = EXCLUDED.eps, profit_margin = EXCLUDED.profit_margin, revenue_ttm = EXCLUDED.revenue_ttm,
+            analyst_target_price = EXCLUDED.analyst_target_price, trailing_pe = EXCLUDED.trailing_pe,
+            forward_pe = EXCLUDED.forward_pe, week_52_high = EXCLUDED.week_52_high, week_52_low = EXCLUDED.week_52_low,
+            day_50_moving_average = EXCLUDED.day_50_moving_average, day_200_moving_average = EXCLUDED.day_200_moving_average,
+            last_updated = CURRENT_TIMESTAMP;
+        """
+
+        cursor.execute(upsert_sql, clean_data)
+        connection.commit()
+        print(f"✨ 成功！股票 {symbol} 的数据已通过 Transformer 清洗并持久化至 DB！")
+        return True
+
+    except (Exception, Error) as error:
+        print(f"❌ 数据库写入失败: {error}")
+        if connection: connection.rollback()
+        return False
+    finally:
+        if cursor: cursor.close()
+        if connection: connection.close()
+
+        
 if __name__ == "__main__":
     init_tables()
