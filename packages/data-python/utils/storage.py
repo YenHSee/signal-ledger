@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from config import config
-from utils.data_transformer import transform_alpha_to_db
+from utils.data_transformer import transform_alpha_to_db, transform_yfinance_to_db
 from tools.alpha_vantage import get_company_overview
 
 def save_analysis_report(ticker: str, analysis_output: dict, raw_data: dict):
@@ -158,7 +158,7 @@ def init_tables():
 def insert_company_overview(raw_json):
     """接收原始 JSON，内部调用 transformer 清洗，并存入数据库"""
     
-    clean_data = transform_alpha_to_db(raw_json)
+    clean_data = transform_yfinance_to_db(raw_json)
     if not clean_data:
         print("❌ 错误: 原始数据清洗后为空，放弃写入数据库")
         return False
@@ -232,6 +232,65 @@ def insert_company_overview(raw_json):
         if cursor: cursor.close()
         if connection: connection.close()
 
+
+def insert_daily_prices(prices_list: list):
+    """
+    接收历史股价字典列表，并批量存入 PostgreSQL。
+    带有 ON CONFLICT 机制，如果某天的价格已经存在，会自动更新（相当于复权价修复）。
+    """
+    if not prices_list:
+        print("❌ 错误: 传入的股价列表为空，放弃写入。")
+        return False
+
+    symbol = prices_list[0].get("symbol")
+    print(f"🔄 正在将 {symbol} 的 {len(prices_list)} 天历史股价同步至 PostgreSQL...")
+
+    connection = None
+    cursor = None
+    try:
+        connection = psycopg2.connect(
+            user=config.DB_USER,
+            password=config.DB_PASSWORD,
+            host=config.DB_HOST,
+            port=config.DB_PORT,
+            database=config.DB_NAME
+        )
+        cursor = connection.cursor()
+
+        # 🌟 针对 (symbol, trade_date) 双主键的 UPSERT 语句
+        upsert_sql = """
+        INSERT INTO daily_prices (
+            symbol, trade_date, open_price, high_price, low_price, 
+            close_price, adjusted_close, volume
+        ) VALUES (
+            %(symbol)s, %(trade_date)s, %(open_price)s, %(high_price)s, %(low_price)s, 
+            %(close_price)s, %(adjusted_close)s, %(volume)s
+        )
+        ON CONFLICT (symbol, trade_date) 
+        DO UPDATE SET 
+            open_price = EXCLUDED.open_price,
+            high_price = EXCLUDED.high_price,
+            low_price = EXCLUDED.low_price,
+            close_price = EXCLUDED.close_price,
+            adjusted_close = EXCLUDED.adjusted_close,
+            volume = EXCLUDED.volume;
+        """
+
+        # executemany 可以一次性把整个列表里的几百上千天数据全部高效塞进数据库
+        cursor.executemany(upsert_sql, prices_list)
+        connection.commit()
+        
+        print(f"✨ 成功！{symbol} 的 {len(prices_list)} 条历史 K 线已持久化至 DB！")
+        return True
+
+    except (Exception, Error) as error:
+        print(f"❌ 股价数据库写入失败: {error}")
+        if connection: connection.rollback()
+        return False
+    finally:
+        if cursor: cursor.close()
+        if connection: connection.close()
+        
         
 if __name__ == "__main__":
     init_tables()

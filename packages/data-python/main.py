@@ -1,7 +1,7 @@
 from tools.alpha_vantage import get_company_overview
 from core.cache_manager import save_to_cache, load_from_cache
 from utils.storage import save_analysis_report, insert_company_overview
-
+from utils.data_transformer import transform_alpha_to_db
 
 def run_stock_pipeline(ticker):
     try:
@@ -12,7 +12,7 @@ def run_stock_pipeline(ticker):
         if not overview_data:
             print(f"❌ 管道中断：未能获取到 {ticker} 的基本面数据。")
             return
-        
+                
         insert_success = insert_company_overview(overview_data)
 
         if not insert_success:

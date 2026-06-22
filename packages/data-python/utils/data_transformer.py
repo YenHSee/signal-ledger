@@ -96,3 +96,80 @@ def transform_alpha_to_db(raw_json: dict) -> dict:
         "dividend_date": _safe_date(raw_json.get("DividendDate")),
         "ex_dividend_date": _safe_date(raw_json.get("ExDividendDate"))
     }
+
+
+def transform_yfinance_to_db(raw_json: dict) -> dict:
+    """
+    把 yfinance (Yahoo) 的 camelCase 格式，转换为
+    PostgreSQL 数据库需要的全小写下划线(snake_case)格式。
+    注意：雅虎有些数据(如 CIK, 详细的分析师打分)没有提供，我们会安全地返回 None，数据库会自动存为 NULL。
+    """
+    # 雅虎的原始数据里，股票代码键名是小写的 'symbol'
+    if not raw_json or "symbol" not in raw_json:
+        return {}
+        
+    return {
+        "symbol": raw_json["symbol"].upper(),
+        "asset_type": raw_json.get("quoteType"),
+        "name": raw_json.get("shortName") or raw_json.get("longName"),
+        "description": raw_json.get("longBusinessSummary"),
+        "cik": None,  # 雅虎通常不提供 CIK
+        "exchange": raw_json.get("exchange"),
+        "currency": raw_json.get("currency"),
+        "country": raw_json.get("country"),
+        "sector": raw_json.get("sector"),
+        "industry": raw_json.get("industry"),
+        "address": raw_json.get("address1"),
+        "official_site": raw_json.get("website"),
+        "fiscal_year_end": None,
+        "latest_quarter": None, 
+        
+        # 核心财务指标映射
+        "market_capitalization": _safe_int(raw_json.get("marketCap")),
+        "ebitda": _safe_int(raw_json.get("ebitda")),
+        "pe_ratio": _safe_float(raw_json.get("trailingPE")),
+        "peg_ratio": _safe_float(raw_json.get("pegRatio")),
+        "book_value": _safe_float(raw_json.get("bookValue")),
+        "dividend_per_share": _safe_float(raw_json.get("dividendRate")),
+        "dividend_yield": _safe_float(raw_json.get("dividendYield")),
+        "eps": _safe_float(raw_json.get("trailingEps")),
+        "revenue_per_share_ttm": _safe_float(raw_json.get("revenuePerShare")),
+        "profit_margin": _safe_float(raw_json.get("profitMargins")),
+        "operating_margin_ttm": _safe_float(raw_json.get("operatingMargins")),
+        "return_on_assets_ttm": _safe_float(raw_json.get("returnOnAssets")),
+        "return_on_equity_ttm": _safe_float(raw_json.get("returnOnEquity")),
+        "revenue_ttm": _safe_int(raw_json.get("totalRevenue")),
+        "gross_profit_ttm": _safe_int(raw_json.get("grossProfits")),
+        "diluted_eps_ttm": _safe_float(raw_json.get("trailingEps")),
+        
+        # 增长与估值
+        "quarterly_earnings_growth_yoy": _safe_float(raw_json.get("earningsQuarterlyGrowth")),
+        "quarterly_revenue_growth_yoy": _safe_float(raw_json.get("revenueGrowth")),
+        "analyst_target_price": _safe_float(raw_json.get("targetMeanPrice")),
+        "analyst_rating_strong_buy": None, # 雅虎不提供精确票数
+        "analyst_rating_buy": None,
+        "analyst_rating_hold": None,
+        "analyst_rating_sell": None,
+        "analyst_rating_strong_sell": None,
+        "trailing_pe": _safe_float(raw_json.get("trailingPE")),
+        "forward_pe": _safe_float(raw_json.get("forwardPE")),
+        "price_to_sales_ratio_ttm": _safe_float(raw_json.get("priceToSalesTrailing12Months")),
+        "price_to_book_ratio": _safe_float(raw_json.get("priceToBook")),
+        "ev_to_revenue": _safe_float(raw_json.get("enterpriseToRevenue")),
+        "ev_to_ebitda": _safe_float(raw_json.get("enterpriseToEbitda")),
+        "beta": _safe_float(raw_json.get("beta")),
+        
+        # 交易数据与股本
+        "week_52_high": _safe_float(raw_json.get("fiftyTwoWeekHigh")),
+        "week_52_low": _safe_float(raw_json.get("fiftyTwoWeekLow")),
+        "day_50_moving_average": _safe_float(raw_json.get("fiftyDayAverage")),
+        "day_200_moving_average": _safe_float(raw_json.get("twoHundredDayAverage")),
+        "shares_outstanding": _safe_int(raw_json.get("sharesOutstanding")),
+        "shares_float": _safe_int(raw_json.get("floatShares")),
+        "percent_insiders": _safe_float(raw_json.get("heldPercentInsiders")),
+        "percent_institutions": _safe_float(raw_json.get("heldPercentInstitutions")),
+        
+        # 日期类数据雅虎返回的是 Unix 时间戳，直接存入比较麻烦，为了稳定性先置空
+        "dividend_date": None,
+        "ex_dividend_date": None
+    }
