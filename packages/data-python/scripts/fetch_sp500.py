@@ -18,7 +18,7 @@ def run_batch_import():
     print("\n🚀 开始执行 Yahoo Finance 标普 500 批量入库任务...")
     
     # 🌟 因为 Yahoo 没限制，我们直接跑满 500 个！(如果你想测试，可以先改成 tickers[:5])
-    for ticker in tickers: 
+    for ticker in tickers:
         print(f"\n--- 正在处理: {ticker} ---")
         
         try:
