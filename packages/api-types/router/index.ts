@@ -15,21 +15,21 @@ export interface RouteItem {
 }
 
 export const macroTerminalRoutes: RouteItem[] = [
-  {
-    path: "/dashboard",
-    name: "Dashboard",
-    component: "/dashboard/index",
-    meta: {
-      title: "大盘概览",
-      icon: "Activity",
-    },
-  },
+  // {
+  //   path: "/dashboard",
+  //   name: "Dashboard",
+  //   component: "/dashboard/index",
+  //   meta: {
+  //     title: "Market Overview", // 大盘概览
+  //     icon: "Activity",
+  //   },
+  // },
   {
     path: "/stock",
     name: "StockIntel",
     redirect: "/stock/screener",
     meta: {
-      title: "个股 AI 分析",
+      title: "AI Stock Intel", // 个股 AI 分析
       icon: "TrendingUp",
     },
     children: [
@@ -38,7 +38,7 @@ export const macroTerminalRoutes: RouteItem[] = [
         name: "StockScreener",
         component: "/stock/screener/index",
         meta: {
-          title: "AI 智能扫盘",
+          title: "Smart Screener", // AI 智能扫盘
         },
       },
       {
@@ -46,8 +46,8 @@ export const macroTerminalRoutes: RouteItem[] = [
         name: "StockDetail",
         component: "/stock/detail/index",
         meta: {
-          title: "个股研报详情",
-          isHide: true,
+          title: "Stock Report Details", // 个股研报详情
+          isHide: false,
         },
       },
     ],
@@ -57,7 +57,7 @@ export const macroTerminalRoutes: RouteItem[] = [
     name: "MacroMatrix",
     redirect: "/macro/nfp",
     meta: {
-      title: "宏观决战矩阵",
+      title: "Macro Matrix", // 宏观决战矩阵
       icon: "Globe",
     },
     children: [
@@ -66,7 +66,7 @@ export const macroTerminalRoutes: RouteItem[] = [
         name: "MacroNFP",
         component: "/macro/nfp/index",
         meta: {
-          title: "NFP 非农剧本",
+          title: "NFP Playbook", // NFP 非农剧本
         },
       },
       {
@@ -74,35 +74,8 @@ export const macroTerminalRoutes: RouteItem[] = [
         name: "MacroCPI",
         component: "/macro/cpi/index",
         meta: {
-          title: "CPI 通胀预演",
+          title: "CPI Projections", // CPI 通胀预演
           requiresPro: true,
-        },
-      },
-    ],
-  },
-  {
-    path: "/settings",
-    name: "Settings",
-    redirect: "/settings/subscription",
-    meta: {
-      title: "账户与资产",
-      icon: "Shield",
-    },
-    children: [
-      {
-        path: "/settings/subscription",
-        name: "Subscription",
-        component: "/settings/subscription/index",
-        meta: {
-          title: "会员订阅 ($9.99)",
-        },
-      },
-      {
-        path: "/settings/broker",
-        name: "BrokerLink",
-        component: "/settings/broker/index",
-        meta: {
-          title: "券商 API 绑定",
         },
       },
     ],
