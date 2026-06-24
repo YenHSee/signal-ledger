@@ -1,19 +1,4 @@
-def transform_to_report(raw_json: dict):
-    return {
-        "ticker": raw_json["Symbol"],
-        "indicators": {
-            "peRatio": float(raw_json["PERatio"]),
-            "rsi": 0, 
-            "isOverbought": False
-        },
-        "decision": {
-            "action": "HOLD", 
-            "reasoning": "待 AI 生成",
-            "confidence": 0
-        }
-    }
-
-
+# Helper Function
 def _safe_float(value):
     if not value or value in ["None", "N/A"]: return None
     try: return float(value)
@@ -31,7 +16,7 @@ def _safe_date(value):
     return value
 
 
-def transform_alpha_to_db(raw_json: dict) -> dict:
+def transform_alpha_overview_to_db(raw_json: dict) -> dict:
     """
     把 Alpha Vantage 的 PascalCase 格式，转换为
     PostgreSQL 数据库需要的全小写下划线(snake_case)格式，并做好类型转换。
@@ -85,7 +70,7 @@ def transform_alpha_to_db(raw_json: dict) -> dict:
         "ev_to_revenue": _safe_float(raw_json.get("EVToRevenue")),
         "ev_to_ebitda": _safe_float(raw_json.get("EVToEBITDA")),
         "beta": _safe_float(raw_json.get("Beta")),
-        "week_52_high": _safe_float(raw_json.get("52WeekHigh")), # 👈 顺便把数字开头的坑在 Python 层解决掉
+        "week_52_high": _safe_float(raw_json.get("52WeekHigh")),
         "week_52_low": _safe_float(raw_json.get("52WeekLow")),
         "day_50_moving_average": _safe_float(raw_json.get("50DayMovingAverage")),
         "day_200_moving_average": _safe_float(raw_json.get("200DayMovingAverage")),
@@ -98,13 +83,12 @@ def transform_alpha_to_db(raw_json: dict) -> dict:
     }
 
 
-def transform_yfinance_to_db(raw_json: dict) -> dict:
+def transform_yfinance_overview_to_db(raw_json: dict) -> dict:
     """
     把 yfinance (Yahoo) 的 camelCase 格式，转换为
     PostgreSQL 数据库需要的全小写下划线(snake_case)格式。
     注意：雅虎有些数据(如 CIK, 详细的分析师打分)没有提供，我们会安全地返回 None，数据库会自动存为 NULL。
     """
-    # 雅虎的原始数据里，股票代码键名是小写的 'symbol'
     if not raw_json or "symbol" not in raw_json:
         return {}
         
@@ -113,7 +97,7 @@ def transform_yfinance_to_db(raw_json: dict) -> dict:
         "asset_type": raw_json.get("quoteType"),
         "name": raw_json.get("shortName") or raw_json.get("longName"),
         "description": raw_json.get("longBusinessSummary"),
-        "cik": None,  # 雅虎通常不提供 CIK
+        "cik": None,  
         "exchange": raw_json.get("exchange"),
         "currency": raw_json.get("currency"),
         "country": raw_json.get("country"),
@@ -146,7 +130,7 @@ def transform_yfinance_to_db(raw_json: dict) -> dict:
         "quarterly_earnings_growth_yoy": _safe_float(raw_json.get("earningsQuarterlyGrowth")),
         "quarterly_revenue_growth_yoy": _safe_float(raw_json.get("revenueGrowth")),
         "analyst_target_price": _safe_float(raw_json.get("targetMeanPrice")),
-        "analyst_rating_strong_buy": None, # 雅虎不提供精确票数
+        "analyst_rating_strong_buy": None,
         "analyst_rating_buy": None,
         "analyst_rating_hold": None,
         "analyst_rating_sell": None,
@@ -172,4 +156,74 @@ def transform_yfinance_to_db(raw_json: dict) -> dict:
         # 日期类数据雅虎返回的是 Unix 时间戳，直接存入比较麻烦，为了稳定性先置空
         "dividend_date": None,
         "ex_dividend_date": None
+    }
+
+
+# 历史股价清洗 (Daily Prices)
+def transform_alpha_prices_to_db(symbol: str, raw_data: dict) -> list:
+    """Alpha Vantage: 接收标准 dict，返回数据库需要的列表"""
+    prices_list = []
+    
+    if not raw_data or "Time Series (Daily)" not in raw_data:
+        return prices_list
+        
+    time_series = raw_data["Time Series (Daily)"]
+    
+    # 遍历字典 { "2023-10-01": {"1. open": 150, ...} }
+    for date_str, daily_data in time_series.items():
+        prices_list.append({
+            "symbol": symbol.upper(),
+            "trade_date": date_str,
+            "open_price": _safe_float(daily_data.get("1. open")),
+            "high_price": _safe_float(daily_data.get("2. high")),
+            "low_price": _safe_float(daily_data.get("3. low")),
+            "close_price": _safe_float(daily_data.get("4. close")),
+            # 容错机制
+            "adjusted_close": _safe_float(daily_data.get("5. adjusted close", daily_data.get("4. close"))),
+            "volume": _safe_int(daily_data.get("6. volume"))
+        })
+        
+    return prices_list
+
+
+def transform_yfinance_prices_to_db(symbol: str, raw_data: dict) -> list:
+    """Yahoo Finance: 接收标准 dict (由 Pandas .to_dict() 转换而来)，返回数据库需要的列表"""
+    prices_list = []
+    
+    if not raw_data:
+        return prices_list
+        
+    # 遍历字典 { Timestamp('2023-10-01'): {"Open": 150, ...} }
+    for date_obj, row in raw_data.items():
+        # 兼容处理：确保日期变成 YYYY-MM-DD 格式的字符串
+        date_str = date_obj.strftime("%Y-%m-%d") if hasattr(date_obj, 'strftime') else str(date_obj)[:10]
+        
+        prices_list.append({
+            "symbol": symbol.upper(),
+            "trade_date": date_str,
+            "open_price": _safe_float(row.get("Open")),
+            "high_price": _safe_float(row.get("High")),
+            "low_price": _safe_float(row.get("Low")),
+            "close_price": _safe_float(row.get("Close")),
+            # 如果没有 Adj Close (批量下载有时会丢)，用 Close 兜底
+            "adjusted_close": _safe_float(row.get("Adj Close", row.get("Close"))),
+            "volume": _safe_int(row.get("Volume"))
+        })
+        
+    return prices_list
+
+
+def transform_to_report(raw_json: dict):
+    return {
+        "ticker": raw_json["Symbol"],
+        "indicators": {
+            "peRatio": float(raw_json["PERatio"]),
+            "rsi": 0, 
+            "isOverbought": False
+        },
+        "decision": {
+            "action": "HOLD", 
+            "reasoning": "待 AI 生成",
+            "confidence": 0
+        }
     }

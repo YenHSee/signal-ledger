@@ -1,4 +1,3 @@
-# tools/market_data.py
 import requests
 import pandas as pd
 import io

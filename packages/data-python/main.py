@@ -1,26 +1,6 @@
-from tools.alpha_vantage import get_company_overview
 from core.cache_manager import save_to_cache, load_from_cache
-from utils.storage import save_analysis_report, insert_company_overview
-from utils.data_transformer import transform_alpha_to_db
+from utils.storage import save_analysis_report
 
-def run_stock_pipeline(ticker):
-    try:
-        ticker = ticker.upper()
-        print(f"🚀 开始为 {ticker} 执行全链路研报流水线...\n")
-        overview_data = get_company_overview(ticker)
-
-        if not overview_data:
-            print(f"❌ 管道中断：未能获取到 {ticker} 的基本面数据。")
-            return
-                
-        insert_success = insert_company_overview(overview_data)
-
-        if not insert_success:
-            print(f"⚠️ 警告：{ticker} 数据库写入失败，但我们将继续尝试生成本地研报...")
-
-    except Exception as e:
-        print(f"\n🚨 致命错误：{ticker} 的流水线发生意外崩溃！")
-        print(f"❌ 错误详情: {e}\n" + "="*50)
 
 def analyze_ticker(ticker: str):
     print(f"\n🚀 终端请求：开始深度调查 {ticker}")
@@ -51,5 +31,4 @@ def analyze_ticker(ticker: str):
     return final_json_dict
 
 if __name__ == "__main__":
-    run_stock_pipeline("NVDA")
     # analyze_ticker("SpaceX")

@@ -4,38 +4,31 @@ import sys
 from datetime import datetime
 import psycopg2
 from psycopg2 import Error
-from dotenv import load_dotenv
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from config import config
-from utils.data_transformer import transform_alpha_to_db, transform_yfinance_to_db
-from tools.alpha_vantage import get_company_overview
 
-def save_analysis_report(ticker: str, analysis_output: dict, raw_data: dict):
-    """将分析结果和原始数据存为一个结构化的 JSON 文件"""
-    
-    # 文件名只要年月日 (方便排序和查找)
-    date_str = datetime.now().strftime("%Y-%m-%d")
-    
-    # ⭐️ 内部自带精确到秒的 timestamp，给前端用的！
-    exact_time = datetime.now().isoformat() 
 
-    report = {
-        "ticker": ticker.upper(),
-        "timestamp": exact_time,          # 明确的生成时间
-        "ai_analysis": analysis_output,   # 这里面也有 generated_at，双保险
-        "raw_financial_data": raw_data
-    }
-    
-    output_dir = "reports"
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
-        
-    file_path = os.path.join(output_dir, f"{date_str}_{ticker.upper()}_report.json")
-    with open(file_path, "w", encoding="utf-8") as f:
-        json.dump(report, f, indent=4, ensure_ascii=False)
-    
-    print(f"✅ 研报已持久化 (保留历史): {file_path}")
+# Helper Function
+def execute_simple_sql(sql_statement):
+    """通用的快捷 SQL 执行工具 (用于执行重置标签、清空表等操作)"""
+    connection = None
+    cursor = None
+    try:
+        connection = psycopg2.connect(
+            user=config.DB_USER, password=config.DB_PASSWORD,
+            host=config.DB_HOST, port=config.DB_PORT, database=config.DB_NAME
+        )
+        cursor = connection.cursor()
+        cursor.execute(sql_statement)
+        connection.commit()
+    except Exception as e:
+        print(f"❌ SQL 执行失败: {e}")
+        if connection: connection.rollback()
+    finally:
+        if cursor: cursor.close()
+        if connection: connection.close()
 
 
 def init_tables():
@@ -43,7 +36,6 @@ def init_tables():
     connection = None
     cursor = None
     try:
-        # 1. 直接连接到 stock_analyst
         connection = psycopg2.connect(
             user=config.DB_USER,
             password=config.DB_PASSWORD,
@@ -54,8 +46,7 @@ def init_tables():
         cursor = connection.cursor()
         print(f"✅ 成功连接到数据库: {config.DB_NAME}")
 
-        # 2. 编写创建 company_overview 表的 SQL
-        # ⚠️ 已添加确实的 TrailingPE, ForwardPE 等字段
+        # 🌟 1. 创建 company_overview 表 (已包含 is_sp500 字段)
         create_overview_sql = """
         CREATE TABLE IF NOT EXISTS company_overview (
             symbol VARCHAR(10) PRIMARY KEY,
@@ -113,11 +104,12 @@ def init_tables():
             percent_institutions NUMERIC(10, 4),
             dividend_date DATE,
             ex_dividend_date DATE,
+            is_sp500 BOOLEAN DEFAULT FALSE,
             last_updated TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
         );
         """
 
-        # 3. 编写创建 daily_prices 表的 SQL
+        # 创建 daily_prices 表
         create_prices_sql = """
         CREATE TABLE IF NOT EXISTS daily_prices (
             symbol VARCHAR(10) REFERENCES company_overview(symbol),
@@ -132,39 +124,34 @@ def init_tables():
         );
         """
 
-        # 4. 执行 SQL 并提交
         cursor.execute(create_overview_sql)
-        print("✅ 表 'company_overview' 初始化检查完成。")
+        print("✅ 表 'company_overview' 初始化检查完成 ")
         
         cursor.execute(create_prices_sql)
-        print("✅ 表 'daily_prices' 初始化检查完成。")
+        print("✅ 表 'daily_prices' 初始化检查完成")
 
         connection.commit()
         print("🎉 所有数据表成功同步！")
 
     except (Exception, Error) as error:
         print("❌ 数据库操作发生错误:", error)
-        if connection:
-            connection.rollback() # 出错时回滚
+        if connection: connection.rollback()
             
     finally:
-        # 5. 关闭连接
         if cursor: cursor.close()
         if connection: 
             connection.close()
             print("🔌 PostgreSQL 连接已安全关闭。")
 
 
-def insert_company_overview(raw_json):
-    """接收原始 JSON，内部调用 transformer 清洗，并存入数据库"""
-    
-    clean_data = transform_yfinance_to_db(raw_json)
-    if not clean_data:
-        print("❌ 错误: 原始数据清洗后为空，放弃写入数据库")
+def insert_company_overview(clean_data: dict):
+    # 1. 只做最基本的入参校验（防呆）
+    if not clean_data or "symbol" not in clean_data:
+        print("❌ 错误: 传入的基本面数据为空或缺少 symbol，放弃写入数据库")
         return False
 
     symbol = clean_data["symbol"]
-    print(f"🔄 正在将清洗后的 {symbol} 基本面数据同步至 PostgreSQL...")
+    print(f"🔄 正在将 {symbol} 的纯净基本面数据同步至 PostgreSQL...")
 
     connection = None
     cursor = None
@@ -178,6 +165,7 @@ def insert_company_overview(raw_json):
         )
         cursor = connection.cursor()
 
+        # 2. 直接拿着上游传来的 clean_data 往数据库里砸
         upsert_sql = """
         INSERT INTO company_overview (
             symbol, asset_type, name, description, cik, exchange, currency, country, 
@@ -191,7 +179,8 @@ def insert_company_overview(raw_json):
             trailing_pe, forward_pe, price_to_sales_ratio_ttm, price_to_book_ratio, 
             ev_to_revenue, ev_to_ebitda, beta, week_52_high, week_52_low, 
             day_50_moving_average, day_200_moving_average, shares_outstanding, shares_float, 
-            percent_insiders, percent_institutions, dividend_date, ex_dividend_date, last_updated
+            percent_insiders, percent_institutions, dividend_date, ex_dividend_date, 
+            is_sp500, last_updated
         ) VALUES (
             %(symbol)s, %(asset_type)s, %(name)s, %(description)s, %(cik)s, %(exchange)s, %(currency)s, %(country)s, 
             %(sector)s, %(industry)s, %(address)s, %(official_site)s, %(fiscal_year_end)s, %(latest_quarter)s, 
@@ -204,7 +193,8 @@ def insert_company_overview(raw_json):
             %(trailing_pe)s, %(forward_pe)s, %(price_to_sales_ratio_ttm)s, %(price_to_book_ratio)s, 
             %(ev_to_revenue)s, %(ev_to_ebitda)s, %(beta)s, %(week_52_high)s, %(week_52_low)s, 
             %(day_50_moving_average)s, %(day_200_moving_average)s, %(shares_outstanding)s, %(shares_float)s, 
-            %(percent_insiders)s, %(percent_institutions)s, %(dividend_date)s, %(ex_dividend_date)s, CURRENT_TIMESTAMP
+            %(percent_insiders)s, %(percent_institutions)s, %(dividend_date)s, %(ex_dividend_date)s, 
+            %(is_sp500)s, CURRENT_TIMESTAMP
         )
         ON CONFLICT (symbol) 
         DO UPDATE SET 
@@ -216,12 +206,13 @@ def insert_company_overview(raw_json):
             analyst_target_price = EXCLUDED.analyst_target_price, trailing_pe = EXCLUDED.trailing_pe,
             forward_pe = EXCLUDED.forward_pe, week_52_high = EXCLUDED.week_52_high, week_52_low = EXCLUDED.week_52_low,
             day_50_moving_average = EXCLUDED.day_50_moving_average, day_200_moving_average = EXCLUDED.day_200_moving_average,
+            is_sp500 = EXCLUDED.is_sp500,
             last_updated = CURRENT_TIMESTAMP;
         """
 
         cursor.execute(upsert_sql, clean_data)
         connection.commit()
-        print(f"✨ 成功！股票 {symbol} 的数据已通过 Transformer 清洗并持久化至 DB！")
+        print(f"✨ 成功！股票 {symbol} 的基本面数据已持久化至 DB！")
         return True
 
     except (Exception, Error) as error:
@@ -234,16 +225,12 @@ def insert_company_overview(raw_json):
 
 
 def insert_daily_prices(prices_list: list):
-    """
-    接收历史股价字典列表，并批量存入 PostgreSQL。
-    带有 ON CONFLICT 机制，如果某天的价格已经存在，会自动更新（相当于复权价修复）。
-    """
     if not prices_list:
         print("❌ 错误: 传入的股价列表为空，放弃写入。")
         return False
 
     symbol = prices_list[0].get("symbol")
-    print(f"🔄 正在将 {symbol} 的 {len(prices_list)} 天历史股价同步至 PostgreSQL...")
+    print(f"🔄 正在将 {symbol} 的 {len(prices_list)} 天历史 K 线批量同步至 PostgreSQL...")
 
     connection = None
     cursor = None
@@ -257,7 +244,6 @@ def insert_daily_prices(prices_list: list):
         )
         cursor = connection.cursor()
 
-        # 🌟 针对 (symbol, trade_date) 双主键的 UPSERT 语句
         upsert_sql = """
         INSERT INTO daily_prices (
             symbol, trade_date, open_price, high_price, low_price, 
@@ -276,7 +262,6 @@ def insert_daily_prices(prices_list: list):
             volume = EXCLUDED.volume;
         """
 
-        # executemany 可以一次性把整个列表里的几百上千天数据全部高效塞进数据库
         cursor.executemany(upsert_sql, prices_list)
         connection.commit()
         
@@ -285,14 +270,35 @@ def insert_daily_prices(prices_list: list):
 
     except (Exception, Error) as error:
         print(f"❌ 股价数据库写入失败: {error}")
-        if connection: connection.rollback()
+        if connection: connection.rollback() 
         return False
     finally:
         if cursor: cursor.close()
         if connection: connection.close()
         
+
+def save_analysis_report(ticker: str, analysis_output: dict, raw_data: dict):
+    """将分析结果和原始数据存为一个结构化的 JSON 文件"""
+    date_str = datetime.now().strftime("%Y-%m-%d")
+    exact_time = datetime.now().isoformat() 
+
+    report = {
+        "ticker": ticker.upper(),
+        "timestamp": exact_time,
+        "ai_analysis": analysis_output,
+        "raw_financial_data": raw_data
+    }
+    
+    output_dir = "reports"
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
         
+    file_path = os.path.join(output_dir, f"{date_str}_{ticker.upper()}_report.json")
+    with open(file_path, "w", encoding="utf-8") as f:
+        json.dump(report, f, indent=4, ensure_ascii=False)
+    
+    print(f"✅ 研报已持久化 (保留历史): {file_path}")
+
+
 if __name__ == "__main__":
     init_tables()
-    overview_data = get_company_overview("NVDA")
-    insert_company_overview(overview_data)
