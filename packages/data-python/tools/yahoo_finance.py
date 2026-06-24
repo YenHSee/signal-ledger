@@ -1,5 +1,6 @@
 import os
 import sys
+import time
 import yfinance as yf
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -31,6 +32,7 @@ def get_company_overview(ticker: str):
             print(f"⚠️ [API 警告] Yahoo Finance 未返回有效的基本面数据: {ticker}")
             return None
         
+        time.sleep(1.5)
         # 存入缓存并返回
         save_to_cache(ticker, overview_data)
         print(f"💾 [数据持久化] 基本面数据已保存至缓存: {ticker}")

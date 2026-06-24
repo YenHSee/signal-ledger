@@ -1,5 +1,6 @@
 import os
 import sys
+import time
 import requests
 
 # 确保能找到根目录的模块
@@ -38,6 +39,7 @@ def get_company_overview(ticker: str):
         
         # 4. 存入缓存并返回
         # 只要成功拿到了数据，就把它存起来
+        time.sleep(1.5)
         save_to_cache(ticker, overview_data)
         print(f"💾 [数据持久化] 基本面数据已保存至缓存: {ticker}")
         
