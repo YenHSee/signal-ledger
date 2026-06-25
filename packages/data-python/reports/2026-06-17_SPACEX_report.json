@@ -1,9 +1,0 @@
-{
-    "ticker": "SPACEX",
-    "timestamp": "2026-06-17T15:20:24.970899",
-    "ai_analysis": "为了提供详尽的尽职调查报告，我将使用我的分析工具来评估 SpaceX 的财务状况和市场表现。\n\n首先，我会尝试使用 analyze_public_stock 工具获取公开上市公司的数据。然而，在尝试之前，我需要确认是否可以成功调用此工具。",
-    "raw_financial_data": {
-        "status": "unlisted",
-        "note": "No public financial data available for SpaceX (Alternative data used)."
-    }
-}

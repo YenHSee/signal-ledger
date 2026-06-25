@@ -1,56 +1,63 @@
-from langchain.agents import AgentExecutor, create_tool_calling_agent
-from langchain.output_parsers import PydanticOutputParser
-from langchain_core.prompts import ChatPromptTemplate
-from core.llm_factory import get_llm
-from tools.tool_registry import get_all_tools
+import os
+from datetime import datetime
 from pydantic import BaseModel, Field
-from datetime import datetime # ⭐️ 必须引入
+
+# 🌟 抛弃旧时代的 AgentExecutor，引入最新的 LangGraph 引擎
+from langgraph.prebuilt import create_react_agent
+from langchain_core.output_parsers import PydanticOutputParser
+
+# 你的本地核心模块
 from core.llm_factory import get_llm, ModelTier
+from tools.tool_registry import get_all_tools
 
+# ==========================================
+# 1. 定义数据结构的“宪兵” (Pydantic Schema)
+# ==========================================
 class InvestmentReport(BaseModel):
-    conclusion: str = Field(description="必须是 BUY, HOLD 或 SELL")
-    target_price: str = Field(description="分析师目标价")
-    reasoning: str = Field(description="300字以内的投资逻辑分析")
+    conclusion: str = Field(description="必须严格输出：BUY, HOLD 或 SELL")
+    target_price: str = Field(description="分析师目标价，例如 '$150' 或 'N/A'")
+    reasoning: str = Field(description="300字以内的核心投资逻辑分析")
     risk_level: str = Field(description="风险等级: High, Medium, Low")
-    full_report: str = Field(description="完整的 Markdown 格式分析内容，必须包含公司的核心业务分析、财务数据深度解读、以及潜在风险提示。字数不得少于 500 字，必须使用多级标题和列表。")
-    generated_at: str = Field(default_factory=lambda: datetime.now().isoformat()) # ⭐️ AI 生成的具体时间
+    full_report: str = Field(
+        description="完整的 Markdown 格式分析内容，必须包含：1.业务概览与护城河 2.财务健康度深度剖析(引用真实数据) 3.投资风险与展望。字数不少于500字，必须使用多级标题和列表。"
+    )
+    generated_at: str = Field(default_factory=lambda: datetime.now().isoformat())
 
+
+# ==========================================
+# 2. 组装 AI 智能体工厂 (LangGraph 引擎)
+# ==========================================
 def create_analyst_agent():
-    """初始化并返回一个配置好的金融分析师 Agent Executor"""
-    # llm = get_llm()
-    # llm = get_llm(tier=ModelTier.NORMAL, temperature=0.3)
-    llm = get_llm(tier=ModelTier.LOCAL, temperature=0.3)
-    tools = get_all_tools()
+    """初始化并返回一个配置好的金融分析师 LangGraph 引擎和 Parser"""
     
-    # ⭐️ 必须先定义 parser！
+    llm = get_llm(tier=ModelTier.LOCAL, temperature=0.1)
+    tools = get_all_tools()
     parser = PydanticOutputParser(pydantic_object=InvestmentReport)
     
-    prompt = ChatPromptTemplate.from_messages([
-        ("system", """你是一个面向顶级投行客户的量化与基本面分析师。你的任务是基于手头工具收集到的数据，直接向客户交付最终的投资研报。
-        
-        【报告撰写标准】:
-        在 `full_report` 字段中，你必须写出一份详尽的、排版精美的 Markdown 报告。报告必须包含：
-        1. 业务概览与护城河分析
-        2. 财务健康度深度剖析（引用 PE、利润率等数据）
-        3. 投资风险与未来展望
-        严禁只写一两句话敷衍了事！必须分段、使用加粗和列表。
-
-        请严格按照以下 JSON 格式要求输出你的最终分析：
-        {format_instructions}
-
-        【分析策略】：
-        - 如果是上市公司，请利用 Alpha Vantage 的财务数据进行计算和推演。
-        - 如果是未上市公司 (如 SpaceX)，请生成另类投资策略（例如推荐竞品 RKLB 或相关供应链股）。
-        """),
-        ("human", "{input}"),
-        ("placeholder", "{agent_scratchpad}"), 
-    ])
-
-    # 注入 JSON 格式指令
-    prompt = prompt.partial(format_instructions=parser.get_format_instructions())
+    # LangGraph 直接把系统提示词当做 state_modifier 传进去，极其优雅
+    system_prompt = f"""你是一个面向顶级投行客户的首席量化与基本面分析师。
     
-    agent = create_tool_calling_agent(llm, tools, prompt)
+    【核心数据来源 - 严禁乱编】：
+    用户已经为你准备好了这只股票的最新基本面、估值、机构持股以及技术面指标数据。
+    你必须且只能基于用户发给你的 JSON 数据来进行推理分析！不要自己去幻想或查找额外的财务数据！
     
-    return AgentExecutor(agent=agent, tools=tools, verbose=True), parser
+    【严格输出要求 - 致命规则】：
+    你必须严格按照以下 JSON 格式返回结果，作为你唯一的最终输出。
+    绝不允许在 JSON 前后输出任何思考过程、Markdown 标记（如 ```json）或问候语！
+    
+    {parser.get_format_instructions()}
+    """
+    
+    # 🌟 核心：使用 LangGraph 引擎创建 Agent (自带工具调用循环防崩溃机制)
+    executor = create_react_agent(
+        model=llm, 
+        tools=tools, 
+        prompt=system_prompt
+    )
+    
+    return executor, parser
 
+# ==========================================
+# 3. 暴露给外部调用的实例
+# ==========================================
 executor, parser = create_analyst_agent()

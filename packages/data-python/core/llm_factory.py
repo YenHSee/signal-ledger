@@ -1,11 +1,7 @@
 import os
 from enum import Enum
-from dotenv import load_dotenv
 
-# 运行前自动加载 .env 
-load_dotenv()
 
-# ⭐️ 这里就是你问的 ModelTier！定义好不同级别
 class ModelTier(Enum):
     SMART = "smart"     # 顶级模型
     NORMAL = "normal"   # 性价比模型

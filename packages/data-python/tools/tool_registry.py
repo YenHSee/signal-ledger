@@ -1,5 +1,5 @@
 from langchain_core.tools import tool
-from tools.alpha_vantage import get_stock_data
+from tools.alpha_vantage import get_company_overview
 from tools.alt_data import get_private_company_data
 
 @tool
@@ -9,7 +9,7 @@ def analyze_public_stock(ticker: str) -> str:
     用于获取公开上市公司 (如 NVDA, AAPL) 的真实财务数据。
     如果返回空数据或失败，说明该公司可能未上市，请放弃此工具。
     """
-    data = get_stock_data(ticker)
+    data = get_company_overview(ticker)
     if not data or "Error Message" in data:
         return "未能找到该公司的公开市场数据。它可能是私有公司，请立刻改用 analyze_private_company 工具。"
     return str(data)
@@ -26,4 +26,4 @@ def analyze_private_company(company_name: str) -> str:
     return str(data)
 
 def get_all_tools():
-    return [analyze_public_stock, analyze_private_company]
+    return []

@@ -4,6 +4,7 @@ import sys
 from datetime import datetime
 import psycopg2
 from psycopg2 import Error
+import psycopg2.extras
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -203,9 +204,12 @@ def insert_company_overview(clean_data: dict):
             latest_quarter = EXCLUDED.latest_quarter, market_capitalization = EXCLUDED.market_capitalization,
             ebitda = EXCLUDED.ebitda, pe_ratio = EXCLUDED.pe_ratio, peg_ratio = EXCLUDED.peg_ratio,
             eps = EXCLUDED.eps, profit_margin = EXCLUDED.profit_margin, revenue_ttm = EXCLUDED.revenue_ttm,
+            return_on_equity_ttm = EXCLUDED.return_on_equity_ttm, 
+            quarterly_earnings_growth_yoy = EXCLUDED.quarterly_earnings_growth_yoy,
             analyst_target_price = EXCLUDED.analyst_target_price, trailing_pe = EXCLUDED.trailing_pe,
             forward_pe = EXCLUDED.forward_pe, week_52_high = EXCLUDED.week_52_high, week_52_low = EXCLUDED.week_52_low,
             day_50_moving_average = EXCLUDED.day_50_moving_average, day_200_moving_average = EXCLUDED.day_200_moving_average,
+            percent_institutions = EXCLUDED.percent_institutions,
             is_sp500 = EXCLUDED.is_sp500,
             last_updated = CURRENT_TIMESTAMP;
         """
@@ -272,6 +276,90 @@ def insert_daily_prices(prices_list: list):
         print(f"❌ 股价数据库写入失败: {error}")
         if connection: connection.rollback() 
         return False
+    finally:
+        if cursor: cursor.close()
+        if connection: connection.close()
+        
+
+def build_ai_context(ticker: str):
+    """
+    【读时计算 (Compute-on-Read) 组装器】
+    从 DB 拉取基本面和最新 K 线，动态计算技术指标（如 3周前价格），
+    组装成极其完美的 JSON 喂给 AI。
+    """
+    connection = None
+    cursor = None
+    try:
+        connection = psycopg2.connect(
+            user=config.DB_USER, password=config.DB_PASSWORD,
+            host=config.DB_HOST, port=config.DB_PORT, database=config.DB_NAME
+        )
+        # 使用 DictCursor 让我们能通过列名（如 row['pe_ratio']）直接拿数据
+        cursor = connection.cursor(cursor_factory=psycopg2.extras.DictCursor)
+
+        # 1. 获取基本面数据
+        cursor.execute("SELECT * FROM company_overview WHERE symbol = %s", (ticker.upper(),))
+        overview = cursor.fetchone()
+        
+        if not overview:
+            return None
+
+        # 2. 获取最近 15 个交易日（约 3 周）的收盘价
+        cursor.execute("""
+            SELECT trade_date, close_price 
+            FROM daily_prices 
+            WHERE symbol = %s 
+            ORDER BY trade_date DESC 
+            LIMIT 15
+        """, (ticker.upper(),))
+        prices = cursor.fetchall()
+
+        current_price = float(prices[0]['close_price']) if prices else 0
+        price_3_weeks_ago = float(prices[-1]['close_price']) if len(prices) == 15 else current_price
+
+        # 3. 动态计算 52 周分位数位置
+        high_52 = float(overview['week_52_high']) if overview['week_52_high'] else 0
+        low_52 = float(overview['week_52_low']) if overview['week_52_low'] else 0
+        current_position_pct = 0
+        if high_52 > low_52 and current_price > 0:
+            current_position_pct = round((current_price - low_52) / (high_52 - low_52), 4)
+
+        # 4. 组装 AI 最喜欢的结构
+        return {
+            "company_identity": {
+                "symbol": overview['symbol'],
+                "name": overview['name'],
+                "sector": overview['sector'],
+                "business_summary": overview['description'][:300] if overview['description'] else "N/A"
+            },
+            "profitability_and_scale": {
+                "market_cap": float(overview['market_capitalization'] or 0),
+                "profit_margin": float(overview['profit_margin'] or 0),
+                "return_on_equity_ttm": float(overview['return_on_equity_ttm'] or 0)
+            },
+            "valuation_and_growth": {
+                "trailing_pe": float(overview['trailing_pe'] or 0),
+                "forward_pe": float(overview['forward_pe'] or 0),
+                "peg_ratio": float(overview['peg_ratio'] or 0),
+                "earnings_growth_yoy": float(overview['quarterly_earnings_growth_yoy'] or 0)
+            },
+            "smart_money_consensus": {
+                "percent_institutions": float(overview['percent_institutions'] or 0),
+                "analyst_target_price": float(overview['analyst_target_price'] or 0),
+                "current_price": current_price
+            },
+            "technical_and_momentum": {
+                "price_3_weeks_ago": price_3_weeks_ago,
+                "week_52_range": {
+                    "high": high_52,
+                    "low": low_52,
+                    "current_position_pct": current_position_pct
+                }
+            }
+        }
+    except Exception as e:
+        print(f"❌ 组装 AI Context 失败: {e}")
+        return None
     finally:
         if cursor: cursor.close()
         if connection: connection.close()
