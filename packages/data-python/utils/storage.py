@@ -317,6 +317,11 @@ def build_ai_context(ticker: str):
         current_price = float(prices[0]['close_price']) if prices else 0
         price_3_weeks_ago = float(prices[-1]['close_price']) if len(prices) == 15 else current_price
 
+        recent_price_change_pct = 0
+        if price_3_weeks_ago > 0:
+            recent_price_change_pct = round((current_price - price_3_weeks_ago) / price_3_weeks_ago, 4)
+ 
+
         # 3. 动态计算 52 周分位数位置
         high_52 = float(overview['week_52_high']) if overview['week_52_high'] else 0
         low_52 = float(overview['week_52_low']) if overview['week_52_low'] else 0
@@ -341,7 +346,8 @@ def build_ai_context(ticker: str):
                 "trailing_pe": float(overview['trailing_pe'] or 0),
                 "forward_pe": float(overview['forward_pe'] or 0),
                 "peg_ratio": float(overview['peg_ratio'] or 0),
-                "earnings_growth_yoy": float(overview['quarterly_earnings_growth_yoy'] or 0)
+                "earnings_growth_yoy": float(overview['quarterly_earnings_growth_yoy'] or 0),
+                "revenue_growth_yoy": float(overview['quarterly_revenue_growth_yoy'] or 0) 
             },
             "smart_money_consensus": {
                 "percent_institutions": float(overview['percent_institutions'] or 0),
@@ -349,11 +355,17 @@ def build_ai_context(ticker: str):
                 "current_price": current_price
             },
             "technical_and_momentum": {
-                "price_3_weeks_ago": price_3_weeks_ago,
+                "moving_averages": {
+                    "day_50_ma": float(overview['day_50_moving_average'] or 0),
+                    "day_200_ma": float(overview['day_200_moving_average'] or 0)
+                },
                 "week_52_range": {
                     "high": high_52,
                     "low": low_52,
                     "current_position_pct": current_position_pct
+                },
+                "recent_3_weeks_action": {
+                    "price_change_pct": recent_price_change_pct, 
                 }
             }
         }
@@ -365,7 +377,7 @@ def build_ai_context(ticker: str):
         if connection: connection.close()
         
 
-def save_analysis_report(ticker: str, analysis_output: dict, raw_data: dict):
+def save_analysis_report(ticker: str, analysis_output: dict, raw_data: dict, model_letter: str = "L"):
     """将分析结果和原始数据存为一个结构化的 JSON 文件"""
     date_str = datetime.now().strftime("%Y-%m-%d")
     exact_time = datetime.now().isoformat() 
@@ -373,6 +385,7 @@ def save_analysis_report(ticker: str, analysis_output: dict, raw_data: dict):
     report = {
         "ticker": ticker.upper(),
         "timestamp": exact_time,
+        "model_tier": model_letter,
         "ai_analysis": analysis_output,
         "raw_financial_data": raw_data
     }
@@ -381,7 +394,8 @@ def save_analysis_report(ticker: str, analysis_output: dict, raw_data: dict):
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
         
-    file_path = os.path.join(output_dir, f"{date_str}_{ticker.upper()}_report.json")
+    file_name = f"{date_str}_{ticker.upper()}_{model_letter}_report.json"
+    file_path = os.path.join(output_dir, file_name)
     with open(file_path, "w", encoding="utf-8") as f:
         json.dump(report, f, indent=4, ensure_ascii=False)
     

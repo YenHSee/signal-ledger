@@ -1,0 +1,51 @@
+{
+    "ticker": "AAPL",
+    "timestamp": "2026-06-26T15:04:23.764134",
+    "ai_analysis": {
+        "conclusion": "BUY",
+        "target_price": "$314.42",
+        "reasoning": "Apple Inc. (AAPL) presents a compelling investment opportunity with strong fundamentals and positive technical indicators. The company has a market capitalization of $4,362.3B, indicating significant scale and financial strength. Its trailing P/E ratio of 35.96 suggests the stock is slightly overvalued compared to its earnings, but this can be justified by its robust growth prospects. The forward P/E of 30.94 indicates a more reasonable valuation for future earnings. Additionally, Apple's profit margin and return on equity are strong, supporting its ability to generate consistent profits. Analysts project a target price of $314.42, which aligns with the current market position. The recent technical indicators show that AAPL is trading above both 50-day and 200-day moving averages, indicating positive momentum. Given these factors, we recommend a BUY stance.",
+        "risk_level": "Medium",
+        "full_report": "# Apple Inc. (AAPL) Investment Analysis\n## Business Overview & Competitive Edge\nApple Inc., a leading technology company, designs, manufactures, and markets smartphones, personal computers, tablets, wearables, and accessories worldwide. The company's strong brand recognition, innovative product offerings, and robust ecosystem create significant barriers to entry.\n\n## Financial Health\n- **Market Capitalization**: $4,362.3B\n- **Profit Margin**: 27.15%\n- **Return on Equity (TTM)**: 1.4147\nThese metrics indicate strong financial health and profitability.\n\n## Valuation & Growth Prospects\n- **Trailing P/E Ratio**: 35.96\n- **Forward P/E Ratio**: 30.94\n- **Earnings Growth (YoY)**: 19.4%\n- **Revenue Growth (YoY)**: 16.6%\nThe forward P/E ratio suggests a more reasonable valuation for future earnings, while the earnings and revenue growth indicate strong long-term prospects.\n\n## Institutional Sentiment & Analyst Target Price\n- **Institutional Ownership**: 65.82%\n- **Analyst Target Price**: $314.42\n- **Current Price**: $294.30\nThe high institutional ownership and positive analyst sentiment support a BUY recommendation.\n\n## Technical Indicators\n- **Moving Averages**: Trading above both 50-day ($289.47) and 200-day ($268.49) moving averages, indicating positive momentum.\n- **Week 52 Range**: Current price at 80.45% of the high, suggesting a balanced position within the range.\n\n## Conclusion & Recommendation\nApple Inc. (AAPL) presents a compelling investment opportunity with strong fundamentals and positive technical indicators. The company's robust financial health, growth prospects, and institutional support justify a BUY recommendation. Analysts project a target price of $314.42, which aligns with the current market position.\n\n### Risk Considerations\n- **Market Volatility**: Despite strong fundamentals, market volatility can impact stock prices.\n- **Competition**: Intense competition in the tech industry could pose risks to Apple's market share and profitability.",
+        "generated_at": "2023-10-15T14:48:00Z"
+    },
+    "raw_financial_data": {
+        "company_identity": {
+            "symbol": "AAPL",
+            "name": "Apple Inc.",
+            "sector": "Technology",
+            "business_summary": "Apple Inc. designs, manufactures, and markets smartphones, personal computers, tablets, wearables, and accessories worldwide. The company offers iPhone, a line of smartphones; Mac, a line of personal computers; iPad, a line of multi-purpose tablets; and wearables, home, and accessories comprising Ai"
+        },
+        "profitability_and_scale": {
+            "market_cap": 4362291642368.0,
+            "profit_margin": 0.2715,
+            "return_on_equity_ttm": 1.4147
+        },
+        "valuation_and_growth": {
+            "trailing_pe": 35.9576,
+            "forward_pe": 30.9366,
+            "peg_ratio": 2.41,
+            "earnings_growth_yoy": 0.194,
+            "revenue_growth_yoy": 0.166
+        },
+        "smart_money_consensus": {
+            "percent_institutions": 0.6582,
+            "analyst_target_price": 314.4238,
+            "current_price": 294.3
+        },
+        "technical_and_momentum": {
+            "moving_averages": {
+                "day_50_ma": 289.4704,
+                "day_200_ma": 268.4858
+            },
+            "week_52_range": {
+                "high": 317.4,
+                "low": 199.26,
+                "current_position_pct": 0.8045
+            },
+            "recent_3_weeks_action": {
+                "price_change_pct": -0.0663
+            }
+        }
+    }
+}

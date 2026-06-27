@@ -8,14 +8,22 @@ import json  # 🌟 必须引入 json 处理字典转化
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from agents.market_analyst import create_analyst_agent
-from utils.storage import save_analysis_report, build_ai_context  # 🌟 引入你的完美组装器
+from utils.storage import save_analysis_report, build_ai_context 
+from core.llm_factory import ModelTier
 
+CHOSEN_TIER = ModelTier.NORMAL
+TIER_LETTER_MAP = {
+    ModelTier.SMART: "S",
+    ModelTier.NORMAL: "N",
+    ModelTier.LOCAL: "L"
+}
+model_letter = TIER_LETTER_MAP.get(CHOSEN_TIER, "U")
 # ==========================================
 # 🧠 全局初始化：唤醒 AI
 # ==========================================
 print("🔄 正在初始化 AI 投行分析师...")
 try:
-    executor, parser = create_analyst_agent()
+    executor, parser = create_analyst_agent(tier=CHOSEN_TIER)
     print("✅ AI 投行分析师已就位！\n")
 except Exception as e:
     print(f"❌ 致命错误：无法唤醒 AI 智能体: {e}")
@@ -75,7 +83,7 @@ def run_analysis(tickers: list):
 
         # 🌟 步骤 D: 落盘持久化
         try:
-            save_analysis_report(ticker, final_json_dict, raw_data)
+            save_analysis_report(ticker, final_json_dict, raw_data, model_letter)
             print(f"💾 ✨ 成功！{ticker} 研报已安全写入 reports/ 文件夹！")
             success_count += 1
             results[ticker] = final_json_dict
@@ -105,7 +113,7 @@ if __name__ == "__main__":
     # 想要单跑一个？就写 ["NVDA"]
     # 想要跑科技七姐妹？全塞进去！
     target_ticker_list = [
-        "NVDA"
+        "AAPL"
     ]
     
     run_analysis(target_ticker_list)
