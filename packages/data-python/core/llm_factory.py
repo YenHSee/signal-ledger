@@ -12,12 +12,10 @@ def get_llm(tier: ModelTier = ModelTier.NORMAL, temperature: float = 0):
     
     if tier == ModelTier.SMART:
         from langchain_openai import ChatOpenAI
-        # 比如 SMART 级别我们强制用 GPT-4o
         return ChatOpenAI(model="gpt-4o", api_key=os.getenv("OPENAI_API_KEY"), temperature=temperature)
     
     elif tier == ModelTier.NORMAL:
         from langchain_openai import ChatOpenAI
-        # NORMAL 级别我们用 DeepSeek
         return ChatOpenAI(
             model="deepseek-chat", 
             api_key=os.getenv("DEEPSEEK_API_KEY"), 

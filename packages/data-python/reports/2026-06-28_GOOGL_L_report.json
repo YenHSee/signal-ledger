@@ -1,0 +1,54 @@
+{
+    "ticker": "GOOGL",
+    "timestamp": "2026-06-28T21:43:25.031807",
+    "model_tier": "L",
+    "ai_analysis": {
+        "conclusion": "BUY",
+        "conviction_level": "High",
+        "target_price": "432.83",
+        "upside_downside_pct": "+25.0%",
+        "reasoning": "GOOGL 的估值合理，PEG 比率接近于1，表明其成长性与估值匹配。技术面显示股价处于52周高位附近，但未破位均线支撑。分析师目标价高于当前价格，且机构持股比例高。",
+        "risk_level": "Medium",
+        "full_report": "# 📌 Executive Summary\nAlphabet Inc. (GOOGL) presents a compelling investment opportunity with strong fundamentals and supportive technical indicators, warranting a BUY rating.\n\n# 🏢 Business Moat & Catalysts\nGoogle's vast user base and diverse product offerings create significant barriers to entry. Recent advancements in cloud services and AI technologies are key catalysts for future growth.\n\n# 📊 Financial & Valuation (财务与估值剖析)\n| 指标 | 详情 | 点评 |\n| --- | --- | --- |\n| 市盈率（TTM） | 26.7x | 合理，接近历史均值 |\n| 前瞻性市盈率 | 24.1x | 显示市场对其未来增长的乐观预期 |\n| PEG 比率 | 1.45 | 成长性与估值匹配 |\n| 营收增长率（YoY） | 21.8% | 增速稳健，但需关注宏观经济影响 |\n\n# ⚖️ Bull & Bear Scenarios (牛熊情景推演)\n- **乐观情境**：云服务和AI技术的持续突破推动股价至500美元。\n- **悲观情境**：全球经济放缓导致广告收入下降，股价可能跌至300美元。\n\n# ⚠️ Risk Assessment (核心风险提示)\n1. **宏观经济波动**（中等概率）\n2. **竞争加剧**（低概率）\n3. **监管政策变化**（高概率）",
+        "generated_at": "2023-10-04T15:00:00Z"
+    },
+    "raw_financial_data": {
+        "company_identity": {
+            "symbol": "GOOGL",
+            "name": "Alphabet Inc.",
+            "sector": "Communication Services",
+            "business_summary": "Alphabet Inc. offers various products and platforms in the United States, Europe, the Middle East, Africa, the Asia-Pacific, Canada, and Latin America. It operates through Google Services, Google Cloud, and Other Bets segments. The Google Services segment provides products and services, including ad"
+        },
+        "profitability_and_scale": {
+            "market_cap": 4266995482624.0,
+            "profit_margin": 0.3792,
+            "return_on_equity_ttm": 0.3888
+        },
+        "valuation_and_growth": {
+            "trailing_pe": 26.6728,
+            "forward_pe": 24.1219,
+            "peg_ratio": 1.45,
+            "earnings_growth_yoy": 0.812,
+            "revenue_growth_yoy": 0.218
+        },
+        "smart_money_consensus": {
+            "percent_institutions": 0.8076,
+            "analyst_target_price": 432.8345,
+            "current_price": 346.13
+        },
+        "technical_and_momentum": {
+            "moving_averages": {
+                "day_50_ma": 367.9974,
+                "day_200_ma": 311.6948
+            },
+            "week_52_range": {
+                "high": 408.61,
+                "low": 166.13,
+                "current_position_pct": 0.7423
+            },
+            "recent_3_weeks_action": {
+                "price_change_pct": -0.0434
+            }
+        }
+    }
+}

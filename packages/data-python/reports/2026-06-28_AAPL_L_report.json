@@ -1,0 +1,54 @@
+{
+    "ticker": "AAPL",
+    "timestamp": "2026-06-28T20:46:28.031237",
+    "model_tier": "L",
+    "ai_analysis": {
+        "conclusion": "BUY",
+        "conviction_level": "High",
+        "target_price": "314.42",
+        "upside_downside_pct": "+6.5%",
+        "reasoning": "Apple Inc. (AAPL) exhibits strong fundamentals with a high profit margin and return on equity, indicating robust profitability. The trailing PE of 35.96 is slightly above the forward PE of 30.94, suggesting potential for earnings growth to justify current valuation. The recent revenue growth of 16.6% supports this view. Analysts project a target price of $314.42, which aligns with our assessment.",
+        "risk_level": "Medium",
+        "full_report": "# 📌 Executive Summary\nApple Inc. (AAPL) is positioned for continued growth based on strong financial health and analyst consensus.\n\n# 🏢 Business Moat & Catalysts\nApple's business moat stems from its brand loyalty, innovation in hardware and software integration, and a vast ecosystem of services. Recent catalysts include the launch of new product lines like the Apple Watch and M1 chips, which could drive future revenue growth.\n\n# 📊 Financial & Valuation (财务与估值剖析)\n| 指标 | 详情 | 点评 |\n| --- | --- | --- |\n| 市值 | $4.36T | 高市值反映市场对公司长期价值的认可。 |\n| 营业利润率 | 27.15% | 显示公司盈利能力强劲。 |\n| 净资产收益率（TTM） | 141.47% | 表明公司资本使用效率高，股东回报率显著。 |\n| 市盈率（TTM） | 35.96x | 略高于市盈率（FWD），但考虑到增长潜力，估值合理。 |\n| PEG比率 | 2.41 | 高PEG表明未来几年可能有较高的增长率来支撑当前估值。 |\n\n# ⚖️ Bull & Bear Scenarios (牛熊情景推演)\n- **乐观情境**：新产品的成功推出和市场扩张将推动股价至$350，+18.2%。\n- **悲观情境**：宏观经济衰退导致消费电子需求下降，股价可能跌至$260，-14.7%。\n\n# ⚠️ Risk Assessment (核心风险提示)\n- **高风险**：全球经济不确定性增加，可能导致消费者支出减少（概率50%）。\n- **中等风险**：供应链中断影响生产与交付（概率30%）。\n- **低风险**：市场竞争加剧，新产品推出不达预期（概率20%）。",
+        "generated_at": "2026-06-28T20:46:28.030993"
+    },
+    "raw_financial_data": {
+        "company_identity": {
+            "symbol": "AAPL",
+            "name": "Apple Inc.",
+            "sector": "Technology",
+            "business_summary": "Apple Inc. designs, manufactures, and markets smartphones, personal computers, tablets, wearables, and accessories worldwide. The company offers iPhone, a line of smartphones; Mac, a line of personal computers; iPad, a line of multi-purpose tablets; and wearables, home, and accessories comprising Ai"
+        },
+        "profitability_and_scale": {
+            "market_cap": 4362291642368.0,
+            "profit_margin": 0.2715,
+            "return_on_equity_ttm": 1.4147
+        },
+        "valuation_and_growth": {
+            "trailing_pe": 35.9576,
+            "forward_pe": 30.9366,
+            "peg_ratio": 2.41,
+            "earnings_growth_yoy": 0.194,
+            "revenue_growth_yoy": 0.166
+        },
+        "smart_money_consensus": {
+            "percent_institutions": 0.6582,
+            "analyst_target_price": 314.4238,
+            "current_price": 294.3
+        },
+        "technical_and_momentum": {
+            "moving_averages": {
+                "day_50_ma": 289.4704,
+                "day_200_ma": 268.4858
+            },
+            "week_52_range": {
+                "high": 317.4,
+                "low": 199.26,
+                "current_position_pct": 0.8045
+            },
+            "recent_3_weeks_action": {
+                "price_change_pct": -0.0663
+            }
+        }
+    }
+}

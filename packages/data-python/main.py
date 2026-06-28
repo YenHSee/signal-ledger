@@ -11,7 +11,7 @@ from agents.market_analyst import create_analyst_agent
 from utils.storage import save_analysis_report, build_ai_context, insert_investment_report, init_db_pool, close_db_pool
 from core.llm_factory import ModelTier
 
-CHOSEN_TIER = ModelTier.NORMAL
+CHOSEN_TIER = ModelTier.LOCAL
 TIER_LETTER_MAP = {
     ModelTier.SMART: "S",
     ModelTier.NORMAL: "N",
@@ -124,7 +124,11 @@ if __name__ == "__main__":
     # 想要单跑一个？就写 ["NVDA"]
     # 想要跑科技七姐妹？全塞进去！
     target_ticker_list = [
-        "AAPL"
+        # "AAPL"，
+        "NVDA",
+        "GOOGL",
+        "GOOG",
+        "MSFT"
     ]
     
     run_analysis(target_ticker_list)

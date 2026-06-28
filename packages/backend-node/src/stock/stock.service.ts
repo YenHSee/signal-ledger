@@ -2,36 +2,54 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Stock } from './entities/stock.entity';
+import { InvestmentReport } from '../investment-report/entities/investment-report.entity';
 
 @Injectable()
 export class StockService {
   constructor(
     @InjectRepository(Stock)
     private stockRepository: Repository<Stock>,
+
+    @InjectRepository(InvestmentReport)
+    private reportRepository: Repository<InvestmentReport>,
   ) {}
 
-  async getScreenerStocks() {
-    // 1. 去数据库把所有公司捞出来
-    const rawStocks = await this.stockRepository.find();
+  async getCompanyList(page: number = 1, limit: number = 100) {
+    const skip = (page - 1) * limit;
 
-    // 2. 将生硬的数据库字段，洗成前端 UI 直接能用的 JSON 格式
-    return rawStocks.map(stock => {
-      let aiSignal = 'HOLD';
-      if (Number(stock.pegRatio) > 0 && Number(stock.pegRatio) < 1.2) {
-        aiSignal = 'STRONG BUY';
-      } else if (Number(stock.peRatio) > 35) {
-        aiSignal = 'SELL';
-      }
+    // 🌟 架构师级写法：使用 QueryBuilder 进行跨表 JOIN，只拿需要的字段！
+    const query = this.stockRepository
+      .createQueryBuilder('stock')
+      // 左连接 investment_reports 表，条件是 stock.symbol == report.ticker
+      .leftJoin(
+        this.reportRepository.metadata.target,
+        'report',
+        'stock.symbol = report.ticker',
+      )
+      .select([
+        'stock.symbol AS symbol',
+        'stock.name AS name',
+        'stock.pe_ratio AS pe_ratio',
+        // 👇 从 Report 表里抓取极具吸引力的 AI 数据
+        'report.conclusion AS ai_signal',
+        'report.conviction_level AS conviction',
+        'report.upside_downside_pct AS upside',
+      ])
+      .orderBy('stock.market_capitalization', 'DESC') // 比如按市值从大到小排
+      .limit(limit)
+      .offset(skip);
 
-      return {
-        ticker: stock.symbol,
-        name: stock.name,
-        price: 150.00, // 暂时写死，后续可以关联价格表
-        change: "+1.2%",
-        isUp: true,
-        aiSignal: aiSignal,
-        keywords: [`PE: ${Number(stock.peRatio).toFixed(1)}`, stock.sector?.toUpperCase()].filter(Boolean),
-      };
-    });
+    // 获取原始联表数据
+    const data = await query.getRawMany();
+
+    // 获取总数（用于前端算总页数）
+    const total = await this.stockRepository.count();
+
+    return {
+      data,
+      total,
+      page,
+      totalPages: Math.ceil(total / limit),
+    };
   }
 }
