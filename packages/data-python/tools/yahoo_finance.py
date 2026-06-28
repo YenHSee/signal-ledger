@@ -5,13 +5,13 @@ import yfinance as yf
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from core.cache_manager import save_to_cache, load_from_cache
+from core.cache_manager import save_to_local_cache, load_from_local_cache, load_from_kv_cache, save_to_kv_cache
 
 def get_company_overview(ticker: str):
     ticker = ticker.upper()
     
     # 检查缓存
-    cached_data = load_from_cache(ticker, max_age_days=7)
+    cached_data = load_from_kv_cache(ticker)
     
     # 🌟 严谨校验：雅虎的数据里通常会有 longBusinessSummary(公司简介) 或 trailingPE
     if cached_data and "longBusinessSummary" in cached_data:
@@ -34,7 +34,7 @@ def get_company_overview(ticker: str):
         
         time.sleep(1.5)
         # 存入缓存并返回
-        save_to_cache(ticker, overview_data)
+        save_to_kv_cache(ticker, overview_data)
         print(f"💾 [数据持久化] 基本面数据已保存至缓存: {ticker}")
         
         return overview_data

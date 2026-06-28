@@ -38,5 +38,23 @@ class AppConfig:
     def DB_NAME(self):
         return os.getenv("DB_NAME", "stock_analyst")
 
+    @property
+    def CF_ACCOUNT_ID(self):
+        return os.getenv("CF_ACCOUNT_ID", "07c8bbd98aac574bd75ddfa1cb030163")
+
+    @property
+    def CF_NAMESPACE_ID(self):
+        key = os.getenv("CF_NAMESPACE_ID")
+        if not key:
+            raise ValueError("❌ 错误: 未找到 CF_NAMESPACE_ID，请检查 .env 文件")
+        return key
+
+    @property
+    def CF_API_TOKEN(self):
+        key = os.getenv("CF_API_TOKEN")
+        if not key:
+            raise ValueError("❌ 错误: 未找到 CF_API_TOKEN，请检查 .env 文件")
+        return key
+    
 # 在底部实例化一个配置对象，导出给其他文件使用
 config = AppConfig()

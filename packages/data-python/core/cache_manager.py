@@ -1,6 +1,12 @@
 import json
 import os
 import time
+import sys
+import requests
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from config import config
 
 CACHE_DIR = "data_cache"
 
@@ -11,7 +17,8 @@ def get_cache_filename(ticker: str) -> str:
     """生成固定的缓存文件名，例如: NVDA.json"""
     return os.path.join(CACHE_DIR, f"{ticker.upper()}.json")
 
-def save_to_cache(ticker: str, data: dict):
+# Local
+def save_to_local_cache(ticker: str, data: dict):
     """把股票数据存入缓存，直接覆盖旧文件"""
     file_path = get_cache_filename(ticker)
     
@@ -20,7 +27,7 @@ def save_to_cache(ticker: str, data: dict):
         
     print(f"💾 数据已更新至本地缓存: {file_path}")
 
-def load_from_cache(ticker: str, max_age_days: int = 7):
+def load_from_local_cache(ticker: str, max_age_days: int = 7):
     """
     尝试读取缓存数据。
     如果文件存在且距今不到 max_age_days 天，则命中缓存；
@@ -49,3 +56,33 @@ def load_from_cache(ticker: str, max_age_days: int = 7):
     print(f"⚡ [缓存命中] {ticker.upper()} 的数据很新鲜 (仅 {age_in_days:.1f} 天)，直接使用！")
     with open(file_path, "r", encoding="utf-8") as f:
         return json.load(f)
+    
+# Cloud
+def save_to_kv_cache(ticker: str, data: dict, max_age_days: int = 7):
+    if not config.CF_API_TOKEN or not config.CF_NAMESPACE_ID:
+        return
+    ticker = ticker.upper()
+    ttl_seconds = int(max_age_days * 24 * 3600)
+    url = f"https://api.cloudflare.com/client/v4/accounts/{config.CF_ACCOUNT_ID}/storage/kv/namespaces/{config.CF_NAMESPACE_ID}/values/{ticker}?expiration_ttl={ttl_seconds}"
+    headers = {"Authorization": f"Bearer {config.CF_API_TOKEN}", "Content-Type": "application/json"}
+    try:
+        response = requests.put(url, headers=headers, data=json.dumps(data, ensure_ascii=False))
+        if response.status_code == 200:
+            print(f"🧊 [KV缓存写入] {ticker} 已存入 Cloudflare (TTL: {max_age_days}天)")
+    except Exception as e:
+        print(f"❌ 写入 KV 网络异常: {e}")
+
+def load_from_kv_cache(ticker: str):
+    if not config.CF_API_TOKEN or not config.CF_NAMESPACE_ID:
+        return None
+    ticker = ticker.upper()
+    url = f"https://api.cloudflare.com/client/v4/accounts/{config.CF_ACCOUNT_ID}/storage/kv/namespaces/{config.CF_NAMESPACE_ID}/values/{ticker}"
+    headers = {"Authorization": f"Bearer {config.CF_API_TOKEN}"}
+    try:
+        response = requests.get(url, headers=headers)
+        if response.status_code == 200:
+            print(f"⚡ [KV缓存命中] {ticker} 极速读取成功！")
+            return response.json()
+    except Exception as e:
+        pass
+    return None
