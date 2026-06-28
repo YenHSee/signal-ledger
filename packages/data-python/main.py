@@ -8,7 +8,7 @@ import json  # 🌟 必须引入 json 处理字典转化
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from agents.market_analyst import create_analyst_agent
-from utils.storage import save_analysis_report, build_ai_context 
+from utils.storage import save_analysis_report, build_ai_context, insert_investment_report, init_db_pool, close_db_pool
 from core.llm_factory import ModelTier
 
 CHOSEN_TIER = ModelTier.NORMAL
@@ -35,7 +35,8 @@ def run_analysis(tickers: list):
     终极研报流水线：无论你传 1 个还是 500 个 Ticker，它都能完美消化。
     """
     print(f"📋 研报生成任务启动！共需处理 {len(tickers)} 支股票。")
-    
+    init_db_pool(min_conn=1, max_conn=5)
+
     results = {}
     success_count = 0
     failed_tickers = []
@@ -83,12 +84,21 @@ def run_analysis(tickers: list):
 
         # 🌟 步骤 D: 落盘持久化
         try:
+            # 1. 存本地 JSON 文件 (保留原来的物理备份)
             save_analysis_report(ticker, final_json_dict, raw_data, model_letter)
-            print(f"💾 ✨ 成功！{ticker} 研报已安全写入 reports/ 文件夹！")
-            success_count += 1
-            results[ticker] = final_json_dict
+            
+            # 2. 存进 Supabase 数据库 (全新的工业级流程！)
+            is_saved = insert_investment_report(ticker, final_json_dict, raw_data, model_letter)
+            
+            if is_saved:
+                print(f"💾 ✨ 成功！{ticker} 研报已安全写入本地及 Supabase 数据库！")
+                success_count += 1
+                results[ticker] = final_json_dict
+            else:
+                failed_tickers.append(ticker)
+
         except Exception as e:
-            print(f"⚠️ 警告：{ticker} 保存到硬盘失败: {e}")
+            print(f"⚠️ 警告：{ticker} 保存落盘失败: {e}")
             failed_tickers.append(ticker)
 
         # 🌟 步骤 E: 连续调用的冷却保护机制
@@ -102,6 +112,7 @@ def run_analysis(tickers: list):
     if failed_tickers:
         print(f"⚠️ 失败名单请核查: {failed_tickers}")
     print("#"*60)
+    close_db_pool()
     
     return results
 

@@ -297,6 +297,74 @@ def build_ai_context(ticker: str):
         if connection: connection.close()
 
 
+def insert_investment_report(ticker: str, ai_analysis: dict, raw_data: dict, model_tier: str):
+    """
+    将 AI 生成的投资研报和当时的原始数据快照，一并持久化到 Supabase 数据库
+    """
+    global db_pool
+    connection = None
+    cursor = None
+    try:
+        if db_pool is not None:
+            connection = db_pool.getconn()
+        else:
+            connection = psycopg2.connect(
+                user=config.DB_USER, password=config.DB_PASSWORD,
+                host=config.DB_HOST, port=config.DB_PORT, database=config.DB_NAME
+            )
+        cursor = connection.cursor()
+
+        insert_sql = """
+        INSERT INTO investment_reports (
+            ticker, model_tier, conclusion, conviction_level, target_price, 
+            upside_downside_pct, risk_level, reasoning, full_report, 
+            raw_financial_data, generated_at
+        ) VALUES (
+            %(ticker)s, %(model_tier)s, %(conclusion)s, %(conviction_level)s, %(target_price)s,
+            %(upside_downside_pct)s, %(risk_level)s, %(reasoning)s, %(full_report)s,
+            %(raw_financial_data)s, %(generated_at)s
+        )
+        """
+        
+        # 安全处理 target_price (防止大模型偶尔返回带有 $ 或逗号的字符串，或者空值)
+        target_price_raw = ai_analysis.get("target_price", 0)
+        try:
+            target_price_float = float(str(target_price_raw).replace('$', '').replace(',', ''))
+        except ValueError:
+            target_price_float = 0
+
+        # 组装数据参数
+        data_params = {
+            "ticker": ticker.upper(),
+            "model_tier": model_tier,
+            "conclusion": ai_analysis.get("conclusion", "N/A"),
+            "conviction_level": ai_analysis.get("conviction_level", "N/A"),
+            "target_price": target_price_float,
+            "upside_downside_pct": ai_analysis.get("upside_downside_pct", "N/A"),
+            "risk_level": ai_analysis.get("risk_level", "N/A"),
+            "reasoning": ai_analysis.get("reasoning", "N/A"),
+            "full_report": ai_analysis.get("full_report", "N/A"),
+            "raw_financial_data": psycopg2.extras.Json(raw_data), 
+            "generated_at": ai_analysis.get("generated_at", datetime.now().isoformat())
+        }
+
+        cursor.execute(insert_sql, data_params)
+        connection.commit()
+        return True
+
+    except Exception as error:
+        print(f"❌ 股票 {ticker} 研报写入数据库失败: {error}")
+        if connection: connection.rollback()
+        return False
+    finally:
+        if cursor: cursor.close()
+        if connection:
+            if db_pool:
+                db_pool.putconn(connection)
+            else:
+                connection.close()
+
+
 def save_analysis_report(ticker: str, analysis_output: dict, raw_data: dict, model_letter: str = "L"):
     date_str = datetime.now().strftime("%Y-%m-%d")
     exact_time = datetime.now().isoformat() 
