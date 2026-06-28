@@ -5,22 +5,60 @@ from datetime import datetime
 import psycopg2
 from psycopg2 import Error
 import psycopg2.extras
+from psycopg2.extras import execute_values
+from psycopg2.pool import ThreadedConnectionPool
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from config import config
 
+db_pool = None
+
+def init_db_pool(min_conn=1, max_conn=20):
+    """初始化全局多线程安全的数据库连接池"""
+    global db_pool
+    if db_pool is None:
+        try:
+            db_pool = ThreadedConnectionPool(
+                min_conn, max_conn,
+                user=config.DB_USER,
+                password=config.DB_PASSWORD,
+                host=config.DB_HOST,
+                port=config.DB_PORT,
+                database=config.DB_NAME
+            )
+            print(f"📡 [POOL] 成功创建 Supabase 线程安全连接池 (最大容量: {max_conn})")
+        except Exception as e:
+            print(f"❌ [POOL] 连接池初始化失败: {e}")
+            sys.exit(1)
+
+def close_db_pool():
+    """安全关闭全局连接池"""
+    global db_pool
+    if db_pool:
+        db_pool.closeall()
+        print("🔌 [POOL] 连接池所有资源已安全释放。")
+
 
 # Helper Function
 def execute_simple_sql(sql_statement):
-    """通用的快捷 SQL 执行工具 (用于执行重置标签、清空表等操作)"""
+    """通用的快捷 SQL 执行工具（🌟 升级版：优先使用全局连接池，没池子时才走独立连接）"""
+    global db_pool
     connection = None
     cursor = None
+    is_from_pool = False
     try:
-        connection = psycopg2.connect(
-            user=config.DB_USER, password=config.DB_PASSWORD,
-            host=config.DB_HOST, port=config.DB_PORT, database=config.DB_NAME
-        )
+        # 🌟 核心判断：如果全局连接池已经初始化了，就直接从池子里‘秒捞’连接
+        if db_pool is not None:
+            connection = db_pool.getconn()
+            is_from_pool = True
+        else:
+            # 如果池子还没建（比如单独运行测试），就走以前的老路
+            connection = psycopg2.connect(
+                user=config.DB_USER, password=config.DB_PASSWORD,
+                host=config.DB_HOST, port=config.DB_PORT, database=config.DB_NAME
+            )
+            
         cursor = connection.cursor()
         cursor.execute(sql_statement)
         connection.commit()
@@ -29,144 +67,84 @@ def execute_simple_sql(sql_statement):
         if connection: connection.rollback()
     finally:
         if cursor: cursor.close()
-        if connection: connection.close()
+        if connection: 
+            if is_from_pool and db_pool:
+                # 🌟 如果是从池子里借的，记得还回去，千万别 close 它
+                db_pool.putconn(connection)
+            else:
+                connection.close()
 
 
 def init_tables():
-    """连接 stock_analyst 数据库并初始化表结构"""
+    """初始化表结构"""
     connection = None
     cursor = None
     try:
         connection = psycopg2.connect(
-            user=config.DB_USER,
-            password=config.DB_PASSWORD,
-            host=config.DB_HOST,
-            port=config.DB_PORT,
-            database=config.DB_NAME
+            user=config.DB_USER, password=config.DB_PASSWORD,
+            host=config.DB_HOST, port=config.DB_PORT, database=config.DB_NAME
         )
         cursor = connection.cursor()
-        print(f"✅ 成功连接到数据库: {config.DB_NAME}")
-
-        # 🌟 1. 创建 company_overview 表 (已包含 is_sp500 字段)
+        
         create_overview_sql = """
         CREATE TABLE IF NOT EXISTS company_overview (
             symbol VARCHAR(10) PRIMARY KEY,
-            asset_type VARCHAR(50),
-            name VARCHAR(255),
-            description TEXT,
-            cik VARCHAR(20),
-            exchange VARCHAR(50),
-            currency VARCHAR(10),
-            country VARCHAR(50),
-            sector VARCHAR(100),
-            industry VARCHAR(100),
-            address TEXT,
-            official_site TEXT,
-            fiscal_year_end VARCHAR(20),
-            latest_quarter DATE,
-            market_capitalization BIGINT,
-            ebitda BIGINT,
-            pe_ratio NUMERIC(10, 4),
-            peg_ratio NUMERIC(10, 4),
-            book_value NUMERIC(10, 4),
-            dividend_per_share NUMERIC(10, 4),
-            dividend_yield NUMERIC(10, 4),
-            eps NUMERIC(10, 4),
-            revenue_per_share_ttm NUMERIC(10, 4),
-            profit_margin NUMERIC(10, 4),
-            operating_margin_ttm NUMERIC(10, 4),
-            return_on_assets_ttm NUMERIC(10, 4),
-            return_on_equity_ttm NUMERIC(10, 4),
-            revenue_ttm BIGINT,
-            gross_profit_ttm BIGINT,
-            diluted_eps_ttm NUMERIC(10, 4),
-            quarterly_earnings_growth_yoy NUMERIC(10, 4),
-            quarterly_revenue_growth_yoy NUMERIC(10, 4),
-            analyst_target_price NUMERIC(10, 4),
-            analyst_rating_strong_buy INTEGER,
-            analyst_rating_buy INTEGER,
-            analyst_rating_hold INTEGER,
-            analyst_rating_sell INTEGER,
-            analyst_rating_strong_sell INTEGER,
-            trailing_pe NUMERIC(10, 4),
-            forward_pe NUMERIC(10, 4),
-            price_to_sales_ratio_ttm NUMERIC(10, 4),
-            price_to_book_ratio NUMERIC(10, 4),
-            ev_to_revenue NUMERIC(10, 4),
-            ev_to_ebitda NUMERIC(10, 4),
-            beta NUMERIC(10, 4),
-            week_52_high NUMERIC(10, 4),
-            week_52_low NUMERIC(10, 4),
-            day_50_moving_average NUMERIC(10, 4),
-            day_200_moving_average NUMERIC(10, 4),
-            shares_outstanding BIGINT,
-            shares_float BIGINT,
-            percent_insiders NUMERIC(10, 4),
-            percent_institutions NUMERIC(10, 4),
-            dividend_date DATE,
-            ex_dividend_date DATE,
-            is_sp500 BOOLEAN DEFAULT FALSE,
-            last_updated TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+            asset_type VARCHAR(50), name VARCHAR(255), description TEXT, cik VARCHAR(20),
+            exchange VARCHAR(50), currency VARCHAR(10), country VARCHAR(50), sector VARCHAR(100),
+            industry VARCHAR(100), address TEXT, official_site TEXT, fiscal_year_end VARCHAR(20),
+            latest_quarter DATE, market_capitalization BIGINT, ebitda BIGINT,
+            pe_ratio NUMERIC(10, 4), peg_ratio NUMERIC(10, 4), book_value NUMERIC(10, 4),
+            dividend_per_share NUMERIC(10, 4), dividend_yield NUMERIC(10, 4), eps NUMERIC(10, 4),
+            revenue_per_share_ttm NUMERIC(10, 4), profit_margin NUMERIC(10, 4), operating_margin_ttm NUMERIC(10, 4),
+            return_on_assets_ttm NUMERIC(10, 4), return_on_equity_ttm NUMERIC(10, 4), revenue_ttm BIGINT,
+            gross_profit_ttm BIGINT, diluted_eps_ttm NUMERIC(10, 4), quarterly_earnings_growth_yoy NUMERIC(10, 4),
+            quarterly_revenue_growth_yoy NUMERIC(10, 4), analyst_target_price NUMERIC(10, 4),
+            analyst_rating_strong_buy INTEGER, analyst_rating_buy INTEGER, analyst_rating_hold INTEGER,
+            analyst_rating_sell INTEGER, analyst_rating_strong_sell INTEGER, trailing_pe NUMERIC(10, 4),
+            forward_pe NUMERIC(10, 4), price_to_sales_ratio_ttm NUMERIC(10, 4), price_to_book_ratio NUMERIC(10, 4),
+            ev_to_revenue NUMERIC(10, 4), ev_to_ebitda NUMERIC(10, 4), beta NUMERIC(10, 4),
+            week_52_high NUMERIC(10, 4), week_52_low NUMERIC(10, 4), day_50_moving_average NUMERIC(10, 4),
+            day_200_moving_average NUMERIC(10, 4), shares_outstanding BIGINT, shares_float BIGINT,
+            percent_insiders NUMERIC(10, 4), percent_institutions NUMERIC(10, 4), dividend_date DATE,
+            ex_dividend_date DATE, is_sp500 BOOLEAN DEFAULT FALSE, last_updated TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
         );
         """
 
-        # 创建 daily_prices 表
         create_prices_sql = """
         CREATE TABLE IF NOT EXISTS daily_prices (
             symbol VARCHAR(10) REFERENCES company_overview(symbol),
-            trade_date DATE,
-            open_price NUMERIC(10, 4),
-            high_price NUMERIC(10, 4),
-            low_price NUMERIC(10, 4),
-            close_price NUMERIC(10, 4),
-            adjusted_close NUMERIC(10, 4),
-            volume BIGINT,
-            PRIMARY KEY (symbol, trade_date)
+            trade_date DATE, open_price NUMERIC(10, 4), high_price NUMERIC(10, 4),
+            low_price NUMERIC(10, 4), close_price NUMERIC(10, 4), adjusted_close NUMERIC(10, 4),
+            volume BIGINT, PRIMARY KEY (symbol, trade_date)
         );
         """
 
         cursor.execute(create_overview_sql)
-        print("✅ 表 'company_overview' 初始化检查完成 ")
-        
         cursor.execute(create_prices_sql)
-        print("✅ 表 'daily_prices' 初始化检查完成")
-
         connection.commit()
         print("🎉 所有数据表成功同步！")
-
     except (Exception, Error) as error:
         print("❌ 数据库操作发生错误:", error)
         if connection: connection.rollback()
-            
     finally:
         if cursor: cursor.close()
-        if connection: 
-            connection.close()
-            print("🔌 PostgreSQL 连接已安全关闭。")
+        if connection: connection.close()
 
 
 def insert_company_overview(clean_data: dict):
-    # 1. 只做最基本的入参校验（防呆）
+    """🚀 极速无损版：从全局多线程连接池里‘秒捞’连接进行写入"""
+    global db_pool
     if not clean_data or "symbol" not in clean_data:
-        print("❌ 错误: 传入的基本面数据为空或缺少 symbol，放弃写入数据库")
         return False
 
     symbol = clean_data["symbol"]
-    print(f"🔄 正在将 {symbol} 的纯净基本面数据同步至 PostgreSQL...")
-
     connection = None
     cursor = None
     try:
-        connection = psycopg2.connect(
-            user=config.DB_USER,
-            password=config.DB_PASSWORD,
-            host=config.DB_HOST,
-            port=config.DB_PORT,
-            database=config.DB_NAME
-        )
+        # 🌟 不再重新生成连接，直接从池子里租借一根现成的连接线，耗时 0 毫秒！
+        connection = db_pool.getconn()
         cursor = connection.cursor()
 
-        # 2. 直接拿着上游传来的 clean_data 往数据库里砸
         upsert_sql = """
         INSERT INTO company_overview (
             symbol, asset_type, name, description, cik, exchange, currency, country, 
@@ -204,89 +182,53 @@ def insert_company_overview(clean_data: dict):
             latest_quarter = EXCLUDED.latest_quarter, market_capitalization = EXCLUDED.market_capitalization,
             ebitda = EXCLUDED.ebitda, pe_ratio = EXCLUDED.pe_ratio, peg_ratio = EXCLUDED.peg_ratio,
             eps = EXCLUDED.eps, profit_margin = EXCLUDED.profit_margin, revenue_ttm = EXCLUDED.revenue_ttm,
-            return_on_equity_ttm = EXCLUDED.return_on_equity_ttm, 
-            quarterly_earnings_growth_yoy = EXCLUDED.quarterly_earnings_growth_yoy,
+            return_on_equity_ttm = EXCLUDED.return_on_equity_ttm, quarterly_earnings_growth_yoy = EXCLUDED.quarterly_earnings_growth_yoy,
             analyst_target_price = EXCLUDED.analyst_target_price, trailing_pe = EXCLUDED.trailing_pe,
             forward_pe = EXCLUDED.forward_pe, week_52_high = EXCLUDED.week_52_high, week_52_low = EXCLUDED.week_52_low,
             day_50_moving_average = EXCLUDED.day_50_moving_average, day_200_moving_average = EXCLUDED.day_200_moving_average,
-            percent_institutions = EXCLUDED.percent_institutions,
-            is_sp500 = EXCLUDED.is_sp500,
-            last_updated = CURRENT_TIMESTAMP;
+            percent_institutions = EXCLUDED.percent_institutions, is_sp500 = EXCLUDED.is_sp500, last_updated = CURRENT_TIMESTAMP;
         """
-
         cursor.execute(upsert_sql, clean_data)
         connection.commit()
-        print(f"✨ 成功！股票 {symbol} 的基本面数据已持久化至 DB！")
         return True
-
-    except (Exception, Error) as error:
-        print(f"❌ 数据库写入失败: {error}")
+    except Exception as error:
+        print(f"❌ 股票 {symbol} 基本面同步失败: {error}")
         if connection: connection.rollback()
         return False
     finally:
         if cursor: cursor.close()
-        if connection: connection.close()
+        if connection and db_pool: 
+            # 🌟 极其重要：把连接物归原主，还回池子里给下一个线程用，绝对不断开！
+            db_pool.putconn(connection)
 
 
-def insert_daily_prices(prices_list: list):
+def insert_daily_prices(cursor, prices_list: list):
+    """接收外部已经创建好的独占复用游标，使用真正的 Bulk Insert 批量塞入数据"""
     if not prices_list:
-        print("❌ 错误: 传入的股价列表为空，放弃写入。")
         return False
 
     symbol = prices_list[0].get("symbol")
-    print(f"🔄 正在将 {symbol} 的 {len(prices_list)} 天历史 K 线批量同步至 PostgreSQL...")
+    data_tuples = [
+        (
+            p.get("symbol"), p.get("trade_date"), p.get("open_price"), p.get("high_price"),
+            p.get("low_price"), p.get("close_price"), p.get("adjusted_close"), p.get("volume")
+        ) for p in prices_list
+    ]
 
-    connection = None
-    cursor = None
-    try:
-        connection = psycopg2.connect(
-            user=config.DB_USER,
-            password=config.DB_PASSWORD,
-            host=config.DB_HOST,
-            port=config.DB_PORT,
-            database=config.DB_NAME
-        )
-        cursor = connection.cursor()
+    upsert_sql = """
+    INSERT INTO daily_prices (
+        symbol, trade_date, open_price, high_price, low_price, close_price, adjusted_close, volume
+    ) VALUES %s
+    ON CONFLICT (symbol, trade_date) 
+    DO UPDATE SET 
+        open_price = EXCLUDED.open_price, high_price = EXCLUDED.high_price, low_price = EXCLUDED.low_price,
+        close_price = EXCLUDED.close_price, adjusted_close = EXCLUDED.adjusted_close, volume = EXCLUDED.volume;
+    """
+    execute_values(cursor, upsert_sql, data_tuples)
+    return True
 
-        upsert_sql = """
-        INSERT INTO daily_prices (
-            symbol, trade_date, open_price, high_price, low_price, 
-            close_price, adjusted_close, volume
-        ) VALUES (
-            %(symbol)s, %(trade_date)s, %(open_price)s, %(high_price)s, %(low_price)s, 
-            %(close_price)s, %(adjusted_close)s, %(volume)s
-        )
-        ON CONFLICT (symbol, trade_date) 
-        DO UPDATE SET 
-            open_price = EXCLUDED.open_price,
-            high_price = EXCLUDED.high_price,
-            low_price = EXCLUDED.low_price,
-            close_price = EXCLUDED.close_price,
-            adjusted_close = EXCLUDED.adjusted_close,
-            volume = EXCLUDED.volume;
-        """
-
-        cursor.executemany(upsert_sql, prices_list)
-        connection.commit()
-        
-        print(f"✨ 成功！{symbol} 的 {len(prices_list)} 条历史 K 线已持久化至 DB！")
-        return True
-
-    except (Exception, Error) as error:
-        print(f"❌ 股价数据库写入失败: {error}")
-        if connection: connection.rollback() 
-        return False
-    finally:
-        if cursor: cursor.close()
-        if connection: connection.close()
-        
 
 def build_ai_context(ticker: str):
-    """
-    【读时计算 (Compute-on-Read) 组装器】
-    从 DB 拉取基本面和最新 K 线，动态计算技术指标（如 3周前价格），
-    组装成极其完美的 JSON 喂给 AI。
-    """
     connection = None
     cursor = None
     try:
@@ -294,23 +236,14 @@ def build_ai_context(ticker: str):
             user=config.DB_USER, password=config.DB_PASSWORD,
             host=config.DB_HOST, port=config.DB_PORT, database=config.DB_NAME
         )
-        # 使用 DictCursor 让我们能通过列名（如 row['pe_ratio']）直接拿数据
         cursor = connection.cursor(cursor_factory=psycopg2.extras.DictCursor)
-
-        # 1. 获取基本面数据
         cursor.execute("SELECT * FROM company_overview WHERE symbol = %s", (ticker.upper(),))
         overview = cursor.fetchone()
-        
-        if not overview:
-            return None
+        if not overview: return None
 
-        # 2. 获取最近 15 个交易日（约 3 周）的收盘价
         cursor.execute("""
-            SELECT trade_date, close_price 
-            FROM daily_prices 
-            WHERE symbol = %s 
-            ORDER BY trade_date DESC 
-            LIMIT 15
+            SELECT trade_date, close_price FROM daily_prices 
+            WHERE symbol = %s ORDER BY trade_date DESC LIMIT 15
         """, (ticker.upper(),))
         prices = cursor.fetchall()
 
@@ -320,21 +253,16 @@ def build_ai_context(ticker: str):
         recent_price_change_pct = 0
         if price_3_weeks_ago > 0:
             recent_price_change_pct = round((current_price - price_3_weeks_ago) / price_3_weeks_ago, 4)
- 
 
-        # 3. 动态计算 52 周分位数位置
         high_52 = float(overview['week_52_high']) if overview['week_52_high'] else 0
         low_52 = float(overview['week_52_low']) if overview['week_52_low'] else 0
         current_position_pct = 0
         if high_52 > low_52 and current_price > 0:
             current_position_pct = round((current_price - low_52) / (high_52 - low_52), 4)
 
-        # 4. 组装 AI 最喜欢的结构
         return {
             "company_identity": {
-                "symbol": overview['symbol'],
-                "name": overview['name'],
-                "sector": overview['sector'],
+                "symbol": overview['symbol'], "name": overview['name'], "sector": overview['sector'],
                 "business_summary": overview['description'][:300] if overview['description'] else "N/A"
             },
             "profitability_and_scale": {
@@ -343,30 +271,22 @@ def build_ai_context(ticker: str):
                 "return_on_equity_ttm": float(overview['return_on_equity_ttm'] or 0)
             },
             "valuation_and_growth": {
-                "trailing_pe": float(overview['trailing_pe'] or 0),
-                "forward_pe": float(overview['forward_pe'] or 0),
+                "trailing_pe": float(overview['trailing_pe'] or 0), "forward_pe": float(overview['forward_pe'] or 0),
                 "peg_ratio": float(overview['peg_ratio'] or 0),
                 "earnings_growth_yoy": float(overview['quarterly_earnings_growth_yoy'] or 0),
                 "revenue_growth_yoy": float(overview['quarterly_revenue_growth_yoy'] or 0) 
             },
             "smart_money_consensus": {
                 "percent_institutions": float(overview['percent_institutions'] or 0),
-                "analyst_target_price": float(overview['analyst_target_price'] or 0),
-                "current_price": current_price
+                "analyst_target_price": float(overview['analyst_target_price'] or 0), "current_price": current_price
             },
             "technical_and_momentum": {
                 "moving_averages": {
                     "day_50_ma": float(overview['day_50_moving_average'] or 0),
                     "day_200_ma": float(overview['day_200_moving_average'] or 0)
                 },
-                "week_52_range": {
-                    "high": high_52,
-                    "low": low_52,
-                    "current_position_pct": current_position_pct
-                },
-                "recent_3_weeks_action": {
-                    "price_change_pct": recent_price_change_pct, 
-                }
+                "week_52_range": {"high": high_52, "low": low_52, "current_position_pct": current_position_pct},
+                "recent_3_weeks_action": {"price_change_pct": recent_price_change_pct}
             }
         }
     except Exception as e:
@@ -375,32 +295,22 @@ def build_ai_context(ticker: str):
     finally:
         if cursor: cursor.close()
         if connection: connection.close()
-        
+
 
 def save_analysis_report(ticker: str, analysis_output: dict, raw_data: dict, model_letter: str = "L"):
-    """将分析结果和原始数据存为一个结构化的 JSON 文件"""
     date_str = datetime.now().strftime("%Y-%m-%d")
     exact_time = datetime.now().isoformat() 
-
     report = {
-        "ticker": ticker.upper(),
-        "timestamp": exact_time,
-        "model_tier": model_letter,
-        "ai_analysis": analysis_output,
-        "raw_financial_data": raw_data
+        "ticker": ticker.upper(), "timestamp": exact_time, "model_tier": model_letter,
+        "ai_analysis": analysis_output, "raw_financial_data": raw_data
     }
-    
     output_dir = "reports"
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
-        
+    if not os.path.exists(output_dir): os.makedirs(output_dir)
     file_name = f"{date_str}_{ticker.upper()}_{model_letter}_report.json"
     file_path = os.path.join(output_dir, file_name)
     with open(file_path, "w", encoding="utf-8") as f:
         json.dump(report, f, indent=4, ensure_ascii=False)
-    
     print(f"✅ 研报已持久化 (保留历史): {file_path}")
-
 
 if __name__ == "__main__":
     init_tables()
