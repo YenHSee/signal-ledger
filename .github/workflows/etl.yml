@@ -1,6 +1,9 @@
 name: Daily Stock ETL Pipeline
 
 on:
+  push:
+    branches:
+      - dev/firstInit
   schedule:
     - cron: '37 22 * * 1-5' # Avoid peak hours
   workflow_dispatch:
@@ -31,5 +34,9 @@ jobs:
         DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         DB_PORT: ${{ secrets.DB_PORT }}
         DB_NAME: ${{ secrets.DB_NAME }}
+
+        CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+        CF_NAMESPACE_ID: ${{ secrets.CF_NAMESPACE_ID }}
+        CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
       run: |
         python packages/data-python/scripts/daily_etl_pipeline.py
