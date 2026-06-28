@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Patch, Param, Delete } from '@nestjs/common';
 import { InvestmentReportService } from './investment-report.service';
 import { CreateInvestmentReportDto } from './dto/create-investment-report.dto';
 import { UpdateInvestmentReportDto } from './dto/update-investment-report.dto';
@@ -19,6 +11,6 @@ export class InvestmentReportController {
 
   @Get(':ticker')
   findOne(@Param('ticker') ticker: string) {
-     return this.investmentReportService.findLatestByTicker(ticker);
+    return this.investmentReportService.findLatestByTicker(ticker);
   }
 }
