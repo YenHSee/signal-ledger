@@ -345,7 +345,7 @@ def insert_investment_report(ticker: str, ai_analysis: dict, raw_data: dict, mod
             "reasoning": ai_analysis.get("reasoning", "N/A"),
             "full_report": ai_analysis.get("full_report", "N/A"),
             "raw_financial_data": psycopg2.extras.Json(raw_data), 
-            "generated_at": ai_analysis.get("generated_at", datetime.now().isoformat())
+            "generated_at": datetime.now()
         }
 
         cursor.execute(insert_sql, data_params)

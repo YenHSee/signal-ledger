@@ -78,7 +78,7 @@ def run_stock_pipeline():
     # ---------------------------------------------------------
     print(f"\n[STEP 4] 📈 开始【单次批量下载】并同步 {len(tickers)} 支股票的最新 3 个月 K 线...")
     try:
-        df = get_daily_prices(tickers, period="3mo")
+        df = get_daily_prices(tickers, period="1mo")
         
         if df is not None:
             print("🔌 正在连接 Supabase 独占大通道进行 Bulk 批量砸入...")

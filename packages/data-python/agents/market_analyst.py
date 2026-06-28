@@ -29,7 +29,6 @@ class InvestmentReport(BaseModel):
         6. Key Risks & Probability (核心风险及其发生概率)
         必须使用多级标题，语调要求：Analytical, precise, institutional (分析性强、精准、机构做派)。"""
     )
-    generated_at: str = Field(default_factory=lambda: datetime.now().isoformat())
 # ==========================================
 # 2. 组装 AI 智能体工厂 (LangGraph 引擎)
 # ==========================================

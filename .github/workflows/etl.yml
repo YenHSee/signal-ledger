@@ -1,10 +1,6 @@
 name: Daily Stock ETL Pipeline
 
 on:
-  push:
-    branches:
-      - 'main'
-      - 'dev/firstInit'
   schedule:
     - cron: '37 22 * * 1-5' # Avoid peak hours
   workflow_dispatch:

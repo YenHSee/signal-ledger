@@ -44,7 +44,7 @@ def get_company_overview(ticker: str):
         return None
     
     
-def get_daily_prices(tickers: str, period="3mo"):
+def get_daily_prices(tickers: str, period="1mo"):
     print(f"📥 正在通过 yfinance 批量下载 {len(tickers)} 支股票的历史股价 (周期: {period})...")
     
     try:
