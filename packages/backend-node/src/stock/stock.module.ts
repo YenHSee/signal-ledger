@@ -3,10 +3,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { StockService } from './stock.service';
 import { StockController } from './stock.controller';
 import { Stock } from './entities/stock.entity';
-import { InvestmentReport } from '../investment-report/entities/investment-report.entity';
+import { DailyPrice } from './entities/daily-price.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Stock, InvestmentReport])],
+  imports: [TypeOrmModule.forFeature([Stock, DailyPrice])],
   controllers: [StockController],
   providers: [StockService],
   exports: [StockService],

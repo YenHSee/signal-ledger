@@ -8,6 +8,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { InvestmentReportModule } from './investment-report/investment-report.module';
 import { InvestmentReport } from './investment-report/entities/investment-report.entity';
+import { DailyPrice } from './stock/entities/daily-price.entity';
 
 @Module({
   imports: [
@@ -18,10 +19,10 @@ import { InvestmentReport } from './investment-report/entities/investment-report
       username: 'postgres',
       password: 'password123',
       database: 'stock_analyst',
-      entities: [Stock, InvestmentReport],
+      entities: [Stock, InvestmentReport, DailyPrice],
       synchronize: false, // 🚨 铁律：必须是 false，由 Python 维护表结构
     }),
-    TypeOrmModule.forFeature([Stock]),
+    TypeOrmModule.forFeature([Stock, DailyPrice]),
     StockModule,
     InvestmentReportModule,
   ],

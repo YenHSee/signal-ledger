@@ -47,7 +47,7 @@ export const macroTerminalRoutes: RouteItem[] = [
         component: "/stock/detail/index",
         meta: {
           title: "Stock Report Details", // 个股研报详情
-          isHide: false,
+          isHide: true,
         },
       },
     ],
@@ -59,6 +59,7 @@ export const macroTerminalRoutes: RouteItem[] = [
     meta: {
       title: "Macro Matrix", // 宏观决战矩阵
       icon: "Globe",
+      isHide: true,
     },
     children: [
       {

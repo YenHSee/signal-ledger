@@ -1,134 +1,404 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useCallback, useMemo } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { ChevronDown } from "lucide-react";
+import {
+  SCREENER_SAVED_PRESETS,
+  type ScreenerColumnKey,
+  type ScreenerIndexFilter,
+  type ScreenerListMeta,
+  type ScreenerSortField,
+  type ScreenerStockItem,
+} from "@stock-analyst/api-types";
+import ColumnPicker from "./ColumnPicker";
+import MoreFilters from "./MoreFilters";
+import Pagination from "./Pagination";
+import {
+  buildQueryParams,
+  countActiveFilters,
+  DEFAULT_UI_STATE,
+  formatMarketCap,
+  formatPercent,
+  formatRatio,
+  getActiveFilterChips,
+  getSignalColor,
+  isPremiumMultiple,
+  parseUiStateFromSearchParams,
+  resetAllFilters,
+  toApiQuery,
+  type ScreenerUiState,
+  COLUMN_LABELS,
+} from "./utils";
 
-// 🌟 1. 严格对应后端 QueryBuilder 吐出的字段
-interface ScreenerData {
-  symbol: string;
-  name: string;
-  pe_ratio: number | null;
-  ai_signal: string | null; // 可能有的股票还没生成报告，所以是 null
-  conviction: string | null;
-  upside: string | null;
-}
+const INDEX_OPTIONS: { value: ScreenerIndexFilter; label: string }[] = [
+  { value: "all", label: "All (SPX + NDX)" },
+  { value: "spx", label: "S&P 500" },
+  { value: "ndx", label: "NASDAQ 100" },
+];
+
+const SORTABLE_COLUMNS: Partial<Record<ScreenerColumnKey, ScreenerSortField>> =
+  {
+    ticker: "ticker",
+    price: "price",
+    marketCap: "marketCap",
+    forwardPe: "forwardPe",
+    vsSpx: "vsSpx",
+    revGrowth: "revenueGrowthYoy",
+    analystUpside: "analystUpside",
+    roe: "roe",
+  };
 
 export default function StockScreener() {
   const navigate = useNavigate();
-  const [stocks, setStocks] = useState<ScreenerData[]>([]);
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const limit = 5;
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const fetchStocks = async (pageNum: number) => {
+  const [state, setState] = useState<ScreenerUiState>(() =>
+    parseUiStateFromSearchParams(searchParams),
+  );
+  const [stocks, setStocks] = useState<ScreenerStockItem[]>([]);
+  const [meta, setMeta] = useState<ScreenerListMeta>({
+    totalStocks: 0,
+    stocksWithReport: 0,
+    spxFwdPe: null,
+    sectors: [],
+  });
+  const [totalPages, setTotalPages] = useState(1);
+  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(false);
+
+  const patchState = useCallback((patch: Partial<ScreenerUiState>) => {
+    setState((prev) => ({ ...prev, ...patch }));
+  }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      patchState({
+        search: state.searchInput.trim() || undefined,
+        page: 1,
+      });
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [state.searchInput, patchState]);
+
+  useEffect(() => {
+    setSearchParams(buildQueryParams(state), { replace: true });
+  }, [state, setSearchParams]);
+
+  const apiQuery = useMemo(
+    () => toApiQuery(state),
+    [
+      state.page,
+      state.limit,
+      state.index,
+      state.sector,
+      state.search,
+      state.sortBy,
+      state.sortOrder,
+      state.marketCapMin,
+      state.marketCapMax,
+      state.forwardPeMin,
+      state.forwardPeMax,
+      state.vsSpxMin,
+      state.vsSpxMax,
+      state.pegMax,
+      state.revenueGrowthMin,
+      state.earningsGrowthMin,
+      state.roeMin,
+      state.profitMarginMin,
+      state.dividendYieldMin,
+      state.ma50,
+      state.ma200,
+      state.nearExtreme,
+      state.hasReport,
+      state.conclusions?.join(","),
+    ],
+  );
+
+  const fetchStocks = useCallback(async () => {
     setLoading(true);
     try {
+      const params = new URLSearchParams();
+
+      Object.entries(apiQuery).forEach(([key, value]) => {
+        if (value === undefined || value === null || value === "") return;
+        if (key === "conclusions" && Array.isArray(value)) {
+          if (value.length > 0) params.set(key, value.join(","));
+          return;
+        }
+        if (key === "sector" && value === "all") return;
+        if (key === "index" && value === "all") return;
+        if (key === "hasReport" && value === "all") return;
+        if (key === "ma50" && value === "all") return;
+        if (key === "ma200" && value === "all") return;
+        if (key === "nearExtreme" && value === "all") return;
+        params.set(key, String(value));
+      });
+
       const response = await fetch(
-        `http://localhost:4000/api/stock?page=${pageNum}&limit=${limit}`,
+        `http://localhost:4000/api/stock?${params.toString()}`,
       );
       const result = await response.json();
       setStocks(result.data || []);
+      setMeta(
+        result.meta || {
+          totalStocks: 0,
+          stocksWithReport: 0,
+          spxFwdPe: null,
+          sectors: [],
+        },
+      );
       setTotalPages(result.totalPages || 1);
+      setTotal(result.total || 0);
     } catch (error) {
       console.error("Fetch error:", error);
     } finally {
       setLoading(false);
     }
-  };
+  }, [apiQuery]);
 
   useEffect(() => {
-    // 处理 StrictMode 的经典双重调用 (Cleanup 函数)
-    let ignore = false;
-    if (!ignore) fetchStocks(page);
-    return () => {
-      ignore = true;
-    };
-  }, [page]);
+    fetchStocks();
+  }, [fetchStocks]);
 
-  // 专属颜色逻辑：匹配大模型的输出 (BUY, HOLD, SELL)
-  const getSignalColor = (signal: string | null) => {
-    if (!signal) return "text-gray-400 bg-gray-800 border-gray-600"; // 无报告状态
-    const s = signal.toUpperCase();
-    if (s.includes("BUY"))
-      return "text-green-400 bg-green-900/30 border-green-800";
-    if (s.includes("HOLD"))
-      return "text-yellow-400 bg-yellow-900/30 border-yellow-800";
-    return "text-red-400 bg-red-900/30 border-red-800";
+  const handleSort = (field: ScreenerSortField) => {
+    if (state.sortBy === field) {
+      patchState({
+        sortOrder: state.sortOrder === "desc" ? "asc" : "desc",
+        page: 1,
+      });
+    } else {
+      patchState({ sortBy: field, sortOrder: "desc", page: 1 });
+    }
   };
+
+  const clearAdvancedFilters = () => {
+    // Full reset: presets can set tier-1 fields (index/sector/search/sort)
+    // too, so "clear all" must wipe those as well, not just the tier-2
+    // advanced filters, otherwise leftover preset filters silently remain.
+    setState((prev) => resetAllFilters(prev));
+  };
+
+  const applyPreset = (presetId: string) => {
+    const preset = SCREENER_SAVED_PRESETS.find((item) => item.id === presetId);
+    if (!preset) return;
+    patchState({
+      ...DEFAULT_UI_STATE,
+      ...preset.filters,
+      page: 1,
+      searchInput: state.searchInput,
+      visibleColumns: state.visibleColumns,
+      showMoreFilters: true,
+    });
+  };
+
+  const activeFilterCount = countActiveFilters(state);
+  const filterChips = getActiveFilterChips(state);
+
+  const SortHeader = ({
+    column,
+    align = "left",
+  }: {
+    column: ScreenerColumnKey;
+    align?: "left" | "right";
+  }) => {
+    const sortField = SORTABLE_COLUMNS[column];
+    if (!sortField) {
+      return (
+        <th
+          className={`py-3 px-4 ${align === "right" ? "text-right" : "text-left"}`}
+        >
+          {COLUMN_LABELS[column]}
+        </th>
+      );
+    }
+
+    return (
+      <th
+        className={`py-3 px-4 cursor-pointer select-none hover:text-gray-200 transition-colors ${
+          align === "right" ? "text-right" : "text-left"
+        }`}
+        onClick={() => handleSort(sortField)}
+      >
+        <span className="inline-flex items-center gap-1">
+          {COLUMN_LABELS[column]}
+          {state.sortBy === sortField && (
+            <ChevronDown
+              size={14}
+              className={`transition-transform ${state.sortOrder === "asc" ? "rotate-180" : ""}`}
+            />
+          )}
+        </span>
+      </th>
+    );
+  };
+
+  const rightAlignedColumns = new Set<ScreenerColumnKey>([
+    "price",
+    "marketCap",
+    "forwardEps",
+    "forwardPe",
+    "vsSpx",
+    "revGrowth",
+    "analystUpside",
+    "roe",
+    "pctFrom52wHigh",
+  ]);
 
   return (
     <div className="w-full h-full text-gray-200">
-      <h1 className="text-2xl font-extrabold text-white mb-6">
-        AI Quantum Screener
-      </h1>
+      <div className="flex flex-wrap items-center gap-3 mb-3">
+        <div className="relative">
+          <select
+            value={state.index ?? "all"}
+            onChange={(e) =>
+              patchState({
+                index: e.target.value as ScreenerIndexFilter,
+                page: 1,
+              })
+            }
+            className="appearance-none bg-gray-800 border border-gray-700 rounded-lg pl-3 pr-8 py-2 text-sm text-gray-200 focus:outline-none focus:border-gray-500 cursor-pointer"
+          >
+            {INDEX_OPTIONS.map((opt) => (
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
+          </select>
+          <ChevronDown
+            size={14}
+            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+          />
+        </div>
 
-      <div className="bg-gray-800 rounded-xl border border-gray-700 overflow-hidden shadow-xl">
-        <table className="w-full text-left border-collapse">
+        <div className="relative">
+          <select
+            value={state.sector ?? "all"}
+            onChange={(e) => patchState({ sector: e.target.value, page: 1 })}
+            className="appearance-none bg-gray-800 border border-gray-700 rounded-lg pl-3 pr-8 py-2 text-sm text-gray-200 focus:outline-none focus:border-gray-500 cursor-pointer"
+          >
+            <option value="all">All Sectors</option>
+            {meta.sectors.map((sector) => (
+              <option key={sector} value={sector}>
+                {sector}
+              </option>
+            ))}
+          </select>
+          <ChevronDown
+            size={14}
+            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+          />
+        </div>
+
+        <input
+          type="text"
+          placeholder="Search ticker or name..."
+          value={state.searchInput}
+          onChange={(e) => patchState({ searchInput: e.target.value })}
+          className="flex-1 min-w-[200px] bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-gray-200 placeholder:text-gray-500 focus:outline-none focus:border-gray-500"
+        />
+
+        <div className="flex items-center gap-2">
+          <ColumnPicker
+            visibleColumns={state.visibleColumns}
+            onChange={(columns) => patchState({ visibleColumns: columns })}
+          />
+
+          <div className="relative group">
+            <button
+              type="button"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm bg-gray-800 border border-gray-700 rounded-lg hover:bg-gray-700 transition-colors"
+            >
+              Presets
+              <ChevronDown size={14} />
+            </button>
+            <div className="absolute right-0 top-full mt-1 z-20 hidden group-hover:block group-focus-within:block">
+              <div className="bg-gray-800 border border-gray-700 rounded-lg shadow-xl py-1 min-w-[180px]">
+                {SCREENER_SAVED_PRESETS.map((preset) => (
+                  <button
+                    key={preset.id}
+                    type="button"
+                    onClick={() => applyPreset(preset.id)}
+                    className="w-full text-left px-3 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white"
+                  >
+                    {preset.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="text-sm text-gray-400 whitespace-nowrap ml-auto">
+          {meta.totalStocks.toLocaleString()} stocks
+          <span> | {meta.stocksWithReport.toLocaleString()} w/ AI</span>
+          {meta.spxFwdPe !== null && (
+            <span> | SPX Fwd PE: {meta.spxFwdPe.toFixed(1)}x</span>
+          )}
+        </div>
+      </div>
+
+      <MoreFilters
+        state={state}
+        onChange={patchState}
+        onClear={clearAdvancedFilters}
+        activeCount={activeFilterCount}
+      />
+
+      {filterChips.length > 0 && (
+        <div className="flex flex-wrap gap-2 mb-4">
+          {filterChips.map((chip) => (
+            <span
+              key={chip}
+              className="px-2.5 py-1 text-xs bg-gray-800 border border-gray-700 rounded-full text-gray-300"
+            >
+              {chip}
+            </span>
+          ))}
+        </div>
+      )}
+
+      <div className="bg-gray-800 rounded-xl border border-gray-700 overflow-hidden shadow-xl overflow-x-auto">
+        <table className="w-full text-left border-collapse min-w-[900px]">
           <thead>
             <tr className="border-b border-gray-700 bg-gray-900/40 text-gray-400 text-xs font-bold uppercase tracking-wider">
-              <th className="py-4 px-5 w-1/3">Ticker / Company</th>
-              <th className="py-4 px-4 w-1/6 text-right">PE Ratio</th>
-              <th className="py-4 px-6 w-1/4">AI Verdict</th>
-              <th className="py-4 px-5 text-right w-1/4">Action</th>
+              {state.visibleColumns.map((column) => (
+                <SortHeader
+                  key={column}
+                  column={column}
+                  align={rightAlignedColumns.has(column) ? "right" : "left"}
+                />
+              ))}
             </tr>
           </thead>
 
           <tbody className="divide-y divide-gray-700/60 text-sm">
             {loading ? (
               <tr>
-                <td colSpan={4} className="p-8 text-center text-gray-500">
+                <td
+                  colSpan={state.visibleColumns.length}
+                  className="p-8 text-center text-gray-500"
+                >
                   Scanning Markets...
+                </td>
+              </tr>
+            ) : stocks.length === 0 ? (
+              <tr>
+                <td
+                  colSpan={state.visibleColumns.length}
+                  className="p-8 text-center text-gray-500"
+                >
+                  No stocks found
                 </td>
               </tr>
             ) : (
               stocks.map((stock) => (
                 <tr
-                  key={stock.symbol}
-                  onClick={() => navigate(`/stock/${stock.symbol}`)}
-                  className="hover:bg-gray-700/60 cursor-pointer transition-all group"
+                  key={stock.ticker}
+                  onClick={() => navigate(`/stock/${stock.ticker}`)}
+                  className="hover:bg-gray-700/60 cursor-pointer transition-all"
                 >
-                  <td className="py-4 px-5">
-                    <div className="font-bold text-blue-400 text-base">
-                      {stock.symbol}
-                    </div>
-                    <div className="text-xs text-gray-400 mt-0.5 truncate max-w-[200px]">
-                      {stock.name}
-                    </div>
-                  </td>
-                  <td className="py-4 px-4 text-right font-semibold text-white">
-                    {stock.pe_ratio ? Number(stock.pe_ratio).toFixed(2) : "N/A"}
-                  </td>
-
-                  {/* 🌟 极具吸引力的 AI 数据列 */}
-                  <td className="py-4 px-6">
-                    <div className="flex items-center gap-2">
-                      <span
-                        className={`px-2.5 py-1 rounded text-xs font-bold border ${getSignalColor(stock.ai_signal)}`}
-                      >
-                        {stock.ai_signal || "AWAITING"}
-                      </span>
-                      {stock.upside && (
-                        <span
-                          className={`text-xs font-bold ${stock.upside.includes("-") ? "text-red-400" : "text-green-400"}`}
-                        >
-                          {stock.upside}
-                        </span>
-                      )}
-                    </div>
-                    {stock.conviction && (
-                      <div className="text-[10px] text-gray-500 mt-1 uppercase tracking-wide">
-                        Conviction: {stock.conviction}
-                      </div>
-                    )}
-                  </td>
-
-                  <td className="py-4 px-5 text-right">
-                    <span className="text-xs font-bold text-blue-500 group-hover:text-white transition-colors flex items-center justify-end gap-1">
-                      {stock.ai_signal ? "Read Intel" : "Request Analysis"}{" "}
-                      <span className="group-hover:translate-x-1 transition-transform">
-                        ➔
-                      </span>
-                    </span>
-                  </td>
+                  {state.visibleColumns.map((column) => (
+                    <RenderCell key={column} stock={stock} column={column} />
+                  ))}
                 </tr>
               ))
             )}
@@ -136,25 +406,131 @@ export default function StockScreener() {
         </table>
       </div>
 
-      <div className="mt-6 flex justify-between items-center text-sm">
-        <button
-          onClick={() => setPage((p) => Math.max(1, p - 1))}
-          disabled={page === 1 || loading}
-          className="px-4 py-2 bg-gray-700 rounded hover:bg-gray-600 disabled:opacity-50"
-        >
-          Previous
-        </button>
-        <span className="font-bold text-gray-400">
-          Page {page} of {totalPages}
-        </span>
-        <button
-          onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-          disabled={page === totalPages || loading}
-          className="px-4 py-2 bg-gray-700 rounded hover:bg-gray-600 disabled:opacity-50"
-        >
-          Next
-        </button>
-      </div>
+      <Pagination
+        page={state.page ?? 1}
+        totalPages={totalPages}
+        limit={state.limit ?? 100}
+        total={total}
+        loading={loading}
+        onPageChange={(page) => patchState({ page })}
+        onLimitChange={(limit) => patchState({ limit, page: 1 })}
+      />
     </div>
   );
+}
+
+function RenderCell({
+  stock,
+  column,
+}: {
+  stock: ScreenerStockItem;
+  column: ScreenerColumnKey;
+}) {
+  const premium = isPremiumMultiple(stock.vsSpx);
+
+  switch (column) {
+    case "ticker":
+      return (
+        <td className="py-3 px-4 font-bold text-blue-400">{stock.ticker}</td>
+      );
+    case "company":
+      return <td className="py-3 px-4 text-gray-300">{stock.name}</td>;
+    case "sector":
+      return <td className="py-3 px-4 text-gray-400">{stock.sector || "—"}</td>;
+    case "price":
+      return (
+        <td className="py-3 px-4 text-right font-semibold text-white">
+          {stock.price !== null ? stock.price.toFixed(2) : "—"}
+        </td>
+      );
+    case "marketCap":
+      return (
+        <td className="py-3 px-4 text-right text-gray-300">
+          {formatMarketCap(stock.marketCap)}
+        </td>
+      );
+    case "forwardEps":
+      return (
+        <td className="py-3 px-4 text-right text-gray-300">
+          {stock.forwardEps !== null ? `$${stock.forwardEps.toFixed(2)}` : "—"}
+        </td>
+      );
+    case "forwardPe":
+      return (
+        <td
+          className={`py-3 px-4 text-right font-medium ${
+            premium ? "text-orange-400" : "text-gray-300"
+          }`}
+        >
+          {formatRatio(stock.forwardPe)}
+        </td>
+      );
+    case "vsSpx":
+      return (
+        <td
+          className={`py-3 px-4 text-right font-medium ${
+            premium ? "text-orange-400" : "text-gray-300"
+          }`}
+        >
+          {formatRatio(stock.vsSpx)}
+        </td>
+      );
+    case "ai":
+      return (
+        <td className="py-3 px-4">
+          <div className="flex items-center gap-2">
+            <span
+              className={`px-2 py-0.5 rounded text-xs font-bold border ${getSignalColor(stock.aiSignal)}`}
+            >
+              {stock.aiSignal || "AWAITING"}
+            </span>
+            {stock.upsidePct && (
+              <span
+                className={`text-xs font-bold ${
+                  stock.upsidePct.includes("-")
+                    ? "text-red-400"
+                    : "text-green-400"
+                }`}
+              >
+                {stock.upsidePct}
+              </span>
+            )}
+          </div>
+        </td>
+      );
+    case "revGrowth":
+      return (
+        <td className="py-3 px-4 text-right text-gray-300">
+          {formatPercent(stock.revenueGrowthYoy)}
+        </td>
+      );
+    case "analystUpside":
+      return (
+        <td
+          className={`py-3 px-4 text-right font-medium ${
+            stock.analystUpside !== null && stock.analystUpside > 0
+              ? "text-green-400"
+              : stock.analystUpside !== null && stock.analystUpside < 0
+                ? "text-red-400"
+                : "text-gray-300"
+          }`}
+        >
+          {formatPercent(stock.analystUpside)}
+        </td>
+      );
+    case "roe":
+      return (
+        <td className="py-3 px-4 text-right text-gray-300">
+          {formatPercent(stock.roe)}
+        </td>
+      );
+    case "pctFrom52wHigh":
+      return (
+        <td className="py-3 px-4 text-right text-gray-300">
+          {formatPercent(stock.pctFrom52wHigh)}
+        </td>
+      );
+    default:
+      return null;
+  }
 }

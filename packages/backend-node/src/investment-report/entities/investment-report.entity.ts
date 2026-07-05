@@ -1,8 +1,8 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import type { RawFinancialSnapshot } from '@stock-analyst/api-types';
 
 @Entity('investment_reports')
 export class InvestmentReport {
-  // 🌟 强烈建议加一个自增的主键 ID，方便以后查询单篇报告
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -34,9 +34,8 @@ export class InvestmentReport {
   @Column({ type: 'text', nullable: true })
   full_report: string;
 
-  // 🌟 PostgreSQL 最牛逼的特性 jsonb，直接无缝存储前端传来的巨型 JSON
   @Column({ type: 'jsonb', nullable: true })
-  raw_financial_data: any;
+  raw_financial_data: RawFinancialSnapshot | null;
 
   @Column({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   generated_at: Date;
