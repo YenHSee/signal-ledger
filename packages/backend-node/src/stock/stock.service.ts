@@ -149,7 +149,7 @@ export class StockService {
         percentInstitutions: num(stock.percent_institutions),
       },
       analystRatings: {
-        strongBuy: stock.analyst_rating_strong_buy ?? 1,
+        strongBuy: stock.analyst_rating_strong_buy ?? 0,
         buy: stock.analyst_rating_buy ?? 0,
         hold: stock.analyst_rating_hold ?? 0,
         sell: stock.analyst_rating_sell ?? 0,
