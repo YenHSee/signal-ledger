@@ -10,10 +10,11 @@ from config import config
 # Tools
 from tools.wikipedia_scraper import get_sp500_tickers 
 from tools.yahoo_finance import get_company_overview, get_daily_prices
+from tools.finnhub_news import get_company_news
 # Utils
-from utils.data_transformer import transform_yfinance_overview_to_db, transform_yfinance_prices_to_db
+from utils.data_transformer import transform_yfinance_overview_to_db, transform_yfinance_prices_to_db, transform_finnhub_news_to_db
 # 🌟 引入新写的全局连接池管理工具
-from utils.storage import execute_simple_sql, init_tables, insert_company_overview, insert_daily_prices, init_db_pool, close_db_pool
+from utils.storage import execute_simple_sql, init_tables, insert_company_overview, insert_daily_prices, insert_stock_news, count_stock_news, init_db_pool, close_db_pool
 
 
 def process_single_overview(ticker):
@@ -27,6 +28,40 @@ def process_single_overview(ticker):
             insert_company_overview(clean_overview)
     except Exception as e:
         print(f"⚠️ 处理 {ticker} 基本面时跳过: {e}")
+
+
+def sync_company_news(tickers):
+    """[STEP 5] 从 Finnhub 增量拉取公司新闻并 upsert 入库（表为空时自动 backfill 30 天）"""
+    from datetime import date, timedelta
+
+    print(f"\n[STEP 5] 📰 开始同步 {len(tickers)} 支股票的公司新闻 (Finnhub)...")
+
+    if not config.FINNHUB_API_KEY:
+        print("⚠️ 未配置 FINNHUB_API_KEY，跳过新闻同步步骤。")
+        return
+
+    # 表为空 → 首次运行做 30 天 backfill；否则增量拉最近 3 天（覆盖周末/失败的 run）
+    lookback_days = 30 if count_stock_news() == 0 else 3
+    today = date.today()
+    from_date = (today - timedelta(days=lookback_days)).isoformat()
+    to_date = today.isoformat()
+    print(f"🗓️ 拉取窗口: {from_date} ~ {to_date} (回看 {lookback_days} 天)")
+
+    total_inserted = 0
+    success_count = 0
+    for ticker in tickers:
+        try:
+            raw_news = get_company_news(ticker, from_date, to_date)
+            if not raw_news:
+                continue
+            news_rows = transform_finnhub_news_to_db(ticker, raw_news)
+            inserted = insert_stock_news(news_rows)
+            total_inserted += inserted
+            success_count += 1
+        except Exception as e:
+            print(f"⚠️ 处理 {ticker} 新闻时跳过: {e}")
+
+    print(f"✅ 新闻同步结束: {success_count} 支股票有新闻，新增入库 {total_inserted} 条。")
 
 
 def run_stock_pipeline():
@@ -114,6 +149,11 @@ def run_stock_pipeline():
                 
     except Exception as e:
         print(f"❌ 批量下载/砸入股价时发生致命错误: {e}")
+
+    # ---------------------------------------------------------
+    # [STEP 5] 拉取公司新闻 (News Loop - Finnhub 增量 append/upsert)
+    # ---------------------------------------------------------
+    sync_company_news(tickers)
 
     # ---------------------------------------------------------
     # 收尾：安全关闭全局连接池

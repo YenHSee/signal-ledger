@@ -6,9 +6,12 @@ import { InvestmentReport } from './entities/investment-report.entity';
 import { Stock } from 'src/stock/entities/stock.entity';
 import { DailyPrice } from 'src/stock/entities/daily-price.entity';
 import { StockService } from 'src/stock/stock.service';
+import { StockNews } from 'src/stock/entities/stock-news.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([InvestmentReport, Stock, DailyPrice])],
+  imports: [
+    TypeOrmModule.forFeature([InvestmentReport, Stock, DailyPrice, StockNews]),
+  ],
   controllers: [InvestmentReportController],
   providers: [InvestmentReportService, StockService],
   exports: [TypeOrmModule],

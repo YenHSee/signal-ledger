@@ -213,6 +213,42 @@ def transform_yfinance_prices_to_db(symbol: str, raw_data: dict) -> list:
     return prices_list
 
 
+# 公司新闻清洗 (Stock News)
+def transform_finnhub_news_to_db(symbol: str, raw_news_list: list) -> list:
+    """
+    把 Finnhub company-news 返回的原始列表，转换为 stock_news 表需要的 dict 列表。
+    datetime (unix 秒) 会额外转出 trade_date (YYYY-MM-DD)，方便按日对齐 chart。
+    """
+    from datetime import datetime, timezone
+
+    news_rows = []
+    if not raw_news_list:
+        return news_rows
+
+    for item in raw_news_list:
+        finnhub_id = item.get("id")
+        unix_ts = item.get("datetime")
+        headline = item.get("headline")
+        # 缺关键字段的脏数据直接丢弃
+        if not finnhub_id or not unix_ts or not headline:
+            continue
+
+        trade_date = datetime.fromtimestamp(int(unix_ts), tz=timezone.utc).strftime("%Y-%m-%d")
+
+        news_rows.append({
+            "finnhub_id": int(finnhub_id),
+            "symbol": symbol.upper(),
+            "trade_date": trade_date,
+            "datetime": int(unix_ts),
+            "headline": headline,
+            "summary": item.get("summary") or "",
+            "source": item.get("source") or "",
+            "url": item.get("url") or ""
+        })
+
+    return news_rows
+
+
 def transform_to_report(raw_json: dict):
     return {
         "ticker": raw_json["Symbol"],

@@ -176,6 +176,16 @@ export interface FundamentalsProfile {
   };
 }
 
+export interface StockNewsItem {
+  id: number;
+  date: string;
+  datetime: number;
+  headline: string;
+  summary: string;
+  source: string;
+  url: string;
+}
+
 export interface DailyPricePoint {
   date: string;
   close: number;

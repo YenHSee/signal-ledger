@@ -10,6 +10,7 @@ import type {
   ScreenerNearExtremeFilter,
   ScreenerSortField,
   ScreenerSortOrder,
+  StockNewsItem,
 } from '@stock-analyst/api-types';
 import { StockService } from './stock.service';
 
@@ -104,5 +105,13 @@ export class StockController {
     @Query('days') days?: string,
   ): Promise<DailyPricePoint[]> {
     return this.stockService.getDailyPrices(ticker, days ? Number(days) : 30);
+  }
+
+  @Get(':ticker/news')
+  async getCompanyNews(
+    @Param('ticker') ticker: string,
+    @Query('days') days?: string,
+  ): Promise<StockNewsItem[]> {
+    return this.stockService.getCompanyNews(ticker, days ? Number(days) : 30);
   }
 }

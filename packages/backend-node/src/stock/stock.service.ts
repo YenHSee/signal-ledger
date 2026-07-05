@@ -15,9 +15,11 @@ import type {
   ScreenerSortField,
   ScreenerSortOrder,
   ScreenerStockItem,
+  StockNewsItem,
 } from '@stock-analyst/api-types';
 import { Stock } from './entities/stock.entity';
 import { DailyPrice } from './entities/daily-price.entity';
+import { StockNews } from './entities/stock-news.entity';
 
 interface RawStockRow {
   symbol: string;
@@ -50,6 +52,8 @@ export class StockService {
     private stockRepository: Repository<Stock>,
     @InjectRepository(DailyPrice)
     private dailyPriceRepository: Repository<DailyPrice>,
+    @InjectRepository(StockNews)
+    private stockNewsRepository: Repository<StockNews>,
   ) {}
 
   async getCompanyList(
@@ -191,6 +195,45 @@ export class StockService {
         volume: this.toNumber(row.volume) ?? undefined,
       }))
       .reverse();
+  }
+
+  async getCompanyNews(ticker: string, days = 30): Promise<StockNewsItem[]> {
+    const symbol = ticker.toUpperCase();
+    const rows = await this.stockNewsRepository
+      .createQueryBuilder('news')
+      .select([
+        'news.finnhub_id AS finnhub_id',
+        'news.trade_date AS trade_date',
+        'news.datetime AS datetime',
+        'news.headline AS headline',
+        'news.summary AS summary',
+        'news.source AS source',
+        'news.url AS url',
+      ])
+      .where('news.symbol = :symbol', { symbol })
+      .andWhere(
+        `news.trade_date >= CURRENT_DATE - INTERVAL '${days} days'`,
+      )
+      .orderBy('news.datetime', 'DESC')
+      .getRawMany<{
+        finnhub_id: string | number;
+        trade_date: string;
+        datetime: string | number;
+        headline: string;
+        summary: string | null;
+        source: string | null;
+        url: string | null;
+      }>();
+
+    return rows.map((row) => ({
+      id: Number(row.finnhub_id),
+      date: row.trade_date,
+      datetime: Number(row.datetime),
+      headline: row.headline,
+      summary: row.summary ?? '',
+      source: row.source ?? '',
+      url: row.url ?? '',
+    }));
   }
 
   private createBaseQuery(): StockQueryBuilder {

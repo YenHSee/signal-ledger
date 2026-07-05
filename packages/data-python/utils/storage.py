@@ -119,8 +119,26 @@ def init_tables():
         );
         """
 
+        # 新闻是永久档案：append/upsert（按 finnhub_id 去重），不像 daily_prices 那样 truncate 重灌
+        create_news_sql = """
+        CREATE TABLE IF NOT EXISTS stock_news (
+            id BIGSERIAL PRIMARY KEY,
+            finnhub_id BIGINT UNIQUE NOT NULL,
+            symbol VARCHAR(10) NOT NULL,
+            trade_date DATE NOT NULL,
+            datetime BIGINT NOT NULL,
+            headline TEXT NOT NULL,
+            summary TEXT,
+            source VARCHAR(100),
+            url TEXT,
+            fetched_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+        );
+        CREATE INDEX IF NOT EXISTS idx_stock_news_symbol_date ON stock_news (symbol, trade_date);
+        """
+
         cursor.execute(create_overview_sql)
         cursor.execute(create_prices_sql)
+        cursor.execute(create_news_sql)
         connection.commit()
         print("🎉 所有数据表成功同步！")
     except (Exception, Error) as error:
@@ -226,6 +244,90 @@ def insert_daily_prices(cursor, prices_list: list):
     """
     execute_values(cursor, upsert_sql, data_tuples)
     return True
+
+
+def insert_stock_news(rows: list):
+    """
+    批量 upsert 新闻（按 finnhub_id 去重，冲突直接跳过）。
+    rows 为 transform_finnhub_news_to_db() 产出的 dict 列表。返回成功写入行数（含被去重跳过的为 0 计数外）。
+    """
+    global db_pool
+    if not rows:
+        return 0
+
+    connection = None
+    cursor = None
+    is_from_pool = False
+    try:
+        if db_pool is not None:
+            connection = db_pool.getconn()
+            is_from_pool = True
+        else:
+            connection = psycopg2.connect(
+                user=config.DB_USER, password=config.DB_PASSWORD,
+                host=config.DB_HOST, port=config.DB_PORT, database=config.DB_NAME
+            )
+        cursor = connection.cursor()
+
+        data_tuples = [
+            (
+                r.get("finnhub_id"), r.get("symbol"), r.get("trade_date"), r.get("datetime"),
+                r.get("headline"), r.get("summary"), r.get("source"), r.get("url")
+            ) for r in rows
+        ]
+
+        upsert_sql = """
+        INSERT INTO stock_news (
+            finnhub_id, symbol, trade_date, datetime, headline, summary, source, url
+        ) VALUES %s
+        ON CONFLICT (finnhub_id) DO NOTHING;
+        """
+        execute_values(cursor, upsert_sql, data_tuples)
+        inserted = cursor.rowcount
+        connection.commit()
+        return inserted
+    except Exception as error:
+        print(f"❌ 新闻批量写入失败: {error}")
+        if connection: connection.rollback()
+        return 0
+    finally:
+        if cursor: cursor.close()
+        if connection:
+            if is_from_pool and db_pool:
+                db_pool.putconn(connection)
+            else:
+                connection.close()
+
+
+def count_stock_news():
+    """返回 stock_news 表当前总行数（表不存在或查询失败时返回 0），用于判断是否需要首次 backfill"""
+    global db_pool
+    connection = None
+    cursor = None
+    is_from_pool = False
+    try:
+        if db_pool is not None:
+            connection = db_pool.getconn()
+            is_from_pool = True
+        else:
+            connection = psycopg2.connect(
+                user=config.DB_USER, password=config.DB_PASSWORD,
+                host=config.DB_HOST, port=config.DB_PORT, database=config.DB_NAME
+            )
+        cursor = connection.cursor()
+        cursor.execute("SELECT COUNT(*) FROM stock_news;")
+        return cursor.fetchone()[0]
+    except Exception as error:
+        print(f"⚠️ 查询 stock_news 行数失败: {error}")
+        if connection: connection.rollback()
+        return 0
+    finally:
+        if cursor: cursor.close()
+        if connection:
+            if is_from_pool and db_pool:
+                db_pool.putconn(connection)
+            else:
+                connection.close()
 
 
 def build_ai_context(ticker: str):

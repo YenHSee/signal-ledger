@@ -9,6 +9,7 @@ import { AppService } from './app.service';
 import { InvestmentReportModule } from './investment-report/investment-report.module';
 import { InvestmentReport } from './investment-report/entities/investment-report.entity';
 import { DailyPrice } from './stock/entities/daily-price.entity';
+import { StockNews } from './stock/entities/stock-news.entity';
 
 @Module({
   imports: [
@@ -19,10 +20,10 @@ import { DailyPrice } from './stock/entities/daily-price.entity';
       username: 'postgres',
       password: 'password123',
       database: 'stock_analyst',
-      entities: [Stock, InvestmentReport, DailyPrice],
-      synchronize: false, // 🚨 铁律：必须是 false，由 Python 维护表结构
+      entities: [Stock, InvestmentReport, DailyPrice, StockNews],
+      synchronize: false,
     }),
-    TypeOrmModule.forFeature([Stock, DailyPrice]),
+    TypeOrmModule.forFeature([Stock, DailyPrice, StockNews]),
     StockModule,
     InvestmentReportModule,
   ],

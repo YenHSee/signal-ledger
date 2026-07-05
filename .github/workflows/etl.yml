@@ -32,6 +32,8 @@ jobs:
         DB_PORT: ${{ secrets.DB_PORT }}
         DB_NAME: ${{ secrets.DB_NAME }}
 
+        FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
+
         CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
         CF_NAMESPACE_ID: ${{ secrets.CF_NAMESPACE_ID }}
         CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}

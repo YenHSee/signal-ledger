@@ -4,9 +4,10 @@ import { StockService } from './stock.service';
 import { StockController } from './stock.controller';
 import { Stock } from './entities/stock.entity';
 import { DailyPrice } from './entities/daily-price.entity';
+import { StockNews } from './entities/stock-news.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Stock, DailyPrice])],
+  imports: [TypeOrmModule.forFeature([Stock, DailyPrice, StockNews])],
   controllers: [StockController],
   providers: [StockService],
   exports: [StockService],

@@ -12,6 +12,11 @@ class AppConfig:
         return key
     
     @property
+    def FINNHUB_API_KEY(self):
+        # 可选配置：没配 key 时 ETL 的 news step 会自动跳过，不影响主流水线
+        return os.getenv("FINNHUB_API_KEY")
+
+    @property
     def MODEL_PROVIDER(self):
         return os.getenv("MODEL_PROVIDER", "ollama")
 
