@@ -1,16 +1,20 @@
 import MarkdownReport from "./MarkdownReport";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import FundamentalsPanel from "./FundamentalsPanel";
 import type {
   DailyPricePoint,
   FundamentalsProfile,
   InvestmentReportHistoryItem,
+  StockNewsItem,
   StockProfile,
 } from "@stock-analyst/api-types";
 import ThesisSummary from "./ThesisSummary";
 import Headline from "./Headline";
 import TrackRecord from "./TrackRecord";
+import PriceChart from "./PriceChart";
+import NewsSection from "./NewsSection";
+import { computeDailyChanges } from "./utils";
 
 const API_BASE = "http://localhost:4000/api";
 
@@ -24,6 +28,8 @@ export default function StockDetail() {
   );
   const [history, setHistory] = useState<InvestmentReportHistoryItem[]>([]);
   const [prices, setPrices] = useState<DailyPricePoint[]>([]);
+  const [news, setNews] = useState<StockNewsItem[]>([]);
+  const [scrollToNewsDate, setScrollToNewsDate] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   useEffect(() => {
@@ -33,13 +39,19 @@ export default function StockDetail() {
       setLoading(true);
       setError(null);
       try {
-        const [profileResult, fundamentalsResult, historyResult, pricesResult] =
-          await Promise.allSettled([
-            fetch(`${API_BASE}/investment-report/${ticker}`),
-            fetch(`${API_BASE}/investment-report/${ticker}/fundamentals`),
-            fetch(`${API_BASE}/investment-report/${ticker}/history`),
-            fetch(`${API_BASE}/stock/${ticker}/prices`),
-          ]);
+        const [
+          profileResult,
+          fundamentalsResult,
+          historyResult,
+          pricesResult,
+          newsResult,
+        ] = await Promise.allSettled([
+          fetch(`${API_BASE}/investment-report/${ticker}`),
+          fetch(`${API_BASE}/investment-report/${ticker}/fundamentals`),
+          fetch(`${API_BASE}/investment-report/${ticker}/history`),
+          fetch(`${API_BASE}/stock/${ticker}/prices`),
+          fetch(`${API_BASE}/stock/${ticker}/news`),
+        ]);
 
         if (ignore) return;
         if (profileResult.status === "fulfilled" && profileResult.value.ok) {
@@ -60,13 +72,19 @@ export default function StockDetail() {
         if (historyResult.status === "fulfilled" && historyResult.value.ok) {
           setHistory(await historyResult.value.json());
         } else {
-          setHistory(null);
+          setHistory([]);
         }
 
         if (pricesResult.status === "fulfilled" && pricesResult.value.ok) {
           setPrices(await pricesResult.value.json());
         } else {
           setPrices([]);
+        }
+
+        if (newsResult.status === "fulfilled" && newsResult.value.ok) {
+          setNews(await newsResult.value.json());
+        } else {
+          setNews([]);
         }
       } catch (err: any) {
         if (!ignore) setError(err.message);
@@ -83,6 +101,15 @@ export default function StockDetail() {
       ignore = true;
     };
   }, [ticker]);
+
+  const dailyChanges = useMemo(() => computeDailyChanges(prices), [prices]);
+
+  const handleNewsMarkerClick = (date: string) => {
+    // Changing the value triggers NewsSection's internal scroll logic.
+    // Reset to null first so the same date can be re-triggered.
+    setScrollToNewsDate(null);
+    requestAnimationFrame(() => setScrollToNewsDate(date));
+  };
 
   if (loading) {
     return (
@@ -130,6 +157,17 @@ export default function StockDetail() {
 
       <Headline report={report} />
 
+      <div className="mb-6">
+        <PriceChart
+          prices={prices}
+          history={history}
+          news={news}
+          targetPrice={report.target_price}
+          dailyChanges={dailyChanges}
+          onNewsMarkerClick={handleNewsMarkerClick}
+        />
+      </div>
+
       <div className="flex flex-col lg:flex-row gap-6 flex-1 min-h-0">
         <div className="lg:w-2/3 bg-gray-800 rounded-xl border border-gray-700 p-8 shadow-xl overflow-y-auto">
           <div className="flex items-center justify-between border-b border-gray-700 pb-4 mb-6">
@@ -163,6 +201,13 @@ export default function StockDetail() {
 
           <ThesisSummary report={report} />
         </div>
+      </div>
+      <div className="mt-6">
+        <NewsSection
+          news={news}
+          dailyChanges={dailyChanges}
+          scrollToDate={scrollToNewsDate}
+        />
       </div>
       <div className="mt-6">
         <TrackRecord history={history} currentPrice={report.current_price} />

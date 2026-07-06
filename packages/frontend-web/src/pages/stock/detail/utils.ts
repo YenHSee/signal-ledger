@@ -1,5 +1,55 @@
+import type { DailyPricePoint } from "@stock-analyst/api-types";
+
+export interface DailyChangeInfo {
+  date: string;
+  close: number;
+  volume?: number;
+  changePct: number | null;
+  avgVolume30d: number | null;
+  isAnomaly: boolean;
+}
+
+/**
+ * Flags "anomaly" days used to surface news markers on the price chart:
+ * a single-day move of >= 2% or volume >= 2x the trailing 30-day average.
+ */
+export function computeDailyChanges(
+  prices: DailyPricePoint[],
+): DailyChangeInfo[] {
+  return prices.map((point, index) => {
+    const prev = index > 0 ? prices[index - 1] : null;
+    const changePct =
+      prev && prev.close
+        ? ((point.close - prev.close) / prev.close) * 100
+        : null;
+
+    const volumeWindow = prices
+      .slice(Math.max(0, index - 29), index + 1)
+      .map((p) => p.volume)
+      .filter((v): v is number => typeof v === "number");
+    const avgVolume30d =
+      volumeWindow.length > 0
+        ? volumeWindow.reduce((sum, v) => sum + v, 0) / volumeWindow.length
+        : null;
+
+    const isBigMove = changePct !== null && Math.abs(changePct) >= 2;
+    const isVolumeSpike =
+      point.volume !== undefined &&
+      avgVolume30d !== null &&
+      point.volume >= avgVolume30d * 2;
+
+    return {
+      date: point.date,
+      close: point.close,
+      volume: point.volume,
+      changePct,
+      avgVolume30d,
+      isAnomaly: isBigMove || isVolumeSpike,
+    };
+  });
+}
+
 export function formatCurrency(value: number | null, decimals = 2): string {
-  console.warn("value", value);
   if (value === null || value === undefined || Number.isNaN(value)) return "—";
   return `${value}`;
   // return `$${value.toFixed(decimals)}`;

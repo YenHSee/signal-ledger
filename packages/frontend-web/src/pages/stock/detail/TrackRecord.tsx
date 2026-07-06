@@ -15,7 +15,6 @@ function computePerformance(
   item: InvestmentReportHistoryItem,
   currentPrice: number | null,
 ): number | null {
-  console.warn("computePerformance", item.priceAtGeneration, currentPrice);
   if (item.priceAtGeneration === null || currentPrice === null) return null;
   if (item.priceAtGeneration === 0) return null;
   return (
@@ -75,7 +74,6 @@ export default function TrackRecord({
               {history.map((item) => {
                 const performancePct = computePerformance(item, currentPrice);
                 const correct = isCallCorrect(item.conclusion, performancePct);
-                console.warn("performancePct", performancePct, correct);
 
                 return (
                   <tr key={item.id} className="text-gray-300">

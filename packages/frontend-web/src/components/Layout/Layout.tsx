@@ -41,7 +41,7 @@ export default function AppLayout() {
 
         <div className="p-4 border-t border-gray-800 bg-gray-900/30 text-center">
           <div className="text-xs text-gray-500">
-            Senior Fullstack Trader Edition
+            {/* Senior Fullstack Trader Edition */}
           </div>
         </div>
       </aside>
