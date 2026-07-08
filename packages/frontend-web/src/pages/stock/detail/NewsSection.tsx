@@ -131,11 +131,11 @@ export default function NewsSection({
 
     // Wait for the expand to render, then scroll within the panel.
     requestAnimationFrame(() => {
-      const target = el.querySelector<HTMLElement>(`#news-${scrollToDate}`);
+      const target = el.querySelector<HTMLElement>(
+        `#${CSS.escape(`news-${scrollToDate}`)}`,
+      );
       if (!target) return;
-      const containerTop = el.getBoundingClientRect().top;
-      const targetTop = target.getBoundingClientRect().top;
-      el.scrollBy({ top: targetTop - containerTop - 8, behavior: "smooth" });
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   }, [scrollToDate, allGroups]);
 
