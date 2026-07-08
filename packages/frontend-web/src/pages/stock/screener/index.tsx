@@ -12,6 +12,7 @@ import {
 import ColumnPicker from "./ColumnPicker";
 import MoreFilters from "./MoreFilters";
 import Pagination from "./Pagination";
+import { getScreenerList } from "../../../api/stock";
 import {
   buildQueryParams,
   countActiveFilters,
@@ -133,10 +134,7 @@ export default function StockScreener() {
         params.set(key, String(value));
       });
 
-      const response = await fetch(
-        `http://localhost:4000/api/stock?${params.toString()}`,
-      );
-      const result = await response.json();
+      const result = await getScreenerList(params);
       setStocks(result.data || []);
       setMeta(
         result.meta || {

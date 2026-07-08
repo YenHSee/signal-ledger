@@ -14,9 +14,13 @@ import Headline from "./Headline";
 import TrackRecord from "./TrackRecord";
 import PriceChart from "./PriceChart";
 import NewsSection from "./NewsSection";
-import { computeDailyChanges } from "./utils";
-
-const API_BASE = "http://localhost:4000/api";
+import { computeDailyChanges, formatDate } from "./utils";
+import {
+  getReport,
+  getFundamentals,
+  getReportHistory,
+} from "../../../api/investmentReport";
+import { getDailyPrices, getStockNews } from "../../../api/stock";
 
 export default function StockDetail() {
   const { ticker } = useParams<{ ticker: string }>();
@@ -46,43 +50,40 @@ export default function StockDetail() {
           pricesResult,
           newsResult,
         ] = await Promise.allSettled([
-          fetch(`${API_BASE}/investment-report/${ticker}`),
-          fetch(`${API_BASE}/investment-report/${ticker}/fundamentals`),
-          fetch(`${API_BASE}/investment-report/${ticker}/history`),
-          fetch(`${API_BASE}/stock/${ticker}/prices`),
-          fetch(`${API_BASE}/stock/${ticker}/news`),
+          getReport(ticker),
+          getFundamentals(ticker),
+          getReportHistory(ticker),
+          getDailyPrices(ticker),
+          getStockNews(ticker),
         ]);
 
         if (ignore) return;
-        if (profileResult.status === "fulfilled" && profileResult.value.ok) {
-          setReport(await profileResult.value.json());
+        if (profileResult.status === "fulfilled") {
+          setReport(profileResult.value);
         } else {
           setReport(null);
         }
 
-        if (
-          fundamentalsResult.status === "fulfilled" &&
-          fundamentalsResult.value.ok
-        ) {
-          setFundamentals(await fundamentalsResult.value.json());
+        if (fundamentalsResult.status === "fulfilled") {
+          setFundamentals(fundamentalsResult.value);
         } else {
           setFundamentals(null);
         }
 
-        if (historyResult.status === "fulfilled" && historyResult.value.ok) {
-          setHistory(await historyResult.value.json());
+        if (historyResult.status === "fulfilled") {
+          setHistory(historyResult.value);
         } else {
           setHistory([]);
         }
 
-        if (pricesResult.status === "fulfilled" && pricesResult.value.ok) {
-          setPrices(await pricesResult.value.json());
+        if (pricesResult.status === "fulfilled") {
+          setPrices(pricesResult.value);
         } else {
           setPrices([]);
         }
 
-        if (newsResult.status === "fulfilled" && newsResult.value.ok) {
-          setNews(await newsResult.value.json());
+        if (newsResult.status === "fulfilled") {
+          setNews(newsResult.value);
         } else {
           setNews([]);
         }
@@ -148,9 +149,6 @@ export default function StockDetail() {
           </div>
           <button className="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-sm border border-gray-700 shadow-sm transition-all">
             Export PDF
-          </button>
-          <button className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-md shadow-blue-900/20 transition-all">
-            Force AI Refresh
           </button>
         </div>
       </div>

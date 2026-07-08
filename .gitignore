@@ -4,7 +4,9 @@ build/
 .turbo/
 .npm/
 .env
-.env.*
+.env.local
+.env.*.local
+!.env.example
 
 __pycache__/
 *.py[cod]

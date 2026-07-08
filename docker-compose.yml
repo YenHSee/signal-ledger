@@ -8,11 +8,11 @@ services:
     environment:
       # ⭐️ 核心配置：这里的值必须和你的 Python config 对齐
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password123
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password123}
       # 💡 魔法：Docker 会在第一次启动时，自动帮你建好这个数据库！
       POSTGRES_DB: stock_analyst
     ports:
-      - "5433:5432" # 把容器内的 5432 端口映射到你电脑的 5432
+      - "5433:5432" # host 5433 → container 5432 (set DB_PORT=5433 in .env)
     volumes:
       # 让数据持久化到本地，这样重启 Docker 容器，你的股票数据也不会丢
       - postgres_data:/var/lib/postgresql/data

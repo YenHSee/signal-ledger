@@ -8,6 +8,10 @@ See the [root README](../../README.md) for the full project overview.
 
 Create a `.env` file in this directory:
 
+```bash
+cp .env.example .env
+```
+
 | Variable | Required | Description |
 | --- | --- | --- |
 | `DB_PASSWORD` | Yes | PostgreSQL password |

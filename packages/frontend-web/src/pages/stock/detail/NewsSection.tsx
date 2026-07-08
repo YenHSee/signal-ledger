@@ -86,7 +86,8 @@ export default function NewsSection({
   }, [news, changeByDate]);
 
   const groups = useMemo(
-    () => (filter === "movers" ? allGroups.filter((g) => g.isAnomaly) : allGroups),
+    () =>
+      filter === "movers" ? allGroups.filter((g) => g.isAnomaly) : allGroups,
     [allGroups, filter],
   );
 
@@ -272,9 +273,7 @@ export default function NewsSection({
                         )}
                         {showAll && group.items.length > PREVIEW_COUNT && (
                           <button
-                            onClick={() =>
-                              setGroupState(group.date, "preview")
-                            }
+                            onClick={() => setGroupState(group.date, "preview")}
                             className="text-xs text-gray-500 hover:text-gray-400 font-medium"
                           >
                             Show less

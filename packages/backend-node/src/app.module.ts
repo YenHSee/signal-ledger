@@ -15,11 +15,11 @@ import { StockNews } from './stock/entities/stock-news.entity';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
-      port: 5433,
-      username: 'postgres',
-      password: 'password123',
-      database: 'stock_analyst',
+      host: process.env.DB_HOST || 'localhost',
+      port: parseInt(process.env.DB_PORT || '5433', 10),
+      username: process.env.DB_USER || 'postgres',
+      password: process.env.DB_PASSWORD || 'password123',
+      database: process.env.DB_NAME || 'stock_analyst',
       entities: [Stock, InvestmentReport, DailyPrice, StockNews],
       synchronize: false,
     }),

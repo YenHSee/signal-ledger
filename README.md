@@ -61,9 +61,9 @@ pnpm install
 docker compose up -d
 
 # 3. Configure the Python data pipeline
-#    Create packages/data-python/.env — see packages/data-python/README.md
-#    Required: DB_PASSWORD, CF_NAMESPACE_ID, CF_API_TOKEN
-#    Optional: FINNHUB_API_KEY (news), OPENAI_API_KEY / DEEPSEEK_API_KEY (AI reports)
+cp packages/data-python/.env.example packages/data-python/.env
+# Edit .env — at minimum: DB_PASSWORD, CF_NAMESPACE_ID, CF_API_TOKEN
+# Optional: FINNHUB_API_KEY (news), OPENAI_API_KEY / DEEPSEEK_API_KEY (AI reports)
 
 # 4. Run the data pipeline (prices, fundamentals, news)
 cd packages/data-python
@@ -76,7 +76,35 @@ cd packages/frontend-web && pnpm dev         # http://localhost:5173
 ```
 
 The ETL also runs on a weekday schedule via GitHub Actions
-(`[.github/workflows/etl.yml](.github/workflows/etl.yml)`).
+([`.github/workflows/etl.yml`](.github/workflows/etl.yml)).
+
+## Deployment
+
+| Component | What it is | Where to run |
+| --- | --- | --- |
+| **Python ETL + reports** | Scheduled batch jobs (not a web server) | **GitHub Actions** (already wired) or cron on a VPS |
+| **PostgreSQL** | Shared database | **Supabase**, Neon, Railway Postgres, or Docker on a VPS |
+| **backend-node** | Read-only REST API | **Railway**, Render, Fly.io, or a VPS (`pnpm build && pnpm start:prod`) |
+| **frontend-web** | Static SPA after `pnpm build` | **Vercel**, Netlify, or Cloudflare Pages |
+
+Typical layout:
+
+```
+GitHub Actions (cron) ──► Python ETL ──► Supabase Postgres
+                                              ▲
+Railway / Render ──► NestJS API ──────────────┘
+Vercel ──► React static site ──► calls public API URL
+```
+
+Before going live:
+
+- Wire backend DB config to env vars (currently hardcoded in `app.module.ts`)
+- Wire frontend `VITE_API_BASE` (currently hardcoded `localhost:4000`)
+- Add a `LICENSE` file (README says MIT)
+- Add screenshots under `docs/screenshots/`
+- Store production secrets in host/GitHub Secrets — never commit `.env`
+
+See `.env.example` in each package for required variables.
 
 ## Roadmap
 
