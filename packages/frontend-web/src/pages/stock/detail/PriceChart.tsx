@@ -3,7 +3,7 @@ import type {
   DailyPricePoint,
   InvestmentReportHistoryItem,
   StockNewsItem,
-} from "@stock-analyst/api-types";
+} from "@signal-ledger/api-types";
 import { formatDate, type DailyChangeInfo } from "./utils";
 import { rankDayNews } from "./newsRanking";
 

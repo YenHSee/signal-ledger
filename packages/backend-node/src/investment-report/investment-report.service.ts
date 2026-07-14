@@ -2,10 +2,9 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import type {
-  InvestmentReportDetail,
   InvestmentReportHistoryItem,
   StockProfile,
-} from '@stock-analyst/api-types';
+} from '@signal-ledger/api-types';
 import { InvestmentReport } from './entities/investment-report.entity';
 import { DailyPrice } from '../stock/entities/daily-price.entity';
 
@@ -32,7 +31,9 @@ export class InvestmentReportService {
     const dayChangePct = await this.getDayChangePct(symbol);
     return {
       ticker: response.ticker,
-      current_price: response.raw_financial_data?.smart_money_consensus?.current_price ?? null, 
+      current_price:
+        response.raw_financial_data?.smart_money_consensus?.current_price ??
+        null,
       target_price: response.target_price ?? null,
       conclusion: response.conclusion ?? null,
       conviction_level: response.conviction_level ?? null,

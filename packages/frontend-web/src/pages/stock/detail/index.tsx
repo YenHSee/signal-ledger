@@ -8,13 +8,13 @@ import type {
   InvestmentReportHistoryItem,
   StockNewsItem,
   StockProfile,
-} from "@stock-analyst/api-types";
+} from "@signal-ledger/api-types";
 import ThesisSummary from "./ThesisSummary";
 import Headline from "./Headline";
 import TrackRecord from "./TrackRecord";
 import PriceChart from "./PriceChart";
 import NewsSection from "./NewsSection";
-import { computeDailyChanges, formatDate } from "./utils";
+import { computeDailyChanges } from "./utils";
 import {
   getReport,
   getFundamentals,
@@ -40,6 +40,8 @@ export default function StockDetail() {
     let ignore = false;
 
     const fetchReportDetail = async () => {
+      if (!ticker) return;
+
       setLoading(true);
       setError(null);
       try {
@@ -87,8 +89,10 @@ export default function StockDetail() {
         } else {
           setNews([]);
         }
-      } catch (err: any) {
-        if (!ignore) setError(err.message);
+      } catch (err: unknown) {
+        if (!ignore) {
+          setError(err instanceof Error ? err.message : "Unable to load report");
+        }
       } finally {
         if (!ignore) setLoading(false);
       }
@@ -115,7 +119,7 @@ export default function StockDetail() {
   if (loading) {
     return (
       <div className="w-full h-full flex items-center justify-center text-blue-400 font-mono">
-        Retrieving Quantum AI Intel for {ticker}...
+        Loading equity research for {ticker}...
       </div>
     );
   }
@@ -147,9 +151,6 @@ export default function StockDetail() {
           <div className="text-xs text-gray-500 flex items-center mr-4">
             Last Generated: {new Date(report.generated_at).toLocaleString()}
           </div>
-          <button className="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-sm border border-gray-700 shadow-sm transition-all">
-            Export PDF
-          </button>
         </div>
       </div>
 

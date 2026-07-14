@@ -1,4 +1,4 @@
-import type { StockNewsItem } from "@stock-analyst/api-types";
+import type { StockNewsItem } from "@signal-ledger/api-types";
 
 /**
  * Lower number = more reputable / less likely to be filler wire content.

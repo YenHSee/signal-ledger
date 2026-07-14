@@ -9,7 +9,7 @@ import {
   type ScreenerNearExtremeFilter,
   type ScreenerSortField,
   type ScreenerSortOrder,
-} from "@stock-analyst/api-types";
+} from "@signal-ledger/api-types";
 
 export function formatMarketCap(value: number | null): string {
   if (value === null) return "—";
@@ -308,11 +308,14 @@ export function getActiveFilterChips(state: ScreenerUiState): string[] {
 
 export function toApiQuery(state: ScreenerUiState): ScreenerListQuery {
   const {
-    searchInput: _searchInput,
-    visibleColumns: _visibleColumns,
-    showMoreFilters: _showMoreFilters,
+    searchInput,
+    visibleColumns,
+    showMoreFilters,
     ...query
   } = state;
+  void searchInput;
+  void visibleColumns;
+  void showMoreFilters;
   return query;
 }
 

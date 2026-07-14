@@ -2,7 +2,7 @@ import type {
   FundamentalsProfile,
   InvestmentReportHistoryItem,
   StockProfile,
-} from "@stock-analyst/api-types";
+} from "@signal-ledger/api-types";
 import { apiGet } from "./client";
 
 export function getReport(ticker: string): Promise<StockProfile> {

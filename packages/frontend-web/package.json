@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@stock-analyst/api-types": "workspace:*",
+    "@signal-ledger/api-types": "workspace:*",
     "@tailwindcss/vite": "^4.3.1",
     "lucide-react": "^1.20.0",
     "react": "^19.2.6",

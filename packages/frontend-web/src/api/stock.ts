@@ -2,7 +2,7 @@ import type {
   DailyPricePoint,
   ScreenerListResponse,
   StockNewsItem,
-} from "@stock-analyst/api-types";
+} from "@signal-ledger/api-types";
 import { apiGet } from "./client";
 
 export function getScreenerList(

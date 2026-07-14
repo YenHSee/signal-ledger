@@ -12,7 +12,11 @@ importers:
         specifier: ^2.0.4
         version: 2.9.18
 
-  packages/api-types: {}
+  packages/api-types:
+    devDependencies:
+      typescript:
+        specifier: ^5.7.3
+        version: 5.9.3
 
   packages/backend-node:
     dependencies:
@@ -31,7 +35,7 @@ importers:
       '@nestjs/typeorm':
         specifier: ^11.0.2
         version: 11.0.2(@nestjs/common@11.1.27(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.27)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(pg@8.22.0)(ts-node@10.9.2(@types/node@24.13.2)(typescript@5.9.3)))
-      '@stock-analyst/api-types':
+      '@signal-ledger/api-types':
         specifier: workspace:*
         version: link:../api-types
       pg:
@@ -119,7 +123,7 @@ importers:
 
   packages/frontend-web:
     dependencies:
-      '@stock-analyst/api-types':
+      '@signal-ledger/api-types':
         specifier: workspace:*
         version: link:../api-types
       '@tailwindcss/vite':

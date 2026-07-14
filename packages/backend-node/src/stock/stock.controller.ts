@@ -11,7 +11,7 @@ import type {
   ScreenerSortField,
   ScreenerSortOrder,
   StockNewsItem,
-} from '@stock-analyst/api-types';
+} from '@signal-ledger/api-types';
 import { StockService } from './stock.service';
 
 function parseNumber(value?: string): number | undefined {

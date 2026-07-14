@@ -1,4 +1,4 @@
-import type { StockProfile } from "@stock-analyst/api-types";
+import type { StockProfile } from "@signal-ledger/api-types";
 
 interface ThesisSummaryProps {
   report: StockProfile;

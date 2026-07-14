@@ -1,4 +1,4 @@
-import { ALL_SCREENER_COLUMNS, type ScreenerColumnKey } from "@stock-analyst/api-types";
+import { ALL_SCREENER_COLUMNS, type ScreenerColumnKey } from "@signal-ledger/api-types";
 import { Columns3 } from "lucide-react";
 import { COLUMN_LABELS, sortColumnsByCanonicalOrder } from "./utils";
 

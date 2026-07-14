@@ -8,7 +8,7 @@ import {
   type ScreenerListMeta,
   type ScreenerSortField,
   type ScreenerStockItem,
-} from "@stock-analyst/api-types";
+} from "@signal-ledger/api-types";
 import ColumnPicker from "./ColumnPicker";
 import MoreFilters from "./MoreFilters";
 import Pagination from "./Pagination";
@@ -84,35 +84,7 @@ export default function StockScreener() {
     setSearchParams(buildQueryParams(state), { replace: true });
   }, [state, setSearchParams]);
 
-  const apiQuery = useMemo(
-    () => toApiQuery(state),
-    [
-      state.page,
-      state.limit,
-      state.index,
-      state.sector,
-      state.search,
-      state.sortBy,
-      state.sortOrder,
-      state.marketCapMin,
-      state.marketCapMax,
-      state.forwardPeMin,
-      state.forwardPeMax,
-      state.vsSpxMin,
-      state.vsSpxMax,
-      state.pegMax,
-      state.revenueGrowthMin,
-      state.earningsGrowthMin,
-      state.roeMin,
-      state.profitMarginMin,
-      state.dividendYieldMin,
-      state.ma50,
-      state.ma200,
-      state.nearExtreme,
-      state.hasReport,
-      state.conclusions?.join(","),
-    ],
-  );
+  const apiQuery = useMemo(() => toApiQuery(state), [state]);
 
   const fetchStocks = useCallback(async () => {
     setLoading(true);
@@ -154,7 +126,9 @@ export default function StockScreener() {
   }, [apiQuery]);
 
   useEffect(() => {
-    fetchStocks();
+    // Fetching remote data is the intended synchronization performed here.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    void fetchStocks();
   }, [fetchStocks]);
 
   const handleSort = (field: ScreenerSortField) => {

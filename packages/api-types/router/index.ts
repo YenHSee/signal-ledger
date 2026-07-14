@@ -14,15 +14,6 @@ export interface RouteItem {
 }
 
 export const macroTerminalRoutes: RouteItem[] = [
-  // {
-  //   path: "/dashboard",
-  //   name: "Dashboard",
-  //   component: "/dashboard/index",
-  //   meta: {
-  //     title: "Market Overview", // 大盘概览
-  //     icon: "Activity",
-  //   },
-  // },
   {
     path: "/stock",
     name: "StockIntel",

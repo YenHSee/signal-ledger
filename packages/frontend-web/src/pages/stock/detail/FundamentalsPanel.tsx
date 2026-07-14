@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { FundamentalsProfile } from "@stock-analyst/api-types";
+import type { FundamentalsProfile } from "@signal-ledger/api-types";
 import {
   formatCurrency,
   formatDate,

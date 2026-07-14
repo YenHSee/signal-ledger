@@ -1,4 +1,4 @@
-import type { DailyPricePoint } from "@stock-analyst/api-types";
+import type { DailyPricePoint } from "@signal-ledger/api-types";
 
 export interface DailyChangeInfo {
   date: string;
@@ -49,7 +49,7 @@ export function computeDailyChanges(
   });
 }
 
-export function formatCurrency(value: number | null, decimals = 2): string {
+export function formatCurrency(value: number | null): string {
   if (value === null || value === undefined || Number.isNaN(value)) return "—";
   return `${value}`;
   // return `$${value.toFixed(decimals)}`;

@@ -1,20 +1,9 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Patch,
-  Param,
-  Query,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import type {
-  DailyPricePoint,
   FundamentalsProfile,
   InvestmentReportHistoryItem,
-} from '@stock-analyst/api-types';
+} from '@signal-ledger/api-types';
 import { InvestmentReportService } from './investment-report.service';
-import { CreateInvestmentReportDto } from './dto/create-investment-report.dto';
-import { UpdateInvestmentReportDto } from './dto/update-investment-report.dto';
 import { StockService } from 'src/stock/stock.service';
 
 @Controller('investment-report')

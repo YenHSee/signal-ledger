@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { Outlet, useLocation, matchPath } from "react-router-dom";
 import SidebarMenu from "../Menu/Sidebar";
-import { macroTerminalRoutes, type RouteItem } from "@stock-analyst/api-types";
+import { macroTerminalRoutes, type RouteItem } from "@signal-ledger/api-types";
 
 const getRouteTitle = (routes: RouteItem[], pathname: string): string => {
   for (const route of routes) {

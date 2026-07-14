@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { StockNewsItem } from "@stock-analyst/api-types";
+import type { StockNewsItem } from "@signal-ledger/api-types";
 import { formatDate, type DailyChangeInfo } from "./utils";
 import { rankDayNews } from "./newsRanking";
 

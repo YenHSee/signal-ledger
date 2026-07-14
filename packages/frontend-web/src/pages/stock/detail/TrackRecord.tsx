@@ -1,4 +1,4 @@
-import type { InvestmentReportHistoryItem } from "@stock-analyst/api-types";
+import type { InvestmentReportHistoryItem } from "@signal-ledger/api-types";
 import {
   formatCurrency,
   formatDate,

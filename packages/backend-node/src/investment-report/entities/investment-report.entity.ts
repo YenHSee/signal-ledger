@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import type { RawFinancialSnapshot } from '@stock-analyst/api-types';
+import type { RawFinancialSnapshot } from '@signal-ledger/api-types';
 
 @Entity('investment_reports')
 export class InvestmentReport {

@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import type { DailyPricePoint } from "@stock-analyst/api-types";
+import type { DailyPricePoint } from "@signal-ledger/api-types";
 import { formatCurrency, formatDate } from "./utils";
 
 interface PriceSparklineProps {

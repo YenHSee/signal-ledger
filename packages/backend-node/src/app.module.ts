@@ -1,8 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Stock } from './stock/entities/stock.entity';
-import { StockController } from './stock/stock.controller';
-import { StockService } from './stock/stock.service';
 import { StockModule } from './stock/stock.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -27,8 +25,6 @@ import { StockNews } from './stock/entities/stock-news.entity';
     StockModule,
     InvestmentReportModule,
   ],
-  // controllers: [StockController],
-  // providers: [StockService],
   controllers: [AppController],
   providers: [AppService],
 })

@@ -4,19 +4,15 @@ import { Repository, SelectQueryBuilder } from 'typeorm';
 import type {
   DailyPricePoint,
   FundamentalsProfile,
-  ScreenerConclusionFilter,
   ScreenerHasReportFilter,
   ScreenerIndexFilter,
   ScreenerListMeta,
   ScreenerListQuery,
   ScreenerListResponse,
-  ScreenerMaFilter,
-  ScreenerNearExtremeFilter,
   ScreenerSortField,
-  ScreenerSortOrder,
   ScreenerStockItem,
   StockNewsItem,
-} from '@stock-analyst/api-types';
+} from '@signal-ledger/api-types';
 import { Stock } from './entities/stock.entity';
 import { DailyPrice } from './entities/daily-price.entity';
 import { StockNews } from './entities/stock-news.entity';
@@ -211,9 +207,7 @@ export class StockService {
         'news.url AS url',
       ])
       .where('news.symbol = :symbol', { symbol })
-      .andWhere(
-        `news.trade_date >= CURRENT_DATE - INTERVAL '${days} days'`,
-      )
+      .andWhere(`news.trade_date >= CURRENT_DATE - INTERVAL '${days} days'`)
       .orderBy('news.datetime', 'DESC')
       .getRawMany<{
         finnhub_id: string | number;

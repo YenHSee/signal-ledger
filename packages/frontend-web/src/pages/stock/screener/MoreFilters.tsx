@@ -3,7 +3,7 @@ import type {
   ScreenerHasReportFilter,
   ScreenerMaFilter,
   ScreenerNearExtremeFilter,
-} from "@stock-analyst/api-types";
+} from "@signal-ledger/api-types";
 import { ChevronDown } from "lucide-react";
 import type { ScreenerUiState } from "./utils";
 
