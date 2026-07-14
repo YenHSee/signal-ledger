@@ -4,7 +4,7 @@ from db.connection import get_connection, release_connection
 
 
 def build_ai_context(ticker: str):
-    """读时计算：把公司基本面、日线动量和近 7 天新闻组装成喂给 LLM 的 context dict"""
+    """Build an LLM context from fundamentals, momentum, and seven days of news."""
     connection = None
     cursor = None
     is_from_pool = False
@@ -21,14 +21,14 @@ def build_ai_context(ticker: str):
         """, (ticker.upper(),))
         prices = cursor.fetchall()
 
-        # 现价优先级：实时报价(overview.current_price) 优先，daily_prices 最新收盘价兜底
+        # Prefer the real-time quote, then fall back to the latest daily close.
         if overview['current_price']:
             current_price = float(overview['current_price'])
         elif prices:
             current_price = float(prices[0]['close_price'])
         else:
             current_price = 0
-            print(f"⚠️ {ticker.upper()} 无可用现价数据 (overview.current_price 和 daily_prices 均为空)")
+            print(f"⚠️ No current price is available for {ticker.upper()}")
 
         price_3_weeks_ago = float(prices[-1]['close_price']) if len(prices) == 15 else current_price
 
@@ -42,7 +42,7 @@ def build_ai_context(ticker: str):
         if high_52 > low_52 and current_price > 0:
             current_position_pct = round((current_price - low_52) / (high_52 - low_52), 4)
 
-        # 近 7 天新闻作为催化剂线索，随 context 一起归档进报告快照
+        # Include recent headlines as potential catalysts in the report snapshot.
         cursor.execute("""
             SELECT headline, source, trade_date FROM stock_news
             WHERE symbol = %s AND trade_date >= CURRENT_DATE - INTERVAL '7 days'
@@ -88,7 +88,7 @@ def build_ai_context(ticker: str):
             "recent_catalysts": recent_catalysts
         }
     except Exception as e:
-        print(f"❌ 组装 AI Context 失败: {e}")
+        print(f"❌ Failed to build the AI context: {e}")
         return None
     finally:
         if cursor: cursor.close()

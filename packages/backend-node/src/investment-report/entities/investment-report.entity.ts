@@ -18,7 +18,7 @@ export class InvestmentReport {
   @Column({ length: 50, nullable: true })
   conviction_level: string;
 
-  // 如果 Python 传过来的是字符串形式的数字，TypeORM 也会帮你转
+  // TypeORM also converts numeric strings received from the Python pipeline.
   @Column({ type: 'decimal', precision: 10, scale: 4, nullable: true })
   target_price: number;
 

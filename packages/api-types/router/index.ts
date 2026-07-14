@@ -19,7 +19,7 @@ export const macroTerminalRoutes: RouteItem[] = [
     name: "StockIntel",
     redirect: "/stock/screener",
     meta: {
-      title: "Equity Research", // 个股 AI 分析
+      title: "Equity Research",
       icon: "TrendingUp",
     },
     children: [
@@ -28,7 +28,7 @@ export const macroTerminalRoutes: RouteItem[] = [
         name: "StockScreener",
         component: "/stock/screener/index",
         meta: {
-          title: "Smart Screener", // AI 智能扫盘
+          title: "Smart Screener",
         },
       },
       {
@@ -36,7 +36,7 @@ export const macroTerminalRoutes: RouteItem[] = [
         name: "StockDetail",
         component: "/stock/detail/index",
         meta: {
-          title: "Stock Report Details", // 个股研报详情
+          title: "Stock Report Details",
           isHide: true,
         },
       },

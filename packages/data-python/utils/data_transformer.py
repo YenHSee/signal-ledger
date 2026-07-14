@@ -18,9 +18,8 @@ def _safe_date(value):
 
 def transform_yfinance_overview_to_db(raw_json: dict) -> dict:
     """
-    把 yfinance (Yahoo) 的 camelCase 格式，转换为
-    PostgreSQL 数据库需要的全小写下划线(snake_case)格式。
-    注意：雅虎有些数据(如 CIK, 详细的分析师打分)没有提供，我们会安全地返回 None，数据库会自动存为 NULL。
+    Convert yfinance camelCase fields to the snake_case database schema.
+    Fields unavailable from Yahoo Finance are returned as None and stored as NULL.
     """
     if not raw_json or "symbol" not in raw_json:
         return {}
@@ -43,7 +42,7 @@ def transform_yfinance_overview_to_db(raw_json: dict) -> dict:
         "fiscal_year_end": None,
         "latest_quarter": None, 
         
-        # 核心财务指标映射
+        # Core financial metrics
         "market_capitalization": _safe_int(raw_json.get("marketCap")),
         "ebitda": _safe_int(raw_json.get("ebitda")),
         "pe_ratio": _safe_float(raw_json.get("trailingPE")),
@@ -61,7 +60,7 @@ def transform_yfinance_overview_to_db(raw_json: dict) -> dict:
         "gross_profit_ttm": _safe_int(raw_json.get("grossProfits")),
         "diluted_eps_ttm": _safe_float(raw_json.get("trailingEps")),
         
-        # 增长与估值
+        # Growth and valuation
         "quarterly_earnings_growth_yoy": _safe_float(raw_json.get("earningsQuarterlyGrowth")),
         "quarterly_revenue_growth_yoy": _safe_float(raw_json.get("revenueGrowth")),
         "analyst_target_price": _safe_float(raw_json.get("targetMeanPrice")),
@@ -78,7 +77,7 @@ def transform_yfinance_overview_to_db(raw_json: dict) -> dict:
         "ev_to_ebitda": _safe_float(raw_json.get("enterpriseToEbitda")),
         "beta": _safe_float(raw_json.get("beta")),
         
-        # 交易数据与股本
+        # Trading data and share ownership
         "week_52_high": _safe_float(raw_json.get("fiftyTwoWeekHigh")),
         "week_52_low": _safe_float(raw_json.get("fiftyTwoWeekLow")),
         "day_50_moving_average": _safe_float(raw_json.get("fiftyDayAverage")),
@@ -88,11 +87,11 @@ def transform_yfinance_overview_to_db(raw_json: dict) -> dict:
         "percent_insiders": _safe_float(raw_json.get("heldPercentInsiders")),
         "percent_institutions": _safe_float(raw_json.get("heldPercentInstitutions")),
         
-        # 日期类数据雅虎返回的是 Unix 时间戳，直接存入比较麻烦，为了稳定性先置空
+        # Date fields are left empty until timestamp normalization is implemented.
         "dividend_date": None,
         "ex_dividend_date": None,
 
-        # 实时报价：currentPrice -> regularMarketPrice -> previousClose 三级 fallback
+        # Quote fallback: currentPrice -> regularMarketPrice -> previousClose.
         "current_price": _safe_float(
             raw_json.get("currentPrice")
             or raw_json.get("regularMarketPrice")
@@ -102,17 +101,17 @@ def transform_yfinance_overview_to_db(raw_json: dict) -> dict:
     }
 
 
-# 历史股价清洗 (Daily Prices)
+# Daily price normalization
 def transform_yfinance_prices_to_db(symbol: str, raw_data: dict) -> list:
-    """Yahoo Finance: 接收标准 dict (由 Pandas .to_dict() 转换而来)，返回数据库需要的列表"""
+    """Convert a pandas-derived Yahoo Finance dictionary into database rows."""
     prices_list = []
     
     if not raw_data:
         return prices_list
         
-    # 遍历字典 { Timestamp('2023-10-01'): {"Open": 150, ...} }
+    # Iterate over {Timestamp('2023-10-01'): {"Open": 150, ...}}.
     for date_obj, row in raw_data.items():
-        # 兼容处理：确保日期变成 YYYY-MM-DD 格式的字符串
+        # Normalize every date to YYYY-MM-DD.
         date_str = date_obj.strftime("%Y-%m-%d") if hasattr(date_obj, 'strftime') else str(date_obj)[:10]
         
         prices_list.append({
@@ -122,7 +121,7 @@ def transform_yfinance_prices_to_db(symbol: str, raw_data: dict) -> list:
             "high_price": _safe_float(row.get("High")),
             "low_price": _safe_float(row.get("Low")),
             "close_price": _safe_float(row.get("Close")),
-            # 如果没有 Adj Close (批量下载有时会丢)，用 Close 兜底
+            # Batch downloads may omit Adj Close; use Close as a fallback.
             "adjusted_close": _safe_float(row.get("Adj Close", row.get("Close"))),
             "volume": _safe_int(row.get("Volume"))
         })
@@ -130,11 +129,11 @@ def transform_yfinance_prices_to_db(symbol: str, raw_data: dict) -> list:
     return prices_list
 
 
-# 公司新闻清洗 (Stock News)
+# Company news normalization
 def transform_finnhub_news_to_db(symbol: str, raw_news_list: list) -> list:
     """
-    把 Finnhub company-news 返回的原始列表，转换为 stock_news 表需要的 dict 列表。
-    datetime (unix 秒) 会额外转出 trade_date (YYYY-MM-DD)，方便按日对齐 chart。
+    Convert Finnhub company-news items into stock_news rows.
+    Derive trade_date from each Unix timestamp for daily chart alignment.
     """
     from datetime import datetime, timezone
 
@@ -146,7 +145,7 @@ def transform_finnhub_news_to_db(symbol: str, raw_news_list: list) -> list:
         finnhub_id = item.get("id")
         unix_ts = item.get("datetime")
         headline = item.get("headline")
-        # 缺关键字段的脏数据直接丢弃
+        # Drop incomplete upstream records.
         if not finnhub_id or not unix_ts or not headline:
             continue
 

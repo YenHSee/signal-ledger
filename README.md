@@ -1,5 +1,7 @@
 # SignalLedger — Verifiable AI Equity Research
 
+[![CI](https://github.com/YenHSee/signal-ledger/actions/workflows/ci.yml/badge.svg)](https://github.com/YenHSee/signal-ledger/actions/workflows/ci.yml)
+
 > Open-source equity research platform that records every AI investment call
 > and measures it against what the market actually did. Includes a daily data
 > pipeline, explainable LLM reports, and an interactive stock screener.
@@ -55,14 +57,14 @@ types (`api-types`) are the contract between all layers.
 
 | Package                                          | Role                             | Stack                                |
 | ------------------------------------------------ | -------------------------------- | ------------------------------------ |
-| `[packages/data-python](packages/data-python)`   | ETL, news ingestion, LLM reports | Python, yfinance, Finnhub, LangChain |
-| `[packages/backend-node](packages/backend-node)` | Read-only REST API               | NestJS, TypeORM                      |
-| `[packages/frontend-web](packages/frontend-web)` | Screener + stock detail UI       | React, Vite, Tailwind                |
-| `[packages/api-types](packages/api-types)`       | Shared type contract             | TypeScript                           |
+| [`packages/data-python`](packages/data-python)   | ETL, news ingestion, LLM reports | Python, yfinance, Finnhub, LangChain |
+| [`packages/backend-node`](packages/backend-node) | Read-only REST API               | NestJS, TypeORM                      |
+| [`packages/frontend-web`](packages/frontend-web) | Screener + stock detail UI       | React, Vite, Tailwind                |
+| [`packages/api-types`](packages/api-types)       | Shared type contract             | TypeScript                           |
 
 ## Quick Start
 
-**Prerequisites:** Node 20+, pnpm 8+, Python 3.11+, Docker
+**Prerequisites:** Node 22.12+, pnpm 9+, Python 3.11+, Docker
 
 ```bash
 # 1. Install dependencies
@@ -73,8 +75,8 @@ docker compose up -d
 
 # 3. Configure the Python data pipeline
 cp packages/data-python/.env.example packages/data-python/.env
-# Edit .env — at minimum: DB_PASSWORD, CF_NAMESPACE_ID, CF_API_TOKEN
-# Optional: FINNHUB_API_KEY (news), OPENAI_API_KEY / DEEPSEEK_API_KEY (AI reports)
+# Edit .env — DB_PASSWORD is required
+# Optional: Cloudflare KV cache, Finnhub news, or an API-backed LLM provider
 
 # 4. Run the data pipeline (prices, fundamentals, news)
 cd packages/data-python

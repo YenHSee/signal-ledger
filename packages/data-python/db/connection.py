@@ -12,7 +12,7 @@ db_pool = None
 
 
 def init_db_pool(min_conn: int = 1, max_conn: int = 20) -> None:
-    """初始化全局多线程安全的数据库连接池"""
+    """Initialize the global thread-safe database connection pool."""
     global db_pool
     if db_pool is None:
         try:
@@ -24,25 +24,25 @@ def init_db_pool(min_conn: int = 1, max_conn: int = 20) -> None:
                 port=config.DB_PORT,
                 database=config.DB_NAME
             )
-            print(f"📡 [POOL] 成功创建 Supabase 线程安全连接池 (最大容量: {max_conn})")
+            print(f"📡 [POOL] Database connection pool created (maximum: {max_conn})")
         except Exception as e:
-            print(f"❌ [POOL] 连接池初始化失败: {e}")
+            print(f"❌ [POOL] Failed to initialize the connection pool: {e}")
             sys.exit(1)
 
 
 def close_db_pool() -> None:
-    """安全关闭全局连接池"""
+    """Close every connection in the global pool."""
     global db_pool
     if db_pool:
         db_pool.closeall()
         db_pool = None
-        print("🔌 [POOL] 连接池所有资源已安全释放。")
+        print("🔌 [POOL] All database connections have been released.")
 
 
 def get_connection():
     """
-    获取一个数据库连接。优先从全局连接池租借；池子未初始化时（如单独跑脚本）新建独立连接。
-    返回 (connection, is_from_pool)，用完必须交给 release_connection() 归还。
+    Borrow a pooled connection when available, otherwise create a standalone one.
+    Return (connection, is_from_pool); callers must pass both to release_connection().
     """
     if db_pool is not None:
         return db_pool.getconn(), True
@@ -54,7 +54,7 @@ def get_connection():
 
 
 def release_connection(connection, is_from_pool: bool) -> None:
-    """归还连接：池子借的还回池子，独立建的直接关闭"""
+    """Return a pooled connection or close a standalone connection."""
     if connection is None:
         return
     if is_from_pool and db_pool is not None:

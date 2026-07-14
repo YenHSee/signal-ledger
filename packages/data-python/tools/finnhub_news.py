@@ -8,13 +8,13 @@ from config import config
 
 FINNHUB_COMPANY_NEWS_URL = "https://finnhub.io/api/v1/company-news"
 
-# Finnhub 免费版限 60 calls/分钟，稳妥起见 pacing 到 ~1 call/秒
+# Finnhub's free tier allows 60 calls per minute, so calls are paced globally.
 _MIN_CALL_INTERVAL_SECONDS = 1.0
 _last_call_at = 0.0
 
 
 def _pace():
-    """简单的全局 rate-limit pacing，保证两次请求间隔至少 1 秒"""
+    """Ensure at least one second between Finnhub requests."""
     global _last_call_at
     elapsed = time.time() - _last_call_at
     if elapsed < _MIN_CALL_INTERVAL_SECONDS:
@@ -24,12 +24,14 @@ def _pace():
 
 def get_company_news(symbol: str, from_date: str, to_date: str, max_retries: int = 2):
     """
-    调 Finnhub company-news 接口，拉取一支股票在 [from_date, to_date] 区间的新闻。
-    日期格式均为 YYYY-MM-DD。返回原始新闻 dict 列表；失败时重试，最终失败返回空列表（跳过该股票）。
+    Fetch company news for a symbol in the inclusive date range.
+
+    Dates use YYYY-MM-DD. Returns raw Finnhub dictionaries; after retries are
+    exhausted, an empty list lets the caller skip the symbol safely.
     """
     api_key = config.FINNHUB_API_KEY
     if not api_key:
-        print("⚠️ [Finnhub] 未配置 FINNHUB_API_KEY，跳过新闻拉取")
+        print("⚠️ [Finnhub] FINNHUB_API_KEY is not configured; skipping news ingestion")
         return []
 
     symbol = symbol.upper()
@@ -40,9 +42,9 @@ def get_company_news(symbol: str, from_date: str, to_date: str, max_retries: int
         try:
             response = requests.get(FINNHUB_COMPANY_NEWS_URL, params=params, timeout=15)
 
-            # 429 = 触发限流，等一会再试
+            # Wait before retrying a rate-limited request.
             if response.status_code == 429:
-                print(f"⚠️ [Finnhub] {symbol} 触发限流 (429)，等待 15 秒后重试...")
+                print(f"⚠️ [Finnhub] {symbol} was rate limited (429); retrying in 15 seconds...")
                 time.sleep(15)
                 continue
 
@@ -50,17 +52,17 @@ def get_company_news(symbol: str, from_date: str, to_date: str, max_retries: int
             data = response.json()
 
             if not isinstance(data, list):
-                print(f"⚠️ [Finnhub] {symbol} 返回异常结构: {data}")
+                print(f"⚠️ [Finnhub] {symbol} returned an unexpected response: {data}")
                 return []
 
             return data
 
         except Exception as e:
             if attempt < max_retries:
-                print(f"⚠️ [Finnhub] {symbol} 第 {attempt + 1} 次请求失败: {e}，重试中...")
+                print(f"⚠️ [Finnhub] Request {attempt + 1} failed for {symbol}: {e}; retrying...")
                 time.sleep(2)
             else:
-                print(f"❌ [Finnhub] {symbol} 新闻拉取最终失败，跳过: {e}")
+                print(f"❌ [Finnhub] News fetch failed for {symbol}; skipping: {e}")
 
     return []
 
@@ -70,6 +72,6 @@ if __name__ == "__main__":
 
     today = date.today()
     news = get_company_news("AAPL", (today - timedelta(days=3)).isoformat(), today.isoformat())
-    print(f"✅ 拿到 {len(news)} 条 AAPL 新闻")
+    print(f"✅ Fetched {len(news)} AAPL news items")
     for item in news[:3]:
         print(f"  - [{item.get('source')}] {item.get('headline')}")

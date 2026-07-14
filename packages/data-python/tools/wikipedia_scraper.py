@@ -3,8 +3,8 @@ import pandas as pd
 import io
 
 def get_sp500_tickers():
-    """从维基百科获取 S&P 500 最新名单 (公共提取工具)"""
-    print("🔍 正在从维基百科获取 S&P 500 最新名单...")
+    """Fetch the current S&P 500 constituent list from Wikipedia."""
+    print("🔍 Fetching the current S&P 500 constituent list from Wikipedia...")
     url = 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies'
     
     headers = {
@@ -12,7 +12,7 @@ def get_sp500_tickers():
     }
     
     try:
-        response = requests.get(url, headers=headers)
+        response = requests.get(url, headers=headers, timeout=30)
         response.raise_for_status() 
         
         html_buffer = io.StringIO(response.text)
@@ -21,9 +21,9 @@ def get_sp500_tickers():
         tickers = tables[0]['Symbol'].tolist()
         tickers = [str(ticker).replace('.', '-') for ticker in tickers]
         
-        print(f"✅ 成功获取 {len(tickers)} 支股票代码！")
+        print(f"✅ Fetched {len(tickers)} symbols.")
         return tickers
         
     except Exception as e:
-        print(f"❌ 提取标普 500 表格失败: {e}")
+        print(f"❌ Failed to extract the S&P 500 table: {e}")
         return []

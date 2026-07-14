@@ -1,7 +1,6 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import type { RouteItem } from "@signal-ledger/api-types";
 
-// 定义组件
 const SidebarMenu = ({ routes }: { routes: RouteItem[] }) => {
   const navigate = useNavigate();
   const location = useLocation();

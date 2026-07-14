@@ -1,20 +1,15 @@
 """
-一次性新闻 backfill 脚本 (Finnhub)。
+One-time Finnhub news backfill.
 
-两个阶段：
-  1. 大范围拉取：每支票用一次 [today - N 天, today] 的宽区间请求拉新闻。
-     Finnhub 对宽区间的返回条数有上限，热门票的旧新闻可能被截断，所以还需要第二阶段。
-  2. 异动日精确补拉：按 daily_prices 计算异动日（单日涨跌 >= 2% 或
-     volume >= 30 天均量 2 倍，与前端 computeDailyChanges 同一套规则），
-     对每个异动日单独发一次 from=to=当日 的请求，保证关键日期的新闻不被截断丢掉。
+The broad phase fetches one date range per symbol. Because Finnhub can truncate
+busy symbols, the anomaly phase also fetches each large price-move or volume-spike
+date individually. insert_stock_news deduplicates overlapping results by Finnhub ID.
 
-写入统一走 insert_stock_news（按 finnhub_id ON CONFLICT DO NOTHING），两阶段重复拉到的新闻自动去重。
-
-用法：
-    python scripts/backfill_news.py                    # 全量 S&P 500，回看 30 天
+Usage:
+    python scripts/backfill_news.py                    # All S&P 500 symbols, 30 days
     python scripts/backfill_news.py --days 30 --tickers AAPL,MSFT
-    python scripts/backfill_news.py --skip-broad       # 只跑异动日补拉
-    python scripts/backfill_news.py --skip-anomaly     # 只跑大范围拉取
+    python scripts/backfill_news.py --skip-broad       # Anomaly dates only
+    python scripts/backfill_news.py --skip-anomaly     # Broad fetch only
 """
 
 import argparse
@@ -34,7 +29,7 @@ from utils.data_transformer import transform_finnhub_news_to_db
 from db.schema import init_tables
 from db.repositories import insert_stock_news
 
-# 与前端 computeDailyChanges 保持一致的异动日阈值
+# Keep anomaly thresholds aligned with the frontend chart.
 BIG_MOVE_PCT = 2.0
 VOLUME_SPIKE_RATIO = 2.0
 VOLUME_AVG_WINDOW = 30
@@ -48,7 +43,7 @@ def _connect():
 
 
 def get_backfill_symbols(connection):
-    """优先取 S&P 500 名单；company_overview 还没灌数据时退回 daily_prices 里出现过的票"""
+    """Return S&P 500 symbols, falling back to symbols present in daily_prices."""
     with connection.cursor() as cursor:
         cursor.execute("SELECT symbol FROM company_overview WHERE is_sp500 = TRUE ORDER BY symbol;")
         symbols = [row[0] for row in cursor.fetchall()]
@@ -59,7 +54,7 @@ def get_backfill_symbols(connection):
 
 
 def load_price_rows(connection, from_date):
-    """一次性捞出窗口内所有票的日线，按 symbol 分组、按日期升序"""
+    """Load and group price rows in ascending date order."""
     grouped = defaultdict(list)
     with connection.cursor() as cursor:
         cursor.execute(
@@ -82,8 +77,8 @@ def load_price_rows(connection, from_date):
 
 def compute_anomaly_dates(price_rows):
     """
-    price_rows: 单支票按日期升序的 [{date, close, volume}]。
-    返回异动日 date 列表：单日涨跌 >= 2%，或 volume >= 近 30 日均量的 2 倍。
+    Return dates with an absolute price move of at least 2%, or volume at least
+    twice the rolling 30-day average.
     """
     anomaly_dates = []
     for index, row in enumerate(price_rows):
@@ -112,7 +107,7 @@ def compute_anomaly_dates(price_rows):
 
 
 def fetch_and_store(symbol, from_date, to_date):
-    """拉一个区间的新闻并入库，返回 (拉到条数, 新增入库条数)"""
+    """Fetch and store one date range; return (normalized rows, inserted rows)."""
     raw_news = get_company_news(symbol, from_date, to_date)
     if not raw_news:
         return 0, 0
@@ -122,21 +117,21 @@ def fetch_and_store(symbol, from_date, to_date):
 
 
 def run_broad_backfill(symbols, from_date, to_date):
-    print(f"\n[PHASE 1] 🌊 大范围拉取: {len(symbols)} 支票 × 区间 {from_date} ~ {to_date}")
+    print(f"\n[PHASE 1] 🌊 Broad fetch: {len(symbols)} symbols from {from_date} to {to_date}")
     total_inserted = 0
     for i, symbol in enumerate(symbols, 1):
         try:
             fetched, inserted = fetch_and_store(symbol, from_date, to_date)
             total_inserted += inserted
-            print(f"  ({i}/{len(symbols)}) {symbol}: 拉到 {fetched} 条，新增 {inserted} 条")
+            print(f"  ({i}/{len(symbols)}) {symbol}: fetched {fetched}, inserted {inserted}")
         except Exception as e:
-            print(f"  ⚠️ ({i}/{len(symbols)}) {symbol} 大范围拉取失败，跳过: {e}")
-    print(f"✅ [PHASE 1] 完成，共新增入库 {total_inserted} 条。")
+            print(f"  ⚠️ ({i}/{len(symbols)}) Broad fetch failed for {symbol}; skipping: {e}")
+    print(f"✅ [PHASE 1] Complete: {total_inserted} rows inserted.")
     return total_inserted
 
 
 def run_anomaly_backfill(connection, symbols, from_date):
-    print(f"\n[PHASE 2] 🎯 按 daily_prices 计算异动日并逐日精确补拉...")
+    print("\n[PHASE 2] 🎯 Fetching news for detected anomaly dates...")
     prices_by_symbol = load_price_rows(connection, from_date)
 
     tasks = []  # (symbol, anomaly_date)
@@ -148,11 +143,11 @@ def run_anomaly_backfill(connection, symbols, from_date):
             tasks.append((symbol, anomaly_date))
 
     if not tasks:
-        print("✅ [PHASE 2] 窗口内没有检测到异动日，无需补拉。")
+        print("✅ [PHASE 2] No anomaly dates found in the selected window.")
         return 0
 
     est_minutes = len(tasks) / 60
-    print(f"🗓️ 共检测到 {len(tasks)} 个 (票, 异动日) 组合，预计耗时约 {est_minutes:.0f} 分钟 (60 calls/min pacing)")
+    print(f"🗓️ Found {len(tasks)} symbol/date pairs; estimated time: {est_minutes:.0f} minutes")
 
     total_inserted = 0
     for i, (symbol, anomaly_date) in enumerate(tasks, 1):
@@ -160,24 +155,24 @@ def run_anomaly_backfill(connection, symbols, from_date):
         try:
             fetched, inserted = fetch_and_store(symbol, day, day)
             total_inserted += inserted
-            print(f"  ({i}/{len(tasks)}) {symbol} @ {day}: 拉到 {fetched} 条，新增 {inserted} 条")
+            print(f"  ({i}/{len(tasks)}) {symbol} @ {day}: fetched {fetched}, inserted {inserted}")
         except Exception as e:
-            print(f"  ⚠️ ({i}/{len(tasks)}) {symbol} @ {day} 补拉失败，跳过: {e}")
-    print(f"✅ [PHASE 2] 完成，异动日补拉共新增入库 {total_inserted} 条。")
+            print(f"  ⚠️ ({i}/{len(tasks)}) Fetch failed for {symbol} @ {day}; skipping: {e}")
+    print(f"✅ [PHASE 2] Complete: {total_inserted} rows inserted.")
     return total_inserted
 
 
 def main():
-    parser = argparse.ArgumentParser(description="一次性 Finnhub 新闻 backfill")
-    parser.add_argument("--days", type=int, default=30, help="回看天数 (默认 30)")
+    parser = argparse.ArgumentParser(description="One-time Finnhub news backfill")
+    parser.add_argument("--days", type=int, default=30, help="Lookback days (default: 30)")
     parser.add_argument("--tickers", type=str, default=None,
-                        help="只处理指定票，逗号分隔 (默认全量 S&P 500)")
-    parser.add_argument("--skip-broad", action="store_true", help="跳过阶段 1 大范围拉取")
-    parser.add_argument("--skip-anomaly", action="store_true", help="跳过阶段 2 异动日补拉")
+                        help="Comma-separated symbols (default: all S&P 500 symbols)")
+    parser.add_argument("--skip-broad", action="store_true", help="Skip the broad-fetch phase")
+    parser.add_argument("--skip-anomaly", action="store_true", help="Skip the anomaly-date phase")
     args = parser.parse_args()
 
     if not config.FINNHUB_API_KEY:
-        print("❌ 未配置 FINNHUB_API_KEY，无法执行 backfill。请先在 .env 里配置。")
+        print("❌ FINNHUB_API_KEY is required. Add it to your .env file first.")
         sys.exit(1)
 
     start_time = time.time()
@@ -185,10 +180,10 @@ def main():
     from_date = today - timedelta(days=args.days)
 
     print("=" * 60)
-    print(f"🚀 [START] 新闻一次性 backfill (回看 {args.days} 天: {from_date} ~ {today})")
+    print(f"🚀 [START] News backfill ({args.days} days: {from_date} to {today})")
     print("=" * 60)
 
-    # 确保 stock_news 表已存在
+    # Ensure stock_news exists.
     init_tables()
 
     connection = _connect()
@@ -199,7 +194,7 @@ def main():
             symbols = get_backfill_symbols(connection)
 
         if not symbols:
-            print("❌ 找不到任何待处理的票 (company_overview / daily_prices 均为空)，请先跑每日 ETL。")
+            print("❌ No symbols found in company_overview or daily_prices. Run the daily ETL first.")
             sys.exit(1)
 
         total = 0
@@ -211,7 +206,7 @@ def main():
         connection.close()
 
     print("\n" + "=" * 60)
-    print(f"🎉 [FINISH] backfill 完成，共新增入库 {total} 条新闻，耗时 {round(time.time() - start_time, 1)} 秒")
+    print(f"🎉 [FINISH] Backfill complete: {total} rows inserted in {round(time.time() - start_time, 1)} seconds")
     print("=" * 60)
 
 

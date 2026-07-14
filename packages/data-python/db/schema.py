@@ -2,7 +2,7 @@ from db.connection import get_connection, release_connection
 
 
 def execute_simple_sql(sql_statement: str) -> None:
-    """通用的快捷 SQL 执行工具（优先使用全局连接池，没池子时才走独立连接）"""
+    """Execute SQL through the global pool, or a standalone connection as fallback."""
     connection = None
     cursor = None
     is_from_pool = False
@@ -12,7 +12,7 @@ def execute_simple_sql(sql_statement: str) -> None:
         cursor.execute(sql_statement)
         connection.commit()
     except Exception as e:
-        print(f"❌ SQL 执行失败: {e}")
+        print(f"❌ SQL execution failed: {e}")
         if connection: connection.rollback()
     finally:
         if cursor: cursor.close()
@@ -20,7 +20,7 @@ def execute_simple_sql(sql_statement: str) -> None:
 
 
 def init_tables() -> None:
-    """初始化表结构"""
+    """Initialize the database schema."""
     connection = None
     cursor = None
     is_from_pool = False
@@ -53,7 +53,7 @@ def init_tables() -> None:
         );
         """
 
-        # 兼容已存在的旧表：补上实时报价相关的新列
+        # Add quote columns to databases created by earlier versions.
         alter_overview_sql = """
         ALTER TABLE company_overview ADD COLUMN IF NOT EXISTS current_price NUMERIC(10, 4);
         ALTER TABLE company_overview ADD COLUMN IF NOT EXISTS price_as_of TIMESTAMP WITH TIME ZONE;
@@ -68,7 +68,7 @@ def init_tables() -> None:
         );
         """
 
-        # 新闻是永久档案：append/upsert（按 finnhub_id 去重），不像 daily_prices 那样 truncate 重灌
+        # News is an append-only archive deduplicated by Finnhub ID.
         create_news_sql = """
         CREATE TABLE IF NOT EXISTS stock_news (
             id BIGSERIAL PRIMARY KEY,
@@ -90,9 +90,9 @@ def init_tables() -> None:
         cursor.execute(create_prices_sql)
         cursor.execute(create_news_sql)
         connection.commit()
-        print("🎉 所有数据表成功同步！")
+        print("🎉 Database schema is ready.")
     except Exception as error:
-        print("❌ 数据库操作发生错误:", error)
+        print("❌ Database schema initialization failed:", error)
         if connection: connection.rollback()
     finally:
         if cursor: cursor.close()

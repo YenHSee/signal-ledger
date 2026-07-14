@@ -10,61 +10,58 @@ from core.cache_manager import load_from_kv_cache, save_to_kv_cache
 def get_company_overview(ticker: str):
     ticker = ticker.upper()
     
-    # 检查缓存
+    # Check the optional Cloudflare KV cache first.
     cached_data = load_from_kv_cache(ticker)
     
-    # 🌟 严谨校验：雅虎的数据里通常会有 longBusinessSummary(公司简介) 或 trailingPE
+    # A valid Yahoo Finance profile normally includes a business summary.
     if cached_data and "longBusinessSummary" in cached_data:
-        print(f"⚡ [缓存命中] 正在使用本地基本面数据: {ticker}")
+        print(f"⚡ [Cache hit] Using cached fundamentals for {ticker}")
         return cached_data
 
-    print(f"🌐 [API 请求] 正在向 Yahoo Finance 获取 {ticker} 的基本面数据...")
+    print(f"🌐 [API request] Fetching {ticker} fundamentals from Yahoo Finance...")
     
     try:
-        # 发起真实的 API 请求
         yf_stock = yf.Ticker(ticker)
         
-        # .info 是 yfinance 获取基本面（财报、市盈率、简介等）的核心属性
+        # .info contains the company profile, valuation, and financial metrics.
         overview_data = yf_stock.info
 
-        # 校验数据是否有效 (雅虎如果查不到股票，可能会返回一个只有寥寥几个键的废字典)
+        # Unknown symbols can produce a small, incomplete dictionary.
         if not overview_data or "symbol" not in overview_data or len(overview_data) < 10:
-            print(f"⚠️ [API 警告] Yahoo Finance 未返回有效的基本面数据: {ticker}")
+            print(f"⚠️ [API warning] Yahoo Finance returned no valid fundamentals for {ticker}")
             return None
         
         time.sleep(1.5)
-        # 存入缓存并返回
         save_to_kv_cache(ticker, overview_data)
-        print(f"💾 [数据持久化] 基本面数据已保存至缓存: {ticker}")
+        print(f"💾 [Cache] Saved fundamentals for {ticker}")
         
         return overview_data
 
     except Exception as e:
-        print(f"❌ [网络错误] 获取 {ticker} 基本面失败: {e}")
+        print(f"❌ [Network error] Failed to fetch fundamentals for {ticker}: {e}")
         return None
     
     
 def get_daily_prices(tickers: list, period="1mo"):
-    print(f"📥 正在通过 yfinance 批量下载 {len(tickers)} 支股票的历史股价 (周期: {period})...")
+    print(f"📥 Downloading price history for {len(tickers)} symbols (period: {period})...")
     
     try:
         df = yf.download(tickers, period=period, auto_adjust=False, group_by='ticker', progress=True)
         
         if df.empty:
-            print("⚠️ 警告：批量下载返回了空数据！")
+            print("⚠️ The batch download returned no data.")
             return None
             
-        print("✅ 批量拉取网络请求成功！")
+        print("✅ Price history download completed.")
         return df
 
     except Exception as e:
-        print(f"❌ 批量获取股价失败: {e}")
+        print(f"❌ Failed to download price history: {e}")
         return None
 
 if __name__ == "__main__":
     data = get_daily_prices("NVDA", period="1mo")
     
     if data:
-        print("最新一天的完整数据展示:")
+        print("Latest available row:")
         print(data[-1])
-

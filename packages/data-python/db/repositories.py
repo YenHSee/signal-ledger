@@ -9,7 +9,7 @@ from db.connection import get_connection, release_connection
 
 
 def insert_company_overview(clean_data: dict) -> bool:
-    """把清洗好的公司基本面 upsert 进 company_overview（连接池秒级租借，多线程安全）"""
+    """Upsert normalized company fundamentals into company_overview."""
     if not clean_data or "symbol" not in clean_data:
         return False
 
@@ -69,7 +69,7 @@ def insert_company_overview(clean_data: dict) -> bool:
         connection.commit()
         return True
     except Exception as error:
-        print(f"❌ 股票 {symbol} 基本面同步失败: {error}")
+        print(f"❌ Failed to synchronize fundamentals for {symbol}: {error}")
         if connection: connection.rollback()
         return False
     finally:
@@ -78,7 +78,7 @@ def insert_company_overview(clean_data: dict) -> bool:
 
 
 def insert_daily_prices(prices_list: list) -> bool:
-    """自己管理连接，使用真正的 Bulk Insert 批量 upsert 一支股票的日线数据"""
+    """Bulk upsert daily prices for one symbol."""
     if not prices_list:
         return False
 
@@ -110,7 +110,7 @@ def insert_daily_prices(prices_list: list) -> bool:
         connection.commit()
         return True
     except Exception as error:
-        print(f"❌ 股票 {symbol} 日线批量写入失败: {error}")
+        print(f"❌ Failed to write daily prices for {symbol}: {error}")
         if connection: connection.rollback()
         return False
     finally:
@@ -120,8 +120,8 @@ def insert_daily_prices(prices_list: list) -> bool:
 
 def insert_stock_news(rows: list) -> int:
     """
-    批量 upsert 新闻（按 finnhub_id 去重，冲突直接跳过）。
-    rows 为 transform_finnhub_news_to_db() 产出的 dict 列表。返回新增入库行数。
+    Insert news in bulk, skipping duplicate Finnhub IDs.
+    Returns the number of newly inserted rows.
     """
     if not rows:
         return 0
@@ -151,7 +151,7 @@ def insert_stock_news(rows: list) -> int:
         connection.commit()
         return inserted
     except Exception as error:
-        print(f"❌ 新闻批量写入失败: {error}")
+        print(f"❌ Failed to write news records: {error}")
         if connection: connection.rollback()
         return 0
     finally:
@@ -160,7 +160,7 @@ def insert_stock_news(rows: list) -> int:
 
 
 def count_stock_news() -> int:
-    """返回 stock_news 表当前总行数（表不存在或查询失败时返回 0），用于判断是否需要首次 backfill"""
+    """Return the stock_news row count, or zero when the query fails."""
     connection = None
     cursor = None
     is_from_pool = False
@@ -170,7 +170,7 @@ def count_stock_news() -> int:
         cursor.execute("SELECT COUNT(*) FROM stock_news;")
         return cursor.fetchone()[0]
     except Exception as error:
-        print(f"⚠️ 查询 stock_news 行数失败: {error}")
+        print(f"⚠️ Failed to count stock_news rows: {error}")
         if connection: connection.rollback()
         return 0
     finally:
@@ -179,7 +179,7 @@ def count_stock_news() -> int:
 
 
 def save_report_to_db(ticker: str, ai_analysis: dict, raw_data: dict, model_tier: str) -> bool:
-    """将 AI 生成的投资研报和当时的原始数据快照，一并持久化到数据库"""
+    """Persist an AI report together with its source-data snapshot."""
     connection = None
     cursor = None
     is_from_pool = False
@@ -199,7 +199,7 @@ def save_report_to_db(ticker: str, ai_analysis: dict, raw_data: dict, model_tier
         )
         """
 
-        # 安全处理 target_price (防止大模型偶尔返回带有 $ 或逗号的字符串，或者空值)
+        # Normalize target prices that may contain currency symbols or separators.
         target_price_raw = ai_analysis.get("target_price", 0)
         try:
             target_price_float = float(str(target_price_raw).replace('$', '').replace(',', ''))
@@ -224,7 +224,7 @@ def save_report_to_db(ticker: str, ai_analysis: dict, raw_data: dict, model_tier
         connection.commit()
         return True
     except Exception as error:
-        print(f"❌ 股票 {ticker} 研报写入数据库失败: {error}")
+        print(f"❌ Failed to save the {ticker} report: {error}")
         if connection: connection.rollback()
         return False
     finally:
@@ -233,7 +233,7 @@ def save_report_to_db(ticker: str, ai_analysis: dict, raw_data: dict, model_tier
 
 
 def save_report_to_file(ticker: str, analysis_output: dict, raw_data: dict, model_letter: str = "L") -> None:
-    """把研报 + 原始数据快照存成本地 JSON 文件（按日期和 model tier 命名，保留历史）"""
+    """Save a report and its source snapshot as a dated local JSON file."""
     date_str = datetime.now().strftime("%Y-%m-%d")
     exact_time = datetime.now().isoformat()
     report = {
@@ -246,4 +246,4 @@ def save_report_to_file(ticker: str, analysis_output: dict, raw_data: dict, mode
     file_path = os.path.join(output_dir, file_name)
     with open(file_path, "w", encoding="utf-8") as f:
         json.dump(report, f, indent=4, ensure_ascii=False)
-    print(f"✅ 研报已持久化 (保留历史): {file_path}")
+    print(f"✅ Report saved with history preserved: {file_path}")

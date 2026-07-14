@@ -3,12 +3,12 @@ from enum import Enum
 
 
 class ModelTier(Enum):
-    SMART = "smart"     # 顶级模型
-    NORMAL = "normal"   # 性价比模型
-    LOCAL = "local"     # 本地免费模型
+    SMART = "smart"     # Highest-quality model
+    NORMAL = "normal"   # Cost-effective hosted model
+    LOCAL = "local"     # Local model
 
 def get_llm(tier: ModelTier = ModelTier.NORMAL, temperature: float = 0):
-    """根据传入的等级，返回对应的模型"""
+    """Return the configured model for the requested tier."""
     
     if tier == ModelTier.SMART:
         from langchain_openai import ChatOpenAI

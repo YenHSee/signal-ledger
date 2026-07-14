@@ -2,19 +2,19 @@ version: "3.8"
 
 services:
   postgres-db:
-    image: postgres:15-alpine # 使用轻量级的 Alpine 版本，启动极快
+    image: postgres:15-alpine # Lightweight image for fast local startup
     container_name: quant_postgres
     restart: always
     environment:
-      # ⭐️ 核心配置：这里的值必须和你的 Python config 对齐
+      # Keep these local-development values aligned with the Python configuration.
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password123}
-      # 💡 魔法：Docker 会在第一次启动时，自动帮你建好这个数据库！
+      # PostgreSQL creates this database on the first startup.
       POSTGRES_DB: stock_analyst
     ports:
       - "5433:5432" # host 5433 → container 5432 (set DB_PORT=5433 in .env)
     volumes:
-      # 让数据持久化到本地，这样重启 Docker 容器，你的股票数据也不会丢
+      # Persist market data across container restarts.
       - postgres_data:/var/lib/postgresql/data
 
 volumes:
