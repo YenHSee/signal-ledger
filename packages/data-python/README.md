@@ -1,6 +1,6 @@
 # data-python
 
-Daily ETL, news ingestion, and LLM investment report generation for Stock Analyst.
+Daily ETL, news ingestion, and LLM investment report generation for SignalLedger.
 
 See the [root README](../../README.md) for the full project overview.
 
@@ -31,7 +31,7 @@ cp .env.example .env
 ## Setup
 
 ```bash
-pip install -r scripts/requirements.txt
+pip install -r requirements.txt
 ```
 
 ## Scripts
@@ -58,9 +58,34 @@ python scripts/backfill_news.py --skip-broad            # anomaly days only
 python scripts/backfill_news.py --skip-anomaly          # broad pull only
 ```
 
+### AI report generation
+
+Generates institutional-style investment reports from data already in the DB
+(fundamentals, prices, and last-7-day news as "recent catalysts"). Reports are
+saved as local JSON under `reports/` and inserted into `investment_reports`.
+
+```bash
+python main.py --tickers AAPL NVDA --tier normal
+```
+
+| `--tier` | Model | Report file suffix |
+| --- | --- | --- |
+| `smart` | GPT-4o (needs `OPENAI_API_KEY`) | `S` |
+| `normal` (default) | DeepSeek (needs `DEEPSEEK_API_KEY`) | `N` |
+| `local` | Ollama (`qwen2.5:7b`, free) | `L` |
+
+## Layout
+
+- `main.py` — report-generation CLI entry point
+- `scripts/` — daily ETL and news backfill
+- `db/` — connection pool, schema, repositories, AI context builder
+- `agents/` + `core/` — LangGraph analyst agent and LLM factory
+- `tools/` — yfinance / Finnhub / Wikipedia fetchers
+- `utils/` — data transformers (API payload → DB rows)
+
 ## Tables owned by this package
 
-Python manages schema via `utils/storage.py` → `init_tables()`:
+Python manages schema via `db/schema.py` → `init_tables()`:
 
 - `company_overview` — fundamentals snapshot
 - `daily_prices` — OHLCV (truncated and reloaded each ETL run)

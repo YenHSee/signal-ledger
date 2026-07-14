@@ -2,7 +2,6 @@ export interface RouteMeta {
   title: string;
   icon?: string;
   isHide?: boolean;
-  requiresPro?: boolean;
 }
 
 export interface RouteItem {
@@ -29,7 +28,7 @@ export const macroTerminalRoutes: RouteItem[] = [
     name: "StockIntel",
     redirect: "/stock/screener",
     meta: {
-      title: "AI Stock Intel", // 个股 AI 分析
+      title: "Equity Research", // 个股 AI 分析
       icon: "TrendingUp",
     },
     children: [
@@ -48,35 +47,6 @@ export const macroTerminalRoutes: RouteItem[] = [
         meta: {
           title: "Stock Report Details", // 个股研报详情
           isHide: true,
-        },
-      },
-    ],
-  },
-  {
-    path: "/macro",
-    name: "MacroMatrix",
-    redirect: "/macro/nfp",
-    meta: {
-      title: "Macro Matrix", // 宏观决战矩阵
-      icon: "Globe",
-      isHide: true,
-    },
-    children: [
-      {
-        path: "/macro/nfp",
-        name: "MacroNFP",
-        component: "/macro/nfp/index",
-        meta: {
-          title: "NFP Playbook", // NFP 非农剧本
-        },
-      },
-      {
-        path: "/macro/cpi",
-        name: "MacroCPI",
-        component: "/macro/cpi/index",
-        meta: {
-          title: "CPI Projections", // CPI 通胀预演
-          requiresPro: true,
         },
       },
     ],

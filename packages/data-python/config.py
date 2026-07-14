@@ -49,17 +49,13 @@ class AppConfig:
 
     @property
     def CF_NAMESPACE_ID(self):
-        key = os.getenv("CF_NAMESPACE_ID")
-        if not key:
-            raise ValueError("❌ 错误: 未找到 CF_NAMESPACE_ID，请检查 .env 文件")
-        return key
+        # 可选配置：没配 key 时 cache_manager 会自动跳过 KV 缓存，不影响主流水线
+        return os.getenv("CF_NAMESPACE_ID")
 
     @property
     def CF_API_TOKEN(self):
-        key = os.getenv("CF_API_TOKEN")
-        if not key:
-            raise ValueError("❌ 错误: 未找到 CF_API_TOKEN，请检查 .env 文件")
-        return key
+        # 可选配置：没配 key 时 cache_manager 会自动跳过 KV 缓存，不影响主流水线
+        return os.getenv("CF_API_TOKEN")
     
 # 在底部实例化一个配置对象，导出给其他文件使用
 config = AppConfig()

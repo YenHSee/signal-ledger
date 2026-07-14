@@ -1,6 +1,6 @@
 # backend-node
 
-Read-only NestJS REST API for the Stock Analyst frontend. Queries PostgreSQL
+Read-only NestJS REST API for the SignalLedger frontend. Queries PostgreSQL
 (prices, fundamentals, screener, investment reports, news) — no external
 data fetching at request time.
 

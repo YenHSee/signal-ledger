@@ -5,7 +5,7 @@ import yfinance as yf
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from core.cache_manager import save_to_local_cache, load_from_local_cache, load_from_kv_cache, save_to_kv_cache
+from core.cache_manager import load_from_kv_cache, save_to_kv_cache
 
 def get_company_overview(ticker: str):
     ticker = ticker.upper()
@@ -44,7 +44,7 @@ def get_company_overview(ticker: str):
         return None
     
     
-def get_daily_prices(tickers: str, period="1mo"):
+def get_daily_prices(tickers: list, period="1mo"):
     print(f"📥 正在通过 yfinance 批量下载 {len(tickers)} 支股票的历史股价 (周期: {period})...")
     
     try:

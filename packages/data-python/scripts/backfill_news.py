@@ -31,7 +31,8 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from config import config
 from tools.finnhub_news import get_company_news
 from utils.data_transformer import transform_finnhub_news_to_db
-from utils.storage import init_tables, insert_stock_news
+from db.schema import init_tables
+from db.repositories import insert_stock_news
 
 # 与前端 computeDailyChanges 保持一致的异动日阈值
 BIG_MOVE_PCT = 2.0

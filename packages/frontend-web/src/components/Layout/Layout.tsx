@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { Outlet, useLocation, matchPath } from "react-router-dom";
 import SidebarMenu from "../Menu/Sidebar";
 import { macroTerminalRoutes, type RouteItem } from "@stock-analyst/api-types";
@@ -30,7 +30,7 @@ export default function AppLayout() {
           <div className="flex items-center gap-2">
             <span className="text-xl">📊</span>
             <h1 className="text-lg font-extrabold text-blue-400 tracking-tight">
-              MacroTerminal
+              SignalLedger
             </h1>
           </div>
         </div>

@@ -1,39 +1,40 @@
 # main.py
+import argparse
 import os
 import sys
 import time
-import json  # 🌟 必须引入 json 处理字典转化
+import json
 
 # 确保能正常导入核心模块
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from agents.market_analyst import create_analyst_agent
-from utils.storage import save_analysis_report, build_ai_context, insert_investment_report, init_db_pool, close_db_pool
+from db.connection import init_db_pool, close_db_pool
+from db.context_builder import build_ai_context
+from db.repositories import save_report_to_file, save_report_to_db
 from core.llm_factory import ModelTier
 
-CHOSEN_TIER = ModelTier.LOCAL
 TIER_LETTER_MAP = {
     ModelTier.SMART: "S",
     ModelTier.NORMAL: "N",
     ModelTier.LOCAL: "L"
 }
-model_letter = TIER_LETTER_MAP.get(CHOSEN_TIER, "U")
-# ==========================================
-# 🧠 全局初始化：唤醒 AI
-# ==========================================
-print("🔄 正在初始化 AI 投行分析师...")
-try:
-    executor, parser = create_analyst_agent(tier=CHOSEN_TIER)
-    print("✅ AI 投行分析师已就位！\n")
-except Exception as e:
-    print(f"❌ 致命错误：无法唤醒 AI 智能体: {e}")
-    sys.exit(1)
 
 
-def run_analysis(tickers: list):
+def generate_reports(tickers: list, tier: ModelTier = ModelTier.NORMAL) -> dict:
     """
     终极研报流水线：无论你传 1 个还是 500 个 Ticker，它都能完美消化。
     """
+    model_letter = TIER_LETTER_MAP.get(tier, "U")
+
+    print("🔄 正在初始化 AI 投行分析师...")
+    try:
+        executor, parser = create_analyst_agent(tier=tier)
+        print("✅ AI 投行分析师已就位！\n")
+    except Exception as e:
+        print(f"❌ 致命错误：无法唤醒 AI 智能体: {e}")
+        sys.exit(1)
+
     print(f"📋 研报生成任务启动！共需处理 {len(tickers)} 支股票。")
     init_db_pool(min_conn=1, max_conn=5)
 
@@ -85,10 +86,10 @@ def run_analysis(tickers: list):
         # 🌟 步骤 D: 落盘持久化
         try:
             # 1. 存本地 JSON 文件 (保留原来的物理备份)
-            save_analysis_report(ticker, final_json_dict, raw_data, model_letter)
+            save_report_to_file(ticker, final_json_dict, raw_data, model_letter)
             
             # 2. 存进 Supabase 数据库 (全新的工业级流程！)
-            is_saved = insert_investment_report(ticker, final_json_dict, raw_data, model_letter)
+            is_saved = save_report_to_db(ticker, final_json_dict, raw_data, model_letter)
             
             if is_saved:
                 print(f"💾 ✨ 成功！{ticker} 研报已安全写入本地及 Supabase 数据库！")
@@ -117,18 +118,15 @@ def run_analysis(tickers: list):
     return results
 
 
-# ==========================================
-# 🎮 测试触发区
-# ==========================================
+def _parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="生成 AI 投资研报")
+    parser.add_argument("--tickers", nargs="+", required=True, metavar="TICKER",
+                        help="要分析的股票代码，空格分隔，例如: --tickers AAPL NVDA")
+    parser.add_argument("--tier", choices=[t.value for t in ModelTier], default=ModelTier.NORMAL.value,
+                        help="模型等级: smart=GPT-4o, normal=DeepSeek, local=Ollama (默认 normal)")
+    return parser.parse_args()
+
+
 if __name__ == "__main__":
-    # 想要单跑一个？就写 ["NVDA"]
-    # 想要跑科技七姐妹？全塞进去！
-    target_ticker_list = [
-        # "AAPL"，
-        "NVDA",
-        "GOOGL",
-        "GOOG",
-        "MSFT"
-    ]
-    
-    run_analysis(target_ticker_list)
+    args = _parse_args()
+    generate_reports(args.tickers, tier=ModelTier(args.tier))

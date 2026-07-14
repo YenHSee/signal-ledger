@@ -17,6 +17,7 @@ env/
 .pytest_cache/
 .poetry/
 packages/data-python/data_cache/
+packages/data-python/reports/*.json
 
 .DS_Store
 .vscode/

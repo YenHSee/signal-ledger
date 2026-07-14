@@ -1,7 +1,6 @@
 import os
 import sys
 import time
-import psycopg2
 import concurrent.futures
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -13,8 +12,10 @@ from tools.yahoo_finance import get_company_overview, get_daily_prices
 from tools.finnhub_news import get_company_news
 # Utils
 from utils.data_transformer import transform_yfinance_overview_to_db, transform_yfinance_prices_to_db, transform_finnhub_news_to_db
-# 🌟 引入新写的全局连接池管理工具
-from utils.storage import execute_simple_sql, init_tables, insert_company_overview, insert_daily_prices, insert_stock_news, count_stock_news, init_db_pool, close_db_pool
+# DB 层：连接池、schema、数据读写
+from db.connection import init_db_pool, close_db_pool
+from db.schema import execute_simple_sql, init_tables
+from db.repositories import insert_company_overview, insert_daily_prices, insert_stock_news, count_stock_news
 
 
 def process_single_overview(ticker):
@@ -116,13 +117,7 @@ def run_stock_pipeline():
         df = get_daily_prices(tickers, period="1mo")
         
         if df is not None:
-            print("🔌 正在连接 Supabase 独占大通道进行 Bulk 批量砸入...")
-            connection = psycopg2.connect(
-                user=config.DB_USER, password=config.DB_PASSWORD,
-                host=config.DB_HOST, port=config.DB_PORT, database=config.DB_NAME
-            )
-            cursor = connection.cursor()
-            
+            print("🔌 正在通过全局连接池进行 Bulk 批量砸入...")
             success_count = 0
             for ticker in tickers:
                 try:
@@ -134,17 +129,12 @@ def run_stock_pipeline():
                     raw_dict = ticker_df.to_dict(orient="index")
                     prices_list = transform_yfinance_prices_to_db(ticker, raw_dict)
                     
-                    if prices_list:
-                        insert_daily_prices(cursor, prices_list)
+                    if prices_list and insert_daily_prices(prices_list):
                         success_count += 1
                         
                 except Exception as single_err:
                     print(f"⚠️ 解析 {ticker} 股价并打包时跳过: {single_err}")
             
-            # 数据一次性装车，整体原子性提交
-            connection.commit()
-            cursor.close()
-            connection.close()
             print(f"✨ 完美！已成功将 {success_count} 支股票（约计三万行K线）全部持久化至云端 DB！")
                 
     except Exception as e:

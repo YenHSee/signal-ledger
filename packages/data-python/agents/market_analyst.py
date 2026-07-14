@@ -8,7 +8,6 @@ from langchain_core.output_parsers import PydanticOutputParser
 
 # 你的本地核心模块
 from core.llm_factory import get_llm, ModelTier
-from tools.tool_registry import get_all_tools
 
 # ==========================================
 # 1. 定义数据结构的“宪兵” (Pydantic Schema)
@@ -36,7 +35,7 @@ def create_analyst_agent(tier: ModelTier = ModelTier.LOCAL):
     """初始化并返回一个配置好的金融分析师 LangGraph 引擎和 Parser"""
     
     llm = get_llm(tier=tier, temperature=0.1)
-    tools = get_all_tools()
+    tools = []
     parser = PydanticOutputParser(pydantic_object=InvestmentReport)
     
     # LangGraph 直接把系统提示词当做 state_modifier 传进去，极其优雅
@@ -50,6 +49,8 @@ def create_analyst_agent(tier: ModelTier = ModelTier.LOCAL):
         1. 估值审视：不要只念数字，要对比 trailing_pe 和 forward_pe，结合 revenue_growth_yoy 来判断是否存在“戴维斯双击”或“估值陷阱”。
         2. 技术面结合基本面：结合 50日/200日均线 和 52周位置，判断目前是“左侧抄底”、“右侧追涨”还是“破位止损”。
         3. 胜率与盈亏比：参考分析师目标价 (analyst_target_price) 与当前价的距离，评估潜在的上行/下行空间。
+        4. 新闻催化剂：如果传入数据中的 `recent_catalysts` 字段包含新闻（date/source/headline），你必须引用其中的具体新闻（注明日期和来源），
+           用它们解释近期价格变动并识别潜在催化剂；如果 `recent_catalysts` 为空列表，则照常基于财务与技术数据分析，绝对不允许编造任何新闻。
         
         【对于 full_report 字段的硬性排版要求】：
         在生成 JSON 中的 `full_report` 字段时，你必须使用高级 Markdown 格式，并且必须包含以下 5 个核心章节：
@@ -74,8 +75,3 @@ def create_analyst_agent(tier: ModelTier = ModelTier.LOCAL):
     )
     
     return executor, parser
-
-# ==========================================
-# 3. 暴露给外部调用的实例
-# ==========================================
-executor, parser = create_analyst_agent()

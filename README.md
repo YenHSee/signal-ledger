@@ -1,11 +1,22 @@
-# Stock Analyst — AI-Powered Equity Research Platform
+# SignalLedger — Verifiable AI Equity Research
 
-> Self-hosted research platform for the S&P 500: a daily data pipeline,
-> LLM-generated investment reports with a verifiable track record, and an
-> interactive screener with price/news-annotated charts.
+> Open-source equity research platform that records every AI investment call
+> and measures it against what the market actually did. Includes a daily data
+> pipeline, explainable LLM reports, and an interactive stock screener.
 
-Screener
-Stock detail
+## Screenshots
+
+### Screener
+
+![Multi-factor screener](docs/screenshots/Screener.png)
+
+### Stock detail
+
+![Price chart with AI signals and target price](docs/screenshots/Detail-1.png)
+
+![Notable moves linked to news](docs/screenshots/Detail-2.png)
+
+![AI investment report and track record](docs/screenshots/Detail-3.png)
 
 ## Features
 
@@ -67,8 +78,11 @@ cp packages/data-python/.env.example packages/data-python/.env
 
 # 4. Run the data pipeline (prices, fundamentals, news)
 cd packages/data-python
-pip install -r scripts/requirements.txt
+pip install -r requirements.txt
 python scripts/daily_etl_pipeline.py
+
+# Optional: generate AI reports (smart=GPT-4o, normal=DeepSeek, local=Ollama)
+python main.py --tickers AAPL NVDA --tier normal
 
 # 5. Start the app (two terminals)
 cd packages/backend-node && pnpm start:dev   # http://localhost:4000
@@ -98,11 +112,9 @@ Vercel ──► React static site ──► calls public API URL
 
 Before going live:
 
-- Wire backend DB config to env vars (currently hardcoded in `app.module.ts`)
-- Wire frontend `VITE_API_BASE` (currently hardcoded `localhost:4000`)
-- Add a `LICENSE` file (README says MIT)
-- Add screenshots under `docs/screenshots/`
-- Store production secrets in host/GitHub Secrets — never commit `.env`
+- Copy each package's `.env.example` to `.env` and set production values
+  (`DB_*` for backend-node, `VITE_API_BASE` for frontend-web, API keys for data-python)
+- Store secrets in your host or GitHub Actions Secrets — never commit `.env`
 
 See `.env.example` in each package for required variables.
 
@@ -111,6 +123,37 @@ See `.env.example` in each package for required variables.
 **Vision:** a self-hosted equity research workbench with a real UI — browse AI
 reports from earliest to latest, plug in your own LLM, and define how analysis
 is done. Compare strategies and models via a verifiable track record.
+
+### Next up
+
+- [ ] **IPO analysis module** — user-driven prospectus analysis for any market
+      (not auto-discovery). IPO discovery is left to the user: there is no
+      reliable global IPO calendar API, and each exchange (Bursa Malaysia, HKEX,
+      SGX, ASX, NYSE/NASDAQ, etc.) has its own disclosure system. The module
+      focuses on **analysis**, not discovery.
+
+      **Input flow**
+      1. User provides company name/ticker + exchange (sets currency and optional
+         post-listing price lookup).
+      2. User uploads the official prospectus (PDF — S-1, Bursa prospectus,
+         SGX offer document, etc.; any language).
+      3. System parses the document, extracts key sections (business overview,
+         financials, risk factors, use of proceeds, cap table / lock-up), and
+         feeds them to a dedicated IPO agent.
+      4. Agent outputs a structured report (same archive + UI pattern as existing
+         equity reports, but IPO-specific fields — e.g. SUBSCRIBE / AVOID / WATCH,
+         valuation vs. comps, red flags, lock-up — not BUY/HOLD/SELL target-price
+         logic for pre-IPO names).
+      5. *Optional:* if the stock is already listed and yfinance recognizes the
+         ticker suffix (e.g. `.KL`, `.HK`, `.SI`), attach a simple post-IPO price
+         chart — passive lookup only, no IPO calendar scraping.
+
+      **Scope**
+      - New `ipo_analyst` agent + IPO report schema in `packages/data-python`
+      - CLI-first MVP (`ticker`, `exchange`, `--prospectus path/to.pdf`) reusing
+        existing report persistence; web upload can follow later
+      - US SEC EDGAR auto-fetch is a *convenience* for US users only, not a core
+        dependency — the upload path must work standalone worldwide
 
 ### Planned
 

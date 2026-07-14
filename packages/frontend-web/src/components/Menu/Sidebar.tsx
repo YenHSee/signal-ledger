@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import type { RouteItem } from "@stock-analyst/api-types";
 
@@ -36,12 +35,6 @@ const SidebarMenu = ({ routes }: { routes: RouteItem[] }) => {
               }`}
             >
               <span>{route.meta.title}</span>
-
-              {route.meta.requiresPro && (
-                <span className="text-[10px] bg-yellow-500 text-black px-1.5 py-0.5 rounded font-bold">
-                  PRO
-                </span>
-              )}
             </button>
           </li>
         );
