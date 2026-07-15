@@ -14,7 +14,9 @@
 
 ### Stock detail
 
-![Price chart with AI signals and target price](docs/screenshots/Detail-1.png)
+![Price chart with AI signals and target price](docs/screenshots/Detail-0.png)
+
+![More Report Detail](docs/screenshots/Detail-1.png)
 
 ![Notable moves linked to news](docs/screenshots/Detail-2.png)
 
@@ -96,12 +98,12 @@ The ETL also runs on a weekday schedule via GitHub Actions
 
 ## Deployment
 
-| Component | What it is | Where to run |
-| --- | --- | --- |
-| **Python ETL + reports** | Scheduled batch jobs (not a web server) | **GitHub Actions** (already wired) or cron on a VPS |
-| **PostgreSQL** | Shared database | **Supabase**, Neon, Railway Postgres, or Docker on a VPS |
-| **backend-node** | Read-only REST API | **Railway**, Render, Fly.io, or a VPS (`pnpm build && pnpm start:prod`) |
-| **frontend-web** | Static SPA after `pnpm build` | **Vercel**, Netlify, or Cloudflare Pages |
+| Component                | What it is                              | Where to run                                                            |
+| ------------------------ | --------------------------------------- | ----------------------------------------------------------------------- |
+| **Python ETL + reports** | Scheduled batch jobs (not a web server) | **GitHub Actions** (already wired) or cron on a VPS                     |
+| **PostgreSQL**           | Shared database                         | **Supabase**, Neon, Railway Postgres, or Docker on a VPS                |
+| **backend-node**         | Read-only REST API                      | **Railway**, Render, Fly.io, or a VPS (`pnpm build && pnpm start:prod`) |
+| **frontend-web**         | Static SPA after `pnpm build`           | **Vercel**, Netlify, or Cloudflare Pages                                |
 
 Typical layout:
 
