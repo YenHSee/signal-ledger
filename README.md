@@ -6,6 +6,15 @@
 > and measures it against what the market actually did. Includes a daily data
 > pipeline, explainable LLM reports, and an interactive stock screener.
 
+## Project status
+
+SignalLedger is currently available as a public preview.
+
+The application can be run locally with user-provided data and AI credentials.
+A no-key Docker demo with seeded reports and market data is currently the main
+development priority. Until that is available, screenshots of the working
+application are included below.
+
 ## Screenshots
 
 ### Screener
@@ -66,6 +75,10 @@ types (`api-types`) are the contract between all layers.
 
 ## Quick Start
 
+> **No-key demo:** A seeded Docker environment that requires no external API
+> credentials is currently in development. The setup below runs the full live
+> data pipeline and may require provider credentials.
+
 **Prerequisites:** Node 22.12+, pnpm 9+, Python 3.11+, Docker
 
 ```bash
@@ -120,75 +133,77 @@ Before going live:
   (`DB_*` for backend-node, `VITE_API_BASE` for frontend-web, API keys for data-python)
 - Store secrets in your host or GitHub Actions Secrets — never commit `.env`
 
+The upcoming no-key demo will use bundled seed data and will not call external
+market-data or LLM providers.
+
 See `.env.example` in each package for required variables.
 
 ## Roadmap
 
-**Vision:** a self-hosted equity research workbench with a real UI — browse AI
-reports from earliest to latest, plug in your own LLM, and define how analysis
-is done. Compare strategies and models via a verifiable track record.
+**Vision:** a self-hosted equity research workbench where AI-generated
+investment calls can be inspected, compared, and verified against actual
+market performance.
 
 ### Next up
 
-- [ ] **IPO analysis module** — user-driven prospectus analysis for any market
-      (not auto-discovery). IPO discovery is left to the user: there is no
-      reliable global IPO calendar API, and each exchange (Bursa Malaysia, HKEX,
-      SGX, ASX, NYSE/NASDAQ, etc.) has its own disclosure system. The module
-      focuses on **analysis**, not discovery.
+- [ ] **No-key local demo** — provide a one-command Docker Compose setup with
+      seeded market data, historical AI reports, news, and track-record examples.
 
-      **Input flow**
-      1. User provides company name/ticker + exchange (sets currency and optional
-         post-listing price lookup).
-      2. User uploads the official prospectus (PDF — S-1, Bursa prospectus,
-         SGX offer document, etc.; any language).
-      3. System parses the document, extracts key sections (business overview,
-         financials, risk factors, use of proceeds, cap table / lock-up), and
-         feeds them to a dedicated IPO agent.
-      4. Agent outputs a structured report (same archive + UI pattern as existing
-         equity reports, but IPO-specific fields — e.g. SUBSCRIBE / AVOID / WATCH,
-         valuation vs. comps, red flags, lock-up — not BUY/HOLD/SELL target-price
-         logic for pre-IPO names).
-      5. *Optional:* if the stock is already listed and yfinance recognizes the
-         ticker suffix (e.g. `.KL`, `.HK`, `.SI`), attach a simple post-IPO price
-         chart — passive lookup only, no IPO calendar scraping.
+      The goal is to let anyone explore the complete SignalLedger experience
+      without creating external accounts or configuring API keys.
 
-      **Scope**
-      - New `ipo_analyst` agent + IPO report schema in `packages/data-python`
-      - CLI-first MVP (`ticker`, `exchange`, `--prospectus path/to.pdf`) reusing
-        existing report persistence; web upload can follow later
-      - US SEC EDGAR auto-fetch is a *convenience* for US users only, not a core
-        dependency — the upload path must work standalone worldwide
+      Planned flow:
+
+      ```bash
+      git clone https://github.com/YenHSee/signal-ledger.git
+      cd signal-ledger
+      docker compose --profile demo up
+      ```
+
+      The demo environment will include:
+
+      - Preloaded PostgreSQL seed data
+      - Sample S&P 500 screener results
+      - Historical BUY / HOLD / SELL reports
+      - Price-at-generation versus current-price comparisons
+      - Archived news and notable-move examples
+      - NestJS API and React frontend started automatically
+      - No OpenAI, Finnhub, Supabase, or other external credentials required
+
+      The live data pipeline and AI report generation will remain optional
+      extensions for users who provide their own API credentials.
 
 ### Planned
 
-- [ ] **Report timeline UI** — per-ticker history from first report to latest;
-      click any past report to read it alongside price-at-generation vs. today
-- [ ] **Bring your own LLM** — configure provider, API key, and model
-      (OpenAI / DeepSeek / Ollama / OpenAI-compatible base URL) without code changes
-- [ ] **Pluggable analysis strategies** — YAML/Markdown presets for analyst
-      persona, focus factors, and prompt templates (e.g. value vs. growth vs.
-      news-first); same output schema, different reasoning style
-- [ ] **Recent Catalysts in reports** — feed archived `stock_news` into report
-      generation so AI conclusions reference actual headlines
-- [ ] **One-command local setup** — `docker compose` for Postgres + API +
-      frontend, plus seed data so new users can explore the UI without API keys
+- [ ] **Report timeline UI** — browse every report for a ticker from earliest to
+      latest and compare price-at-generation with subsequent performance
+- [ ] **Bring your own LLM** — configure provider, API key, model, and optional
+      OpenAI-compatible base URL without changing application code
+- [ ] **Pluggable analysis strategies** — define analyst persona, focus factors,
+      and prompt templates using YAML or Markdown presets
+- [ ] **Recent catalysts in reports** — include archived stock news in report
+      generation so conclusions can reference actual events
+- [ ] **IPO analysis module** — upload an official prospectus and generate a
+      structured IPO-specific report covering business quality, valuation,
+      financials, risk factors, use of proceeds, ownership, and lock-up terms
 
 ### Exploring
 
-- [ ] **AI track-record backtesting page** — compare BUY/HOLD/SELL calls vs.
-      actual forward returns (30d / 90d) across models and strategies
-- [ ] **LLM one-line summaries for notable-move days** — replace raw headline
-      lists on chart markers with a single "what happened that day" sentence
+- [ ] **AI track-record backtesting page** — compare BUY / HOLD / SELL calls
+      against actual 30-day and 90-day forward returns
+- [ ] **LLM summaries for notable-move days** — turn multiple daily headlines
+      into a concise explanation of what moved the stock
 - [ ] **Multi-step analysis workflows** — optional bull/bear debate or
-      news-then-fundamentals pipeline (lightweight take on agent frameworks)
+      news-first and fundamentals-second pipelines
 - [ ] **External agent hook** — call a user-provided webhook or Python plugin
-      and ingest structured results into the same report archive + UI
-- [ ] **Candlestick chart with longer lookback** — zoom/pan for 6–12 month views
+      and save compatible results into the existing report archive
+- [ ] **Candlestick chart with longer lookback** — add zoom and pan for
+      six-to-twelve-month analysis
 
 ### Non-goals
 
 - Real-time trading or order execution
-- Licensed/delay-free market data feeds
+- Licensed or delay-free market data feeds
 - Financial advice or regulated investment products
 
 ## Disclaimer
