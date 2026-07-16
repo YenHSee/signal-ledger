@@ -60,8 +60,7 @@ export class StockService {
     const skip = (page - 1) * limit;
     const sortBy = options.sortBy ?? 'marketCap';
     const sortOrder = (options.sortOrder ?? 'desc').toUpperCase() as
-      | 'ASC'
-      | 'DESC';
+      'ASC' | 'DESC';
 
     const spxFwdPe = await this.getSpxForwardPe();
     const sectors = await this.getDistinctSectors();
