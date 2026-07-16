@@ -11,7 +11,7 @@ jobs:
 
     steps:
     - name: Fetch latest GitHub code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
 
     - name: Init Python Environment
       uses: actions/setup-python@v5
