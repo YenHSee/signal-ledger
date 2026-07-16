@@ -4,7 +4,9 @@ build/
 .turbo/
 .npm/
 .env
-.env.*
+.env.local
+.env.*.local
+!.env.example
 
 __pycache__/
 *.py[cod]
@@ -14,6 +16,8 @@ venv/
 env/
 .pytest_cache/
 .poetry/
+packages/data-python/data_cache/
+packages/data-python/reports/*.json
 
 .DS_Store
 .vscode/

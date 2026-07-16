@@ -1,16 +1,28 @@
 import os
+from enum import Enum
 
-def get_llm():
-    model_provider = os.getenv("MODEL_PROVIDER", "ollama")
+
+class ModelTier(Enum):
+    SMART = "smart"     # Highest-quality model
+    NORMAL = "normal"   # Cost-effective hosted model
+    LOCAL = "local"     # Local model
+
+def get_llm(tier: ModelTier = ModelTier.NORMAL, temperature: float = 0):
+    """Return the configured model for the requested tier."""
     
-    if model_provider == "openai":
+    if tier == ModelTier.SMART:
         from langchain_openai import ChatOpenAI
-        return ChatOpenAI(model="gpt-4o", api_key=os.getenv("OPENAI_API_KEY"))
+        return ChatOpenAI(model="gpt-4o", api_key=os.getenv("OPENAI_API_KEY"), temperature=temperature)
     
-    elif model_provider == "deepseek":
+    elif tier == ModelTier.NORMAL:
         from langchain_openai import ChatOpenAI
-        return ChatOpenAI(model="deepseek-chat", api_key=os.getenv("DEEPSEEK_API_KEY"), base_url="https://api.deepseek.com")
+        return ChatOpenAI(
+            model="deepseek-chat", 
+            api_key=os.getenv("DEEPSEEK_API_KEY"), 
+            base_url="https://api.deepseek.com",
+            temperature=temperature
+        )
         
     else:
         from langchain_ollama import ChatOllama
-        return ChatOllama(model="qwen2.5:1.5b", temperature=0)
+        return ChatOllama(model="qwen2.5:7b", temperature=temperature)

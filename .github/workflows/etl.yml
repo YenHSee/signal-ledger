@@ -1,0 +1,41 @@
+name: Daily Stock ETL Pipeline
+
+on:
+  schedule:
+    - cron: '37 22 * * 1-5' # Avoid peak hours
+  workflow_dispatch:
+
+jobs:
+  daily-stock-etl:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Fetch latest GitHub code
+      uses: actions/checkout@v4
+
+    - name: Init Python Environment
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        cache : 'pip'
+
+    - name: Install Requirements
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r packages/data-python/requirements.txt
+
+    - name: Run Pipeline 
+      env:
+        DB_HOST: ${{ secrets.DB_HOST }}
+        DB_USER: ${{ secrets.DB_USER }}
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        DB_PORT: ${{ secrets.DB_PORT }}
+        DB_NAME: ${{ secrets.DB_NAME }}
+
+        FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
+
+        CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+        CF_NAMESPACE_ID: ${{ secrets.CF_NAMESPACE_ID }}
+        CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+      run: |
+        python packages/data-python/scripts/daily_etl_pipeline.py

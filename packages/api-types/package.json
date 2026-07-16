@@ -1,11 +1,14 @@
 {
-  "name": "@stock-analyst/api-types",
+  "name": "@signal-ledger/api-types",
   "version": "1.0.0",
   "private": true,
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./index.ts",
+  "types": "./index.ts",
   "scripts": {
-    "build": "echo 'Build types here later'",
-    "lint": "echo 'Lint types'"
+    "build": "tsc --noEmit",
+    "lint": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3"
   }
 }

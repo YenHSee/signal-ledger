@@ -1,3 +1,2 @@
-export interface SampleType {
-  id: string;
-}
+export * from "./stock/index";
+export * from "./router/index";
