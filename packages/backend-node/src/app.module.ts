@@ -17,7 +17,7 @@ import { StockNews } from './stock/entities/stock-news.entity';
       port: parseInt(process.env.DB_PORT || '5433', 10),
       username: process.env.DB_USER || 'postgres',
       password: process.env.DB_PASSWORD || 'password123',
-      database: process.env.DB_NAME || 'stock_analyst',
+      database: process.env.DB_NAME || 'signal_ledger',
       entities: [Stock, InvestmentReport, DailyPrice, StockNews],
       synchronize: false,
     }),

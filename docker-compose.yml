@@ -3,14 +3,14 @@ version: "3.8"
 services:
   postgres-db:
     image: postgres:15-alpine # Lightweight image for fast local startup
-    container_name: quant_postgres
+    container_name: signal_ledger_postgres
     restart: always
     environment:
       # Keep these local-development values aligned with the Python configuration.
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password123}
       # PostgreSQL creates this database on the first startup.
-      POSTGRES_DB: stock_analyst
+      POSTGRES_DB: signal_ledger
     ports:
       - "5433:5432" # host 5433 → container 5432 (set DB_PORT=5433 in .env)
     volumes:

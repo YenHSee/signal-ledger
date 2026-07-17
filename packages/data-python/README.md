@@ -18,7 +18,7 @@ cp .env.example .env
 | `DB_HOST` | No | Default `127.0.0.1` |
 | `DB_PORT` | No | Default `5432` — use **`5433`** when using root `docker compose` |
 | `DB_USER` | No | Default `postgres` |
-| `DB_NAME` | No | Default `stock_analyst` |
+| `DB_NAME` | No | Default `signal_ledger` |
 | `CF_NAMESPACE_ID` | Yes | Cloudflare KV namespace (Yahoo fundamentals cache) |
 | `CF_API_TOKEN` | Yes | Cloudflare API token |
 | `CF_ACCOUNT_ID` | No | Cloudflare account ID |

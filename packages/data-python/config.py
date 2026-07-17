@@ -41,7 +41,7 @@ class AppConfig:
 
     @property
     def DB_NAME(self):
-        return os.getenv("DB_NAME", "stock_analyst")
+        return os.getenv("DB_NAME", "signal_ledger")
 
     @property
     def CF_ACCOUNT_ID(self):
