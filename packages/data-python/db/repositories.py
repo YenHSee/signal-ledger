@@ -5,11 +5,14 @@ from datetime import datetime
 import psycopg2.extras
 from psycopg2.extras import execute_values
 
+from runtime_mode import assert_live_write_target
+
 from db.connection import get_connection, release_connection
 
 
 def insert_company_overview(clean_data: dict) -> bool:
     """Upsert normalized company fundamentals into company_overview."""
+    assert_live_write_target("insert company overview")
     if not clean_data or "symbol" not in clean_data:
         return False
 
@@ -79,6 +82,7 @@ def insert_company_overview(clean_data: dict) -> bool:
 
 def insert_daily_prices(prices_list: list) -> bool:
     """Bulk upsert daily prices for one symbol."""
+    assert_live_write_target("insert daily prices")
     if not prices_list:
         return False
 
@@ -123,6 +127,7 @@ def insert_stock_news(rows: list) -> int:
     Insert news in bulk, skipping duplicate Finnhub IDs.
     Returns the number of newly inserted rows.
     """
+    assert_live_write_target("insert stock news")
     if not rows:
         return 0
 
@@ -180,6 +185,7 @@ def count_stock_news() -> int:
 
 def save_report_to_db(ticker: str, ai_analysis: dict, raw_data: dict, model_tier: str) -> bool:
     """Persist an AI report together with its source-data snapshot."""
+    assert_live_write_target("save investment report")
     connection = None
     cursor = None
     is_from_pool = False

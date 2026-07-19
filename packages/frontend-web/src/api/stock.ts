@@ -12,7 +12,7 @@ export function getScreenerList(
 }
 
 export function getDailyPrices(ticker: string): Promise<DailyPricePoint[]> {
-  return apiGet<DailyPricePoint[]>(`/stock/${ticker}/prices`);
+  return apiGet<DailyPricePoint[]>(`/stock/${ticker}/prices?days=365`);
 }
 
 export function getStockNews(ticker: string): Promise<StockNewsItem[]> {

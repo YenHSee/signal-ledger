@@ -12,6 +12,7 @@ from db.connection import init_db_pool, close_db_pool
 from db.context_builder import build_ai_context
 from db.repositories import save_report_to_file, save_report_to_db
 from core.llm_factory import ModelTier
+from runtime_mode import assert_live_write_target
 
 TIER_LETTER_MAP = {
     ModelTier.SMART: "S",
@@ -22,6 +23,7 @@ TIER_LETTER_MAP = {
 
 def generate_reports(tickers: list, tier: ModelTier = ModelTier.NORMAL) -> dict:
     """Generate and persist structured investment reports for the requested tickers."""
+    assert_live_write_target("generate investment reports")
     model_letter = TIER_LETTER_MAP.get(tier, "U")
 
     print("Initializing the AI equity analyst...")

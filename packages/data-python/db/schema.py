@@ -1,8 +1,10 @@
 from db.connection import get_connection, release_connection
+from runtime_mode import assert_live_write_target
 
 
 def execute_simple_sql(sql_statement: str) -> None:
     """Execute SQL through the global pool, or a standalone connection as fallback."""
+    assert_live_write_target("execute schema SQL")
     connection = None
     cursor = None
     is_from_pool = False
@@ -21,6 +23,7 @@ def execute_simple_sql(sql_statement: str) -> None:
 
 def init_tables() -> None:
     """Initialize the database schema."""
+    assert_live_write_target("initialize database schema")
     connection = None
     cursor = None
     is_from_pool = False

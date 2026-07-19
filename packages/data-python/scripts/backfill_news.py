@@ -28,6 +28,7 @@ from tools.finnhub_news import get_company_news
 from utils.data_transformer import transform_finnhub_news_to_db
 from db.schema import init_tables
 from db.repositories import insert_stock_news
+from runtime_mode import assert_live_write_target
 
 # Keep anomaly thresholds aligned with the frontend chart.
 BIG_MOVE_PCT = 2.0
@@ -163,6 +164,7 @@ def run_anomaly_backfill(connection, symbols, from_date):
 
 
 def main():
+    assert_live_write_target("backfill stock news")
     parser = argparse.ArgumentParser(description="One-time Finnhub news backfill")
     parser.add_argument("--days", type=int, default=30, help="Lookback days (default: 30)")
     parser.add_argument("--tickers", type=str, default=None,

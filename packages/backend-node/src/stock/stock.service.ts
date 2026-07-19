@@ -22,6 +22,7 @@ interface RawStockRow {
   name: string;
   sector: string | null;
   market_capitalization: string | number | null;
+  current_price: string | number | null;
   forward_pe: string | number | null;
   shares_outstanding: string | number | null;
   quarterly_revenue_growth_yoy: string | number | null;
@@ -110,9 +111,10 @@ export class StockService {
     const marketCap = num(stock.market_capitalization);
     const sharesOutstanding = num(stock.shares_outstanding);
     const price =
-      marketCap !== null && sharesOutstanding !== null && sharesOutstanding > 0
+      num(stock.current_price) ??
+      (marketCap !== null && sharesOutstanding !== null && sharesOutstanding > 0
         ? Number((marketCap / sharesOutstanding).toFixed(2))
-        : null;
+        : null);
 
     // const dayChangePct = await this.getDayChangePct(symbol);
 
@@ -165,12 +167,12 @@ export class StockService {
     };
   }
 
-  async getDailyPrices(ticker: string, days = 30): Promise<DailyPricePoint[]> {
+  async getDailyPrices(ticker: string, days = 365): Promise<DailyPricePoint[]> {
     const symbol = ticker.toUpperCase();
     const rows = await this.dailyPriceRepository
       .createQueryBuilder('price')
       .select([
-        'price.trade_date AS trade_date',
+        'price.trade_date::text AS trade_date',
         'price.close_price AS close_price',
         'price.volume AS volume',
       ])
@@ -246,6 +248,7 @@ export class StockService {
         'stock.name AS name',
         'stock.sector AS sector',
         'stock.market_capitalization AS market_capitalization',
+        'stock.current_price AS current_price',
         'stock.forward_pe AS forward_pe',
         'stock.shares_outstanding AS shares_outstanding',
         'stock.quarterly_revenue_growth_yoy AS quarterly_revenue_growth_yoy',
@@ -265,7 +268,10 @@ export class StockService {
   }
 
   private priceExpression(): string {
-    return 'stock.market_capitalization / NULLIF(stock.shares_outstanding, 0)';
+    return `COALESCE(
+      stock.current_price,
+      stock.market_capitalization / NULLIF(stock.shares_outstanding, 0)
+    )`;
   }
 
   private applyAllFilters(
@@ -548,15 +554,17 @@ export class StockService {
     spxFwdPe: number | null,
   ): ScreenerStockItem {
     const marketCap = this.toNumber(row.market_capitalization);
+    const storedPrice = this.toNumber(row.current_price);
     const sharesOutstanding = this.toNumber(row.shares_outstanding);
     const forwardPe = this.toNumber(row.forward_pe);
     const week52High = this.toNumber(row.week_52_high);
     const analystTargetPrice = this.toNumber(row.analyst_target_price);
 
     const price =
-      marketCap !== null && sharesOutstanding !== null && sharesOutstanding > 0
+      storedPrice ??
+      (marketCap !== null && sharesOutstanding !== null && sharesOutstanding > 0
         ? Number((marketCap / sharesOutstanding).toFixed(2))
-        : null;
+        : null);
 
     const forwardEps =
       price !== null && forwardPe !== null && forwardPe > 0

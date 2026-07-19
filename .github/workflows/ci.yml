@@ -60,3 +60,6 @@ jobs:
         env:
           PYTHONPYCACHEPREFIX: /tmp/signal-ledger-pycache
         run: python -m compileall -q packages/data-python
+
+      - name: Run Python runtime safety tests
+        run: python -m unittest discover -s packages/data-python/tests -p 'test_*.py'

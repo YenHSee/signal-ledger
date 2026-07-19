@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://signal-ledger.local/sample-data/manifest.schema.json",
+  "title": "SignalLedger sample dataset manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "datasetVersion",
+    "status",
+    "createdAt",
+    "dataAsOf",
+    "tickers",
+    "files",
+    "expectedRows",
+    "targetCoverage"
+  ],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schemaVersion": { "const": 1 },
+    "datasetVersion": { "type": "string", "minLength": 1 },
+    "status": { "enum": ["draft", "ready"] },
+    "createdAt": { "type": "string", "format": "date" },
+    "dataAsOf": {
+      "oneOf": [{ "type": "string", "format": "date" }, { "type": "null" }]
+    },
+    "tickers": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^[A-Z][A-Z0-9.-]{0,9}$" }
+    },
+    "files": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "company_overview",
+        "daily_prices",
+        "stock_news",
+        "investment_reports"
+      ],
+      "properties": {
+        "company_overview": { "type": "string" },
+        "daily_prices": { "type": "string" },
+        "stock_news": { "type": "string" },
+        "investment_reports": { "type": "string" }
+      }
+    },
+    "expectedRows": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "company_overview",
+        "daily_prices",
+        "stock_news",
+        "investment_reports"
+      ],
+      "properties": {
+        "company_overview": { "type": "integer", "minimum": 0 },
+        "daily_prices": { "type": "integer", "minimum": 0 },
+        "stock_news": { "type": "integer", "minimum": 0 },
+        "investment_reports": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "targetCoverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dailyPriceMonths",
+        "reportsPerTickerMin",
+        "reportsPerTickerMax",
+        "newsPerTickerMax"
+      ],
+      "properties": {
+        "dailyPriceMonths": { "type": "integer", "minimum": 1 },
+        "priceStart": { "type": "string", "format": "date" },
+        "priceEnd": { "type": "string", "format": "date" },
+        "reportsPerTickerMin": { "type": "integer", "minimum": 0 },
+        "reportsPerTickerMax": { "type": "integer", "minimum": 0 },
+        "newsPerTickerMax": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "sources": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fundamentals", "dailyPrices", "redistributionReview"],
+      "properties": {
+        "fundamentals": { "type": "string" },
+        "dailyPrices": { "type": "string" },
+        "redistributionReview": { "enum": ["pending", "approved"] }
+      }
+    }
+  }
+}

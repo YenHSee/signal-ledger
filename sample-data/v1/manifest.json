@@ -1,0 +1,45 @@
+{
+  "$schema": "../manifest.schema.json",
+  "schemaVersion": 1,
+  "datasetVersion": "v1-draft.3",
+  "status": "draft",
+  "createdAt": "2026-07-18",
+  "dataAsOf": "2026-07-17",
+  "tickers": [
+    "AAPL",
+    "MSFT",
+    "NVDA",
+    "GOOGL",
+    "AMZN",
+    "META",
+    "TSLA",
+    "AMD",
+    "JPM",
+    "WMT"
+  ],
+  "files": {
+    "company_overview": "company_overview.json",
+    "daily_prices": "daily_prices.json",
+    "stock_news": "stock_news.json",
+    "investment_reports": "investment_reports.json"
+  },
+  "expectedRows": {
+    "company_overview": 10,
+    "daily_prices": 2510,
+    "stock_news": 0,
+    "investment_reports": 0
+  },
+  "targetCoverage": {
+    "dailyPriceMonths": 12,
+    "reportsPerTickerMin": 5,
+    "reportsPerTickerMax": 10,
+    "newsPerTickerMax": 20,
+    "priceStart": "2025-07-18",
+    "priceEnd": "2026-07-17"
+  },
+  "sources": {
+    "fundamentals": "signal_ledger live database snapshot",
+    "dailyPrices": "Yahoo Finance via yfinance",
+    "redistributionReview": "pending"
+  }
+}

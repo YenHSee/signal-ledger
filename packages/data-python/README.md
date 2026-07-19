@@ -12,21 +12,29 @@ Create a `.env` file in this directory:
 cp .env.example .env
 ```
 
-| Variable | Required | Description |
-| --- | --- | --- |
-| `DB_PASSWORD` | Yes | PostgreSQL password |
-| `DB_HOST` | No | Default `127.0.0.1` |
-| `DB_PORT` | No | Default `5432` — use **`5433`** when using root `docker compose` |
-| `DB_USER` | No | Default `postgres` |
-| `DB_NAME` | No | Default `signal_ledger` |
-| `CF_NAMESPACE_ID` | Yes | Cloudflare KV namespace (Yahoo fundamentals cache) |
-| `CF_API_TOKEN` | Yes | Cloudflare API token |
-| `CF_ACCOUNT_ID` | No | Cloudflare account ID |
-| `FINNHUB_API_KEY` | No | [Finnhub](https://finnhub.io) free key — news step skipped if unset |
-| `OPENAI_API_KEY` | No | For GPT-4o report generation |
-| `DEEPSEEK_API_KEY` | No | For DeepSeek report generation |
-| `MODEL_PROVIDER` | No | Default `ollama` |
-| `ALPHA_VANTAGE_API_KEY` | No | Legacy; not used by the daily ETL |
+| Variable                | Required | Description                                                         |
+| ----------------------- | -------- | ------------------------------------------------------------------- |
+| `APP_MODE`              | No       | Default `live`; all ETL/report writes require `live`                |
+| `DB_PASSWORD`           | Yes      | PostgreSQL password                                                 |
+| `DB_HOST`               | No       | Default `127.0.0.1`                                                 |
+| `DB_PORT`               | No       | Default `5432` — use **`5433`** when using root `docker compose`    |
+| `DB_USER`               | No       | Default `postgres`                                                  |
+| `DB_NAME`               | No       | Default `signal_ledger`                                             |
+| `CF_NAMESPACE_ID`       | Yes      | Cloudflare KV namespace (Yahoo fundamentals cache)                  |
+| `CF_API_TOKEN`          | Yes      | Cloudflare API token                                                |
+| `CF_ACCOUNT_ID`         | No       | Cloudflare account ID                                               |
+| `FINNHUB_API_KEY`       | No       | [Finnhub](https://finnhub.io) free key — news step skipped if unset |
+| `OPENAI_API_KEY`        | No       | For GPT-4o report generation                                        |
+| `DEEPSEEK_API_KEY`      | No       | For DeepSeek report generation                                      |
+| `MODEL_PROVIDER`        | No       | Default `ollama`                                                    |
+| `ALPHA_VANTAGE_API_KEY` | No       | Legacy; not used by the daily ETL                                   |
+
+## Runtime safety
+
+This package owns live data writes. ETL, schema initialization, news backfill,
+and report persistence stop before writing unless `APP_MODE=live`, and live
+writes are rejected when `DB_NAME` ends in `_sample`. The sample seeder uses a separate guard requiring both `APP_MODE=sample` and the exact database
+name `signal_ledger_sample`.
 
 ## Setup
 
@@ -35,6 +43,19 @@ pip install -r requirements.txt
 ```
 
 ## Scripts
+
+### Frozen sample fundamentals and prices
+
+Maintainers can rebuild the v1 draft fixture from a read-only live fundamentals
+snapshot and a fixed yfinance price window:
+
+```bash
+APP_MODE=live DB_NAME=signal_ledger DB_PORT=5433 \
+  python scripts/export_sample_data.py --dry-run
+```
+
+Remove `--dry-run` only after coverage validation succeeds. End users never run
+this exporter; sample mode reads the committed frozen JSON.
 
 ### Daily ETL (prices, fundamentals, news)
 
@@ -68,11 +89,11 @@ saved as local JSON under `reports/` and inserted into `investment_reports`.
 python main.py --tickers AAPL NVDA --tier normal
 ```
 
-| `--tier` | Model | Report file suffix |
-| --- | --- | --- |
-| `smart` | GPT-4o (needs `OPENAI_API_KEY`) | `S` |
-| `normal` (default) | DeepSeek (needs `DEEPSEEK_API_KEY`) | `N` |
-| `local` | Ollama (`qwen2.5:7b`, free) | `L` |
+| `--tier`           | Model                               | Report file suffix |
+| ------------------ | ----------------------------------- | ------------------ |
+| `smart`            | GPT-4o (needs `OPENAI_API_KEY`)     | `S`                |
+| `normal` (default) | DeepSeek (needs `DEEPSEEK_API_KEY`) | `N`                |
+| `local`            | Ollama (`qwen2.5:7b`, free)         | `L`                |
 
 ## Layout
 

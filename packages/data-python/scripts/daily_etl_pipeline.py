@@ -16,6 +16,7 @@ from utils.data_transformer import transform_yfinance_overview_to_db, transform_
 from db.connection import init_db_pool, close_db_pool
 from db.schema import execute_simple_sql, init_tables
 from db.repositories import insert_company_overview, insert_daily_prices, insert_stock_news, count_stock_news
+from runtime_mode import assert_live_write_target
 
 
 def process_single_overview(ticker):
@@ -66,6 +67,7 @@ def sync_company_news(tickers):
 
 def run_stock_pipeline():
     """Run the daily market-data ingestion pipeline."""
+    assert_live_write_target("run daily ETL pipeline")
     
     print("\n" + "="*60)
     print("🚀 [START] Starting the S&P 500 ETL pipeline")

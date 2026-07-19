@@ -5,6 +5,10 @@ load_dotenv()
 
 class AppConfig:
     @property
+    def APP_MODE(self):
+        return os.getenv("APP_MODE", "live").strip().lower()
+
+    @property
     def ALPHA_VANTAGE_API_KEY(self):
         key = os.getenv("ALPHA_VANTAGE_API_KEY")
         if not key:

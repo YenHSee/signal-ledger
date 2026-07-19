@@ -283,7 +283,7 @@ export default function PriceChart({
     <div className="bg-gray-800 rounded-xl border border-gray-700 p-6 shadow-xl">
       <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
         <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider">
-          30-Day Price Action
+          12-Month Price Action
         </h3>
         <div className="flex items-center gap-3 text-[10px] text-gray-500">
           <LegendDot color={CONCLUSION_COLORS.BUY} label="AI Buy" />
@@ -319,13 +319,7 @@ export default function PriceChart({
             onMouseLeave={() => setHoverIndex(null)}
           >
             <defs>
-              <linearGradient
-                id="price-chart-fill"
-                x1="0"
-                y1="0"
-                x2="0"
-                y2="1"
-              >
+              <linearGradient id="price-chart-fill" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor={strokeColor} stopOpacity="0.25" />
                 <stop offset="100%" stopColor={strokeColor} stopOpacity="0" />
               </linearGradient>

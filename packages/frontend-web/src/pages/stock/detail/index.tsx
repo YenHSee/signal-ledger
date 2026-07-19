@@ -108,6 +108,24 @@ export default function StockDetail() {
   }, [ticker]);
 
   const dailyChanges = useMemo(() => computeDailyChanges(prices), [prices]);
+  const latestPrice = prices.length > 0 ? prices[prices.length - 1].close : null;
+  const displayProfile: StockProfile = report ?? {
+    ticker: ticker ?? "",
+    current_price: latestPrice ?? fundamentals?.price ?? null,
+    target_price: null,
+    conclusion: null,
+    conviction_level: null,
+    upside_downside_pct: null,
+    risk_level: null,
+    full_report: "No investment report generated yet.",
+    reasoning: "Report backfill has not been run for this sample ticker yet.",
+    generated_at: new Date(prices[prices.length - 1]?.date ?? 0),
+    dayChangePct:
+      dailyChanges.length > 0
+        ? dailyChanges[dailyChanges.length - 1].changePct
+        : null,
+    company_identity: { symbol: ticker },
+  };
 
   const handleNewsMarkerClick = (date: string) => {
     // Changing the value triggers NewsSection's internal scroll logic.
@@ -124,7 +142,7 @@ export default function StockDetail() {
     );
   }
 
-  if (error || !report) {
+  if (error || (!report && !fundamentals && prices.length === 0)) {
     return (
       <div className="w-full h-full flex flex-col items-center justify-center text-red-400 font-mono gap-4">
         <div>Error: Signal Lost for {ticker}</div>
@@ -149,19 +167,21 @@ export default function StockDetail() {
         </button>
         <div className="flex gap-3">
           <div className="text-xs text-gray-500 flex items-center mr-4">
-            Last Generated: {new Date(report.generated_at).toLocaleString()}
+            {report
+              ? `Last Generated: ${new Date(report.generated_at).toLocaleString()}`
+              : "Report not generated yet"}
           </div>
         </div>
       </div>
 
-      <Headline report={report} />
+      <Headline report={displayProfile} />
 
       <div className="mb-6">
         <PriceChart
           prices={prices}
           history={history}
           news={news}
-          targetPrice={report.target_price}
+          targetPrice={displayProfile.target_price}
           dailyChanges={dailyChanges}
           onNewsMarkerClick={handleNewsMarkerClick}
         />
@@ -176,29 +196,31 @@ export default function StockDetail() {
             <span
               className={`text-xs font-bold px-2 py-1 rounded border uppercase tracking-wider
               ${
-                report.conclusion?.includes("BUY")
+                displayProfile.conclusion?.includes("BUY")
                   ? "bg-green-900/30 text-green-400 border-green-800"
-                  : report.conclusion?.includes("SELL")
+                  : displayProfile.conclusion?.includes("SELL")
                     ? "bg-red-900/30 text-red-400 border-red-800"
                     : "bg-yellow-900/30 text-yellow-400 border-yellow-800"
               }`}
             >
-              Signal: {report.conclusion || "PENDING"}
+              Signal: {displayProfile.conclusion || "PENDING"}
             </span>
           </div>
 
           <MarkdownReport
-            content={report.full_report || "No detailed report generated yet."}
+            content={
+              displayProfile.full_report || "No detailed report generated yet."
+            }
           />
         </div>
 
         <div className="lg:w-1/3 flex flex-col gap-6">
           <FundamentalsPanel
             fundamentalsProfile={fundamentals}
-            riskLevel={report.risk_level}
+            riskLevel={displayProfile.risk_level}
           />
 
-          <ThesisSummary report={report} />
+          <ThesisSummary report={displayProfile} />
         </div>
       </div>
       <div className="mt-6">
@@ -209,7 +231,10 @@ export default function StockDetail() {
         />
       </div>
       <div className="mt-6">
-        <TrackRecord history={history} currentPrice={report.current_price} />
+        <TrackRecord
+          history={history}
+          currentPrice={displayProfile.current_price}
+        />
       </div>
     </div>
   );

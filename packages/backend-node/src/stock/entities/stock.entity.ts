@@ -170,6 +170,12 @@ export class Stock {
   @Column({ default: false })
   is_sp500: boolean;
 
+  @Column({ type: 'decimal', precision: 10, scale: 4, nullable: true })
+  current_price: number;
+
+  @Column({ type: 'timestamptz', nullable: true })
+  price_as_of: Date;
+
   @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   last_updated: Date;
 }

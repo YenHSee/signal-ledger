@@ -104,7 +104,7 @@ export class StockController {
     @Param('ticker') ticker: string,
     @Query('days') days?: string,
   ): Promise<DailyPricePoint[]> {
-    return this.stockService.getDailyPrices(ticker, days ? Number(days) : 30);
+    return this.stockService.getDailyPrices(ticker, days ? Number(days) : 365);
   }
 
   @Get(':ticker/news')
