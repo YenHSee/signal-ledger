@@ -1,7 +1,7 @@
 {
   "$schema": "../manifest.schema.json",
   "schemaVersion": 1,
-  "datasetVersion": "v1-draft.3",
+  "datasetVersion": "v1-draft.6",
   "status": "draft",
   "createdAt": "2026-07-18",
   "dataAsOf": "2026-07-17",
@@ -25,21 +25,23 @@
   },
   "expectedRows": {
     "company_overview": 10,
-    "daily_prices": 2510,
-    "stock_news": 0,
-    "investment_reports": 0
+    "daily_prices": 1350,
+    "stock_news": 200,
+    "investment_reports": 50
   },
   "targetCoverage": {
-    "dailyPriceMonths": 12,
+    "dailyPriceMonths": 7,
     "reportsPerTickerMin": 5,
-    "reportsPerTickerMax": 10,
+    "reportsPerTickerMax": 5,
     "newsPerTickerMax": 20,
-    "priceStart": "2025-07-18",
+    "priceStart": "2026-01-02",
     "priceEnd": "2026-07-17"
   },
   "sources": {
     "fundamentals": "signal_ledger live database snapshot",
     "dailyPrices": "Yahoo Finance via yfinance",
-    "redistributionReview": "pending"
+    "redistributionReview": "pending",
+    "news": "Finnhub company-news 2026 YTD curated report-window and price-anomaly snapshot; headline metadata only",
+    "investmentReports": "deepseek/deepseek-v4-pro historical analysis from frozen sample-data/v1 inputs"
   }
 }

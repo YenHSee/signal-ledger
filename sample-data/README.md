@@ -18,18 +18,33 @@ unless a developer explicitly passes `--allow-draft`. Change the status to
 `ready` only after row counts, date coverage, redistribution safety, and all ten
 ticker pages have been verified.
 
-The committed `v1` draft currently contains fundamentals and one year of daily
-prices for each of the ten tickers, covering 2025-07-18 through 2026-07-17.
-News, reports, and redistribution review are still incomplete.
+The committed `v1` draft currently contains fundamentals and 2026 year-to-date
+daily prices for each of the ten tickers, covering the first trading day on
+2026-01-02 through 2026-07-17. It also contains 200 curated 2026 YTD news items
+and 50 schema-v2 historical reports (five per ticker). Redistribution review is
+still incomplete, so the dataset remains a draft.
+
+`report_inputs/<TICKER>.json` is a non-seeded generation input. It contains
+the longer price history needed for 50/200-day calculations plus point-in-time
+SEC 10-K/10-Q facts and filing metadata. At each report date the builder selects
+only filings already public on that date. The browser-facing
+sample database still receives only the compact YTD tables above.
 
 ## Frozen report acceptance
 
-Reports are accepted only when their timestamp falls inside the frozen price
+Schema-v2 reports are accepted only when `analysis_as_of` falls inside the frozen price
 range, their snapshot price matches a close from the preceding seven days, and
 their stated upside or downside can be reproduced from the snapshot and target
 prices. The loader also requires the full report sections used by the UI,
-rejects a conflicting embedded generation date, and rejects catalysts that are
+rejects a conflicting embedded analysis date, and rejects catalysts that are
 not present in `stock_news.json`.
+
+Every accepted report must have complete `agent_outputs` and
+`generation_metadata`. The unique `final_run_id` must link the canonical
+conclusion to its actual provider response model, prompt version, finish reason,
+and token usage. Requested model names are never substituted for missing
+response metadata. Legacy live reports remain readable as `legacy_incomplete`
+but cannot enter the auditable frozen track record.
 
 When no frozen news is available, the report must say so in its Data Limitations
 section. Structurally complete live reports are not copied automatically: they
@@ -62,6 +77,46 @@ DB_PASSWORD=password123 \
 ```
 
 The exporter downloads prices while building the fixture; sample mode never does.
+
+Freeze the longer price and SEC inputs for the ten sample tickers:
+
+```bash
+cd packages/data-python
+SEC_USER_AGENT="SignalLedger/1.0 maintainer@example.com" \
+.venv/bin/python scripts/export_report_inputs.py \
+  --ticker AAPL --ticker MSFT --ticker NVDA --ticker GOOGL --ticker AMZN \
+  --ticker META --ticker TSLA --ticker AMD --ticker JPM --ticker WMT \
+  --earliest-as-of 2026-01-09 --as-of 2026-07-17
+```
+
+Validate all 50 point-in-time snapshots without an LLM call:
+
+```bash
+APP_MODE=live DB_NAME=signal_ledger \
+.venv/bin/python scripts/build_sample_reports.py --validate-schedule
+```
+
+Before a full paid backfill, generate and validate one isolated pilot:
+
+```bash
+APP_MODE=live DB_NAME=signal_ledger \
+.venv/bin/python scripts/build_sample_reports.py \
+  --pilot-ticker NVDA --pilot-date 2026-01-09 \
+  --pilot-output reports/2026-01-09_NVDA_N_pilot.json --tier normal
+```
+
+After approving the pilot, the resumable full DeepSeek backfill is:
+
+```bash
+APP_MODE=live DB_NAME=signal_ledger \
+.venv/bin/python scripts/build_sample_reports.py --tier normal
+```
+
+The schedule contains five reports for every sample ticker on 2026-01-09,
+2026-02-20, 2026-03-31, 2026-05-15, and 2026-07-17. Individual report archives
+under `packages/data-python/reports/` remain local and ignored; the validated
+50-report fixture in `v1/investment_reports.json` is what the sample seeder
+loads.
 
 ## Seed the draft locally
 

@@ -87,6 +87,8 @@
       "properties": {
         "fundamentals": { "type": "string" },
         "dailyPrices": { "type": "string" },
+        "news": { "type": "string" },
+        "investmentReports": { "type": "string" },
         "redistributionReview": { "enum": ["pending", "approved"] }
       }
     }

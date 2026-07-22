@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import type { RawFinancialSnapshot } from '@signal-ledger/api-types';
+import type { AgentOutput, GenerationMetadata } from '@signal-ledger/api-types';
 
 @Entity('investment_reports')
 export class InvestmentReport {
@@ -36,6 +37,30 @@ export class InvestmentReport {
 
   @Column({ type: 'jsonb', nullable: true })
   raw_financial_data: RawFinancialSnapshot | null;
+
+  @Column({ type: 'integer', nullable: true })
+  report_schema_version: number | null;
+
+  @Column({ type: 'timestamptz', nullable: true })
+  analysis_as_of: Date | null;
+
+  @Column({ type: 'varchar', length: 50, nullable: true })
+  generation_mode: string | null;
+
+  @Column({ type: 'varchar', length: 50, nullable: true })
+  model_provider: string | null;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  model_name: string | null;
+
+  @Column({ type: 'varchar', length: 100, nullable: true })
+  prompt_version: string | null;
+
+  @Column({ type: 'jsonb', nullable: true })
+  agent_outputs: AgentOutput[] | null;
+
+  @Column({ type: 'jsonb', nullable: true })
+  generation_metadata: GenerationMetadata | null;
 
   @Column({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   generated_at: Date;

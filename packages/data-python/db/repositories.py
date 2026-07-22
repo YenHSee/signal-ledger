@@ -183,7 +183,68 @@ def count_stock_news() -> int:
         release_connection(connection, is_from_pool)
 
 
-def save_report_to_db(ticker: str, ai_analysis: dict, raw_data: dict, model_tier: str) -> bool:
+def upsert_sec_financial_snapshots(symbol: str, snapshots: list[dict]) -> int:
+    """Persist immutable SEC 10-K/10-Q snapshots for later point-in-time reads."""
+    assert_live_write_target("insert SEC financial snapshots")
+    if not snapshots:
+        return 0
+    connection = None
+    cursor = None
+    is_from_pool = False
+    try:
+        connection, is_from_pool = get_connection()
+        cursor = connection.cursor()
+        rows = []
+        for snapshot in snapshots:
+            filing = snapshot["filing"]
+            rows.append(
+                (
+                    symbol.upper(),
+                    filing["accession"],
+                    filing["form"],
+                    filing["filed_at"],
+                    filing.get("accepted_at"),
+                    filing.get("period_end"),
+                    filing.get("primary_document"),
+                    snapshot.get("cik"),
+                    snapshot.get("entity_name"),
+                    json.dumps(snapshot.get("facts") or {}),
+                )
+            )
+        execute_values(
+            cursor,
+            """
+            INSERT INTO sec_financial_snapshots (
+                symbol, accession_number, form, filed_at, accepted_at, period_end,
+                primary_document, cik, entity_name, facts
+            ) VALUES %s
+            ON CONFLICT (symbol, accession_number) DO UPDATE SET
+                form = EXCLUDED.form,
+                filed_at = EXCLUDED.filed_at,
+                accepted_at = EXCLUDED.accepted_at,
+                period_end = EXCLUDED.period_end,
+                primary_document = EXCLUDED.primary_document,
+                cik = EXCLUDED.cik,
+                entity_name = EXCLUDED.entity_name,
+                facts = EXCLUDED.facts,
+                fetched_at = CURRENT_TIMESTAMP
+            """,
+            rows,
+        )
+        connection.commit()
+        return len(rows)
+    except Exception as error:
+        print(f"❌ Failed to write SEC financial snapshots for {symbol}: {error}")
+        if connection:
+            connection.rollback()
+        return 0
+    finally:
+        if cursor:
+            cursor.close()
+        release_connection(connection, is_from_pool)
+
+
+def save_report_to_db(report: dict) -> bool:
     """Persist an AI report together with its source-data snapshot."""
     assert_live_write_target("save investment report")
     connection = None
@@ -195,42 +256,47 @@ def save_report_to_db(ticker: str, ai_analysis: dict, raw_data: dict, model_tier
 
         insert_sql = """
         INSERT INTO investment_reports (
-            ticker, model_tier, conclusion, conviction_level, target_price, 
+            report_schema_version, ticker, analysis_as_of, generation_mode,
+            model_tier, model_provider, model_name, prompt_version,
+            conclusion, conviction_level, target_price,
             upside_downside_pct, risk_level, reasoning, full_report, 
-            raw_financial_data, generated_at
+            raw_financial_data, agent_outputs, generation_metadata, generated_at
         ) VALUES (
-            %(ticker)s, %(model_tier)s, %(conclusion)s, %(conviction_level)s, %(target_price)s,
+            %(report_schema_version)s, %(ticker)s, %(analysis_as_of)s, %(generation_mode)s,
+            %(model_tier)s, %(model_provider)s, %(model_name)s, %(prompt_version)s,
+            %(conclusion)s, %(conviction_level)s, %(target_price)s,
             %(upside_downside_pct)s, %(risk_level)s, %(reasoning)s, %(full_report)s,
-            %(raw_financial_data)s, %(generated_at)s
+            %(raw_financial_data)s, %(agent_outputs)s, %(generation_metadata)s, %(generated_at)s
         )
         """
 
-        # Normalize target prices that may contain currency symbols or separators.
-        target_price_raw = ai_analysis.get("target_price", 0)
-        try:
-            target_price_float = float(str(target_price_raw).replace('$', '').replace(',', ''))
-        except ValueError:
-            target_price_float = 0
-
         data_params = {
-            "ticker": ticker.upper(),
-            "model_tier": model_tier,
-            "conclusion": ai_analysis.get("conclusion", "N/A"),
-            "conviction_level": ai_analysis.get("conviction_level", "N/A"),
-            "target_price": target_price_float,
-            "upside_downside_pct": ai_analysis.get("upside_downside_pct", "N/A"),
-            "risk_level": ai_analysis.get("risk_level", "N/A"),
-            "reasoning": ai_analysis.get("reasoning", "N/A"),
-            "full_report": ai_analysis.get("full_report", "N/A"),
-            "raw_financial_data": psycopg2.extras.Json(raw_data),
-            "generated_at": datetime.now()
+            "report_schema_version": report["report_schema_version"],
+            "ticker": report["ticker"].upper(),
+            "analysis_as_of": report["analysis_as_of"],
+            "generation_mode": report["generation_mode"],
+            "model_tier": report["model_tier"],
+            "model_provider": report["model_provider"],
+            "model_name": report["model_name"],
+            "prompt_version": report["prompt_version"],
+            "conclusion": report.get("conclusion", "N/A"),
+            "conviction_level": report.get("conviction_level", "N/A"),
+            "target_price": report["target_price"],
+            "upside_downside_pct": report.get("upside_downside_pct", "N/A"),
+            "risk_level": report.get("risk_level", "N/A"),
+            "reasoning": report.get("reasoning", "N/A"),
+            "full_report": report.get("full_report", "N/A"),
+            "raw_financial_data": psycopg2.extras.Json(report["raw_financial_data"]),
+            "agent_outputs": psycopg2.extras.Json(report["agent_outputs"]),
+            "generation_metadata": psycopg2.extras.Json(report["generation_metadata"]),
+            "generated_at": report["generated_at"],
         }
 
         cursor.execute(insert_sql, data_params)
         connection.commit()
         return True
     except Exception as error:
-        print(f"❌ Failed to save the {ticker} report: {error}")
+        print(f"❌ Failed to save the {report.get('ticker', 'unknown')} report: {error}")
         if connection: connection.rollback()
         return False
     finally:
@@ -238,17 +304,15 @@ def save_report_to_db(ticker: str, ai_analysis: dict, raw_data: dict, model_tier
         release_connection(connection, is_from_pool)
 
 
-def save_report_to_file(ticker: str, analysis_output: dict, raw_data: dict, model_letter: str = "L") -> None:
+def save_report_to_file(report: dict) -> None:
     """Save a report and its source snapshot as a dated local JSON file."""
-    date_str = datetime.now().strftime("%Y-%m-%d")
-    exact_time = datetime.now().isoformat()
-    report = {
-        "ticker": ticker.upper(), "timestamp": exact_time, "model_tier": model_letter,
-        "ai_analysis": analysis_output, "raw_financial_data": raw_data
-    }
+    generated_at = datetime.fromisoformat(report["generated_at"].replace("Z", "+00:00"))
+    timestamp = generated_at.strftime("%Y-%m-%dT%H%M%SZ")
+    ticker = report["ticker"].upper()
+    model_letter = report["model_tier"]
     output_dir = "reports"
     if not os.path.exists(output_dir): os.makedirs(output_dir)
-    file_name = f"{date_str}_{ticker.upper()}_{model_letter}_report.json"
+    file_name = f"{timestamp}_{ticker}_{model_letter}_report.json"
     file_path = os.path.join(output_dir, file_name)
     with open(file_path, "w", encoding="utf-8") as f:
         json.dump(report, f, indent=4, ensure_ascii=False)

@@ -1,6 +1,6 @@
 import MarkdownReport from "./MarkdownReport";
-import { useState, useEffect, useMemo } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useState, useEffect, useMemo, useRef } from "react";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import FundamentalsPanel from "./FundamentalsPanel";
 import type {
   DailyPricePoint,
@@ -12,9 +12,11 @@ import type {
 import ThesisSummary from "./ThesisSummary";
 import Headline from "./Headline";
 import TrackRecord from "./TrackRecord";
+import ReportTimeline from "./ReportTimeline";
 import PriceChart from "./PriceChart";
 import NewsSection from "./NewsSection";
-import { computeDailyChanges } from "./utils";
+import { computeDailyChanges, formatDate, formatDateTime } from "./utils";
+import { fundamentalsFromSnapshot } from "./snapshotFundamentals";
 import {
   getReport,
   getFundamentals,
@@ -25,6 +27,18 @@ import { getDailyPrices, getStockNews } from "../../../api/stock";
 export default function StockDetail() {
   const { ticker } = useParams<{ ticker: string }>();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const reportSectionRef = useRef<HTMLDivElement>(null);
+
+  const reportIdParam = searchParams.get("report");
+  const parsedReportId =
+    reportIdParam === null ? undefined : Number(reportIdParam);
+  const requestedReportId =
+    parsedReportId !== undefined &&
+    Number.isInteger(parsedReportId) &&
+    parsedReportId > 0
+      ? parsedReportId
+      : undefined;
 
   const [report, setReport] = useState<StockProfile | null>(null);
   const [fundamentals, setFundamentals] = useState<FundamentalsProfile | null>(
@@ -35,37 +49,35 @@ export default function StockDetail() {
   const [news, setNews] = useState<StockNewsItem[]>([]);
   const [scrollToNewsDate, setScrollToNewsDate] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [reportLoading, setReportLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (reportIdParam !== null && requestedReportId === undefined) {
+      const next = new URLSearchParams(searchParams);
+      next.delete("report");
+      setSearchParams(next, { replace: true });
+    }
+  }, [reportIdParam, requestedReportId, searchParams, setSearchParams]);
+
   useEffect(() => {
     let ignore = false;
 
-    const fetchReportDetail = async () => {
+    const fetchPageData = async () => {
       if (!ticker) return;
 
       setLoading(true);
       setError(null);
       try {
-        const [
-          profileResult,
-          fundamentalsResult,
-          historyResult,
-          pricesResult,
-          newsResult,
-        ] = await Promise.allSettled([
-          getReport(ticker),
-          getFundamentals(ticker),
-          getReportHistory(ticker),
-          getDailyPrices(ticker),
-          getStockNews(ticker),
-        ]);
+        const [fundamentalsResult, historyResult, pricesResult, newsResult] =
+          await Promise.allSettled([
+            getFundamentals(ticker),
+            getReportHistory(ticker),
+            getDailyPrices(ticker),
+            getStockNews(ticker),
+          ]);
 
         if (ignore) return;
-        if (profileResult.status === "fulfilled") {
-          setReport(profileResult.value);
-        } else {
-          setReport(null);
-        }
-
         if (fundamentalsResult.status === "fulfilled") {
           setFundamentals(fundamentalsResult.value);
         } else {
@@ -91,7 +103,9 @@ export default function StockDetail() {
         }
       } catch (err: unknown) {
         if (!ignore) {
-          setError(err instanceof Error ? err.message : "Unable to load report");
+          setError(
+            err instanceof Error ? err.message : "Unable to load report",
+          );
         }
       } finally {
         if (!ignore) setLoading(false);
@@ -99,7 +113,7 @@ export default function StockDetail() {
     };
 
     if (ticker) {
-      fetchReportDetail();
+      fetchPageData();
     }
 
     return () => {
@@ -107,10 +121,47 @@ export default function StockDetail() {
     };
   }, [ticker]);
 
+  useEffect(() => {
+    let ignore = false;
+
+    const fetchSelectedReport = async () => {
+      if (!ticker) return;
+      setReportLoading(true);
+      setError(null);
+      try {
+        const selected = await getReport(ticker, requestedReportId);
+        if (!ignore) setReport(selected);
+      } catch (err: unknown) {
+        if (!ignore) {
+          setReport(null);
+          setError(
+            err instanceof Error ? err.message : "Unable to load report",
+          );
+        }
+      } finally {
+        if (!ignore) setReportLoading(false);
+      }
+    };
+
+    fetchSelectedReport();
+    return () => {
+      ignore = true;
+    };
+  }, [ticker, requestedReportId]);
+
   const dailyChanges = useMemo(() => computeDailyChanges(prices), [prices]);
-  const latestPrice = prices.length > 0 ? prices[prices.length - 1].close : null;
+  const latestPrice =
+    prices.length > 0 ? prices[prices.length - 1].close : null;
   const displayProfile: StockProfile = report ?? {
+    report_id: 0,
+    report_schema_version: null,
     ticker: ticker ?? "",
+    analysis_as_of: null,
+    generation_mode: null,
+    model_tier: null,
+    model_provider: null,
+    model_name: null,
+    prompt_version: null,
     current_price: latestPrice ?? fundamentals?.price ?? null,
     target_price: null,
     conclusion: null,
@@ -125,6 +176,37 @@ export default function StockDetail() {
         ? dailyChanges[dailyChanges.length - 1].changePct
         : null,
     company_identity: { symbol: ticker },
+    raw_financial_data: null,
+    agent_outputs: null,
+    generation_metadata: null,
+    provenance_status: "legacy_incomplete",
+  };
+  const activeReportId = report?.report_id ?? null;
+  const latestReportId = history[0]?.id ?? activeReportId;
+  const isLatestReport =
+    activeReportId !== null && activeReportId === latestReportId;
+  const reportFundamentals =
+    fundamentalsFromSnapshot(report?.raw_financial_data ?? null) ??
+    fundamentals;
+
+  const handleReportSelect = (reportId: number) => {
+    const next = new URLSearchParams(searchParams);
+    if (reportId === latestReportId) {
+      next.delete("report");
+    } else {
+      next.set("report", String(reportId));
+    }
+    setSearchParams(next);
+    requestAnimationFrame(() => {
+      reportSectionRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    });
+  };
+
+  const returnNavigate = () => {
+    navigate("/stock/screener");
   };
 
   const handleNewsMarkerClick = (date: string) => {
@@ -134,7 +216,7 @@ export default function StockDetail() {
     requestAnimationFrame(() => setScrollToNewsDate(date));
   };
 
-  if (loading) {
+  if (loading || (reportLoading && !report)) {
     return (
       <div className="w-full h-full flex items-center justify-center text-blue-400 font-mono">
         Loading equity research for {ticker}...
@@ -160,7 +242,7 @@ export default function StockDetail() {
     <div className="w-full min-h-full flex flex-col animate-fade-in text-gray-200">
       <div className="flex items-center justify-between mb-6">
         <button
-          onClick={() => navigate(-1)}
+          onClick={() => returnNavigate()}
           className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors text-sm font-bold"
         >
           <span>←</span> Back to Screener
@@ -168,7 +250,7 @@ export default function StockDetail() {
         <div className="flex gap-3">
           <div className="text-xs text-gray-500 flex items-center mr-4">
             {report
-              ? `Last Generated: ${new Date(report.generated_at).toLocaleString()}`
+              ? `Generated: ${formatDateTime(report.generated_at)}`
               : "Report not generated yet"}
           </div>
         </div>
@@ -187,12 +269,50 @@ export default function StockDetail() {
         />
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-6 flex-1 min-h-0">
-        <div className="lg:w-2/3 bg-gray-800 rounded-xl border border-gray-700 p-8 shadow-xl overflow-y-auto">
+      <ReportTimeline
+        history={history}
+        selectedReportId={activeReportId}
+        onSelect={handleReportSelect}
+      />
+
+      <div
+        ref={reportSectionRef}
+        className="flex flex-col lg:flex-row gap-6 flex-1 min-h-0 scroll-mt-6"
+      >
+        <div
+          className={`lg:w-2/3 bg-gray-800 rounded-xl border border-gray-700 p-8 shadow-xl overflow-y-auto transition-opacity ${reportLoading ? "opacity-60" : "opacity-100"}`}
+        >
           <div className="flex items-center justify-between border-b border-gray-700 pb-4 mb-6">
-            <h2 className="text-xl font-bold text-white">
-              Institutional AI Report
-            </h2>
+            <div>
+              <div className="flex flex-wrap items-center gap-2">
+                <h2 className="text-xl font-bold text-white">
+                  Institutional AI Report
+                </h2>
+                <span
+                  className={`rounded px-2 py-1 text-[10px] font-bold uppercase tracking-wider ${
+                    isLatestReport
+                      ? "bg-blue-900/50 text-blue-300"
+                      : "bg-purple-900/40 text-purple-300"
+                  }`}
+                >
+                  {isLatestReport ? "Latest Report" : "Historical Report"}
+                </span>
+              </div>
+              <div className="mt-2 flex flex-wrap items-center gap-3 text-xs text-gray-500">
+                <span>
+                  Analysis as of {formatDate(displayProfile.analysis_as_of)}
+                </span>
+                {!isLatestReport && latestReportId !== null && (
+                  <button
+                    type="button"
+                    onClick={() => handleReportSelect(latestReportId)}
+                    className="font-semibold text-blue-400 hover:text-blue-300"
+                  >
+                    Back to Latest
+                  </button>
+                )}
+              </div>
+            </div>
             <span
               className={`text-xs font-bold px-2 py-1 rounded border uppercase tracking-wider
               ${
@@ -216,8 +336,9 @@ export default function StockDetail() {
 
         <div className="lg:w-1/3 flex flex-col gap-6">
           <FundamentalsPanel
-            fundamentalsProfile={fundamentals}
+            fundamentalsProfile={reportFundamentals}
             riskLevel={displayProfile.risk_level}
+            contextLabel={`Point-in-time · ${formatDate(displayProfile.analysis_as_of)}`}
           />
 
           <ThesisSummary report={displayProfile} />
@@ -233,7 +354,8 @@ export default function StockDetail() {
       <div className="mt-6">
         <TrackRecord
           history={history}
-          currentPrice={displayProfile.current_price}
+          selectedReportId={activeReportId}
+          onSelect={handleReportSelect}
         />
       </div>
     </div>

@@ -14,11 +14,13 @@ from scripts.export_sample_data import (  # noqa: E402
 
 
 class SampleExportTests(unittest.TestCase):
-    def _rows(self, ticker: str, count: int = 240) -> list[dict]:
-        start = date(2025, 7, 1)
+    def _rows(self, ticker: str, count: int = 135) -> list[dict]:
+        start = date(2026, 1, 2)
+        end = date(2026, 7, 17)
+        span_days = (end - start).days
         rows = []
         for offset in range(count):
-            trade_date = start + timedelta(days=round(offset * 364 / (count - 1)))
+            trade_date = start + timedelta(days=round(offset * span_days / (count - 1)))
             rows.append(
                 {
                     "symbol": ticker,
@@ -37,15 +39,15 @@ class SampleExportTests(unittest.TestCase):
         rows = self._rows("AAPL")
         rows.append(dict(rows[0]))
         with self.assertRaisesRegex(SampleExportError, "duplicate"):
-            validate_prices(rows, ["AAPL"], date(2025, 7, 1), date(2026, 6, 30))
+            validate_prices(rows, ["AAPL"], date(2026, 1, 2), date(2026, 7, 17))
 
     def test_missing_ticker_is_rejected(self):
         with self.assertRaisesRegex(SampleExportError, "MSFT"):
             validate_prices(
                 self._rows("AAPL"),
                 ["AAPL", "MSFT"],
-                date(2025, 7, 1),
-                date(2026, 6, 30),
+                date(2026, 1, 2),
+                date(2026, 7, 17),
             )
 
 

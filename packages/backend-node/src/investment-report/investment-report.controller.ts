@@ -20,13 +20,19 @@ export class InvestmentReportController {
   ): Promise<InvestmentReportHistoryItem[]> {
     return this.investmentReportService.findHistoryByTicker(
       ticker,
-      limit ? Number(limit) : 10,
+      limit ? Number(limit) : 20,
     );
   }
 
   @Get(':ticker')
-  async getStockProfile(@Param('ticker') ticker: string) {
-    return this.investmentReportService.getStockProfile(ticker);
+  async getStockProfile(
+    @Param('ticker') ticker: string,
+    @Query('reportId') reportId?: string,
+  ) {
+    return this.investmentReportService.getStockProfile(
+      ticker,
+      reportId === undefined ? undefined : Number(reportId),
+    );
   }
 
   @Get(':ticker/fundamentals')

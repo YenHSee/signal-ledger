@@ -82,6 +82,10 @@ export function formatDate(value: string | Date | null): string {
     year: "numeric",
     month: "short",
     day: "numeric",
+    // Report and market-data dates are calendar dates. Formatting them in the
+    // browser timezone turns a 21:00Z analysis timestamp into the next day in
+    // Asia, so always preserve the UTC calendar date here.
+    timeZone: "UTC",
   });
 }
 

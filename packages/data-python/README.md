@@ -82,7 +82,8 @@ python scripts/backfill_news.py --skip-anomaly          # broad pull only
 ### AI report generation
 
 Generates institutional-style investment reports from data already in the DB
-(fundamentals, prices, and last-7-day news as "recent catalysts"). Reports are
+(fundamentals, prices, SEC snapshots, and relevant news from the preceding 30
+days as "recent catalysts"). Reports are
 saved as local JSON under `reports/` and inserted into `investment_reports`.
 
 ```bash
@@ -94,6 +95,14 @@ python main.py --tickers AAPL NVDA --tier normal
 | `smart`            | GPT-4o (needs `OPENAI_API_KEY`)     | `S`                |
 | `normal` (default) | DeepSeek (needs `DEEPSEEK_API_KEY`) | `N`                |
 | `local`            | Ollama (`qwen2.5:7b`, free)         | `L`                |
+
+Synchronize free SEC 10-K/10-Q balance-sheet and cash-flow snapshots before
+generating live reports:
+
+```bash
+APP_MODE=live DB_NAME=signal_ledger \
+.venv/bin/python scripts/sync_sec_financials.py --tickers AAPL NVDA TSLA
+```
 
 ## Layout
 
@@ -111,4 +120,5 @@ Python manages schema via `db/schema.py` → `init_tables()`:
 - `company_overview` — fundamentals snapshot
 - `daily_prices` — OHLCV (truncated and reloaded each ETL run)
 - `stock_news` — news archive (append/upsert by `finnhub_id`)
+- `sec_financial_snapshots` — accession-keyed SEC 10-K/10-Q facts
 - `investment_reports` — AI report history

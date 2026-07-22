@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS daily_prices (
 
 CREATE TABLE IF NOT EXISTS stock_news (
     id BIGSERIAL PRIMARY KEY,
-    finnhub_id BIGINT UNIQUE NOT NULL,
+    finnhub_id BIGINT NOT NULL,
     symbol VARCHAR(10) NOT NULL,
     trade_date DATE NOT NULL,
     datetime BIGINT NOT NULL,
@@ -85,8 +85,33 @@ CREATE TABLE IF NOT EXISTS stock_news (
     fetched_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
+ALTER TABLE stock_news
+    DROP CONSTRAINT IF EXISTS stock_news_finnhub_id_key;
+
+CREATE UNIQUE INDEX IF NOT EXISTS uq_sample_stock_news_fixture
+    ON stock_news (finnhub_id, symbol);
+
 CREATE INDEX IF NOT EXISTS idx_stock_news_symbol_date
     ON stock_news (symbol, trade_date);
+
+CREATE TABLE IF NOT EXISTS sec_financial_snapshots (
+    id BIGSERIAL PRIMARY KEY,
+    symbol VARCHAR(10) NOT NULL,
+    accession_number VARCHAR(32) NOT NULL,
+    form VARCHAR(10) NOT NULL CHECK (form IN ('10-K', '10-Q')),
+    filed_at DATE NOT NULL,
+    accepted_at TIMESTAMP WITH TIME ZONE,
+    period_end DATE,
+    primary_document TEXT,
+    cik VARCHAR(10),
+    entity_name TEXT,
+    facts JSONB NOT NULL,
+    fetched_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (symbol, accession_number)
+);
+
+CREATE INDEX IF NOT EXISTS idx_sec_financial_snapshots_symbol_filed
+    ON sec_financial_snapshots (symbol, filed_at DESC);
 
 CREATE TABLE IF NOT EXISTS investment_reports (
     id BIGSERIAL PRIMARY KEY,
@@ -104,8 +129,22 @@ CREATE TABLE IF NOT EXISTS investment_reports (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE UNIQUE INDEX IF NOT EXISTS uq_sample_investment_reports_fixture
-    ON investment_reports (ticker, generated_at, model_tier);
+ALTER TABLE investment_reports
+    ADD COLUMN IF NOT EXISTS report_schema_version INTEGER,
+    ADD COLUMN IF NOT EXISTS analysis_as_of TIMESTAMP WITH TIME ZONE,
+    ADD COLUMN IF NOT EXISTS generation_mode VARCHAR(50),
+    ADD COLUMN IF NOT EXISTS model_provider VARCHAR(50),
+    ADD COLUMN IF NOT EXISTS model_name VARCHAR(255),
+    ADD COLUMN IF NOT EXISTS prompt_version VARCHAR(100),
+    ADD COLUMN IF NOT EXISTS agent_outputs JSONB,
+    ADD COLUMN IF NOT EXISTS generation_metadata JSONB;
+
+DROP INDEX IF EXISTS uq_sample_investment_reports_fixture;
+
+CREATE UNIQUE INDEX IF NOT EXISTS uq_sample_investment_reports_fixture_v2
+    ON investment_reports (
+        ticker, analysis_as_of, model_provider, model_name, prompt_version
+    );
 
 CREATE TABLE IF NOT EXISTS sample_dataset_metadata (
     singleton_id SMALLINT PRIMARY KEY DEFAULT 1 CHECK (singleton_id = 1),

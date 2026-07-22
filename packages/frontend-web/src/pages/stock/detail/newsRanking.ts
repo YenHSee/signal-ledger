@@ -10,6 +10,8 @@ const SOURCE_TIERS: Record<string, number> = {
   "wall street journal": 1,
   "the wall street journal": 1,
   "associated press": 1,
+  "dow jones": 1,
+  dowjones: 1,
   cnbc: 2,
   marketwatch: 2,
   barrons: 2,

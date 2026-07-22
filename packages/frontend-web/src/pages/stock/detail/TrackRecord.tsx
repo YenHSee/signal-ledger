@@ -8,34 +8,23 @@ import {
 
 interface TrackRecordProps {
   history: InvestmentReportHistoryItem[];
-  currentPrice: number | null;
+  selectedReportId: number | null;
+  onSelect: (reportId: number) => void;
 }
 
-function computePerformance(
-  item: InvestmentReportHistoryItem,
-  currentPrice: number | null,
-): number | null {
-  if (item.priceAtGeneration === null || currentPrice === null) return null;
-  if (item.priceAtGeneration === 0) return null;
-  return (
-    ((currentPrice - item.priceAtGeneration) / item.priceAtGeneration) * 100
-  );
-}
-
-function isCallCorrect(
-  conclusion: string | null,
-  performancePct: number | null,
-): boolean | null {
-  if (!conclusion || performancePct === null) return null;
-  const c = conclusion.toUpperCase();
-  if (c.includes("BUY")) return performancePct > 0;
-  if (c.includes("SELL")) return performancePct < 0;
-  return null;
+function verdictStyle(verdict: InvestmentReportHistoryItem["verdict"]): string {
+  if (verdict === "FAVORABLE") return "text-green-400";
+  if (verdict === "ADVERSE" || verdict === "DOWNSIDE_BREAKDOWN") {
+    return "text-red-400";
+  }
+  if (verdict === "UPSIDE_BREAKOUT") return "text-blue-400";
+  return "text-gray-400";
 }
 
 export default function TrackRecord({
   history,
-  currentPrice,
+  selectedReportId,
+  onSelect,
 }: TrackRecordProps) {
   return (
     <div className="bg-gray-800 rounded-xl border border-gray-700 p-6 shadow-xl">
@@ -67,18 +56,37 @@ export default function TrackRecord({
                 <th className="py-2 pr-4 font-medium text-right">
                   Performance Since
                 </th>
-                <th className="py-2 font-medium text-center">Verdict</th>
+                <th className="py-2 font-medium text-center">
+                  Interim Verdict
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-700/60">
               {history.map((item) => {
-                const performancePct = computePerformance(item, currentPrice);
-                const correct = isCallCorrect(item.conclusion, performancePct);
+                const performancePct = item.performanceSincePct;
 
                 return (
-                  <tr key={item.id} className="text-gray-300">
+                  <tr
+                    key={item.id}
+                    role="button"
+                    tabIndex={0}
+                    aria-current={
+                      item.id === selectedReportId ? "true" : undefined
+                    }
+                    onClick={() => onSelect(item.id)}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        onSelect(item.id);
+                      }
+                    }}
+                    className={`cursor-pointer text-gray-300 transition-colors hover:bg-gray-700/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500 ${
+                      item.id === selectedReportId ? "bg-blue-500/10" : ""
+                    }`}
+                    title="Open this historical report"
+                  >
                     <td className="py-3 pr-4 whitespace-nowrap text-gray-400">
-                      {formatDate(item.generatedAt)}
+                      {formatDate(item.analysisAsOf ?? item.generatedAt)}
                     </td>
                     <td className="py-3 pr-4">
                       <span
@@ -106,22 +114,14 @@ export default function TrackRecord({
                       )}
                     </td>
                     <td className="py-3 text-center">
-                      {correct === null ||
-                      (performancePct === 0 && !correct) ? (
+                      {item.verdict === null ? (
                         <span className="text-gray-500">—</span>
-                      ) : correct ? (
-                        <span
-                          className="text-green-400"
-                          title="Call played out correctly"
-                        >
-                          ✓
-                        </span>
                       ) : (
                         <span
-                          className="text-red-400"
-                          title="Call did not play out"
+                          className={`text-xs font-bold ${verdictStyle(item.verdict)}`}
+                          title={`${item.verdictStatus ?? "interim"}; ${item.verdictMethod ?? "method unavailable"}`}
                         >
-                          ✕
+                          {item.verdict.replaceAll("_", " ")}
                         </span>
                       )}
                     </td>

@@ -112,6 +112,9 @@ export class StockController {
     @Param('ticker') ticker: string,
     @Query('days') days?: string,
   ): Promise<StockNewsItem[]> {
-    return this.stockService.getCompanyNews(ticker, days ? Number(days) : 30);
+    return this.stockService.getCompanyNews(
+      ticker,
+      days ? Number(days) : undefined,
+    );
   }
 }

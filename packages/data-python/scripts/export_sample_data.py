@@ -21,9 +21,9 @@ from scripts.seed_sample_data import load_fixture
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 DEFAULT_FIXTURE_DIR = REPO_ROOT / "sample-data" / "v1"
-DEFAULT_PRICE_START = date(2025, 7, 18)
+DEFAULT_PRICE_START = date(2026, 1, 2)
 DEFAULT_PRICE_END = date(2026, 7, 17)
-DATASET_VERSION = "v1-draft.3"
+DATASET_VERSION = "v1-draft.5"
 
 
 class SampleExportError(RuntimeError):
@@ -164,7 +164,7 @@ def validate_prices(rows: list[dict], tickers: list[str], start: date, end: date
             raise SampleExportError(f"{ticker} does not cover the beginning of the date range.")
         if max(dates) < end - timedelta(days=7):
             raise SampleExportError(f"{ticker} does not cover the end of the date range.")
-        if not 230 <= len(ticker_rows) <= 270:
+        if not 125 <= len(ticker_rows) <= 155:
             raise SampleExportError(f"{ticker} has an unexpected {len(ticker_rows)} daily rows.")
         for row in ticker_rows:
             if row["close_price"] is None or row["volume"] is None:
@@ -210,15 +210,18 @@ def build_fixture(
     manifest["expectedRows"]["daily_prices"] = len(prices)
     manifest["targetCoverage"].update(
         {
+            "dailyPriceMonths": 7,
             "priceStart": start.isoformat(),
             "priceEnd": end.isoformat(),
         }
     )
-    manifest["sources"] = {
-        "fundamentals": "signal_ledger live database snapshot",
-        "dailyPrices": "Yahoo Finance via yfinance",
-        "redistributionReview": "pending",
-    }
+    manifest.setdefault("sources", {}).update(
+        {
+            "fundamentals": "signal_ledger live database snapshot",
+            "dailyPrices": "Yahoo Finance via yfinance",
+            "redistributionReview": "pending",
+        }
+    )
 
     if not dry_run:
         with tempfile.TemporaryDirectory(prefix="sample-v1-", dir=fixture_dir.parent) as temp_name:
@@ -261,7 +264,7 @@ def main() -> None:
     for ticker, count in sorted(result["priceCounts"].items()):
         print(f"  {ticker}: {count}")
     print("Dry run only; fixture files were not changed." if result["dryRun"] else "Fixture files updated atomically.")
-    print("DRAFT ONLY — reports, news, and redistribution review are still incomplete.")
+    print("DRAFT ONLY — reports and redistribution review are still incomplete.")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,6404 @@
+{
+  "schema_version": 2,
+  "ticker": "TSLA",
+  "as_of": "2026-07-17",
+  "prices": [
+    {
+      "trade_date": "2024-11-15",
+      "open_price": 310.57,
+      "high_price": 324.68,
+      "low_price": 309.22,
+      "close_price": 320.72,
+      "adjusted_close": 320.72,
+      "volume": 114440300
+    },
+    {
+      "trade_date": "2024-11-18",
+      "open_price": 340.73,
+      "high_price": 348.55,
+      "low_price": 330.01,
+      "close_price": 338.74,
+      "adjusted_close": 338.74,
+      "volume": 126085600
+    },
+    {
+      "trade_date": "2024-11-19",
+      "open_price": 335.76,
+      "high_price": 347.38,
+      "low_price": 332.75,
+      "close_price": 346.0,
+      "adjusted_close": 346.0,
+      "volume": 88852500
+    },
+    {
+      "trade_date": "2024-11-20",
+      "open_price": 345.0,
+      "high_price": 346.6,
+      "low_price": 334.3,
+      "close_price": 342.03,
+      "adjusted_close": 342.03,
+      "volume": 66340700
+    },
+    {
+      "trade_date": "2024-11-21",
+      "open_price": 343.81,
+      "high_price": 347.99,
+      "low_price": 335.28,
+      "close_price": 339.64,
+      "adjusted_close": 339.64,
+      "volume": 58011700
+    },
+    {
+      "trade_date": "2024-11-22",
+      "open_price": 341.09,
+      "high_price": 361.53,
+      "low_price": 337.7,
+      "close_price": 352.56,
+      "adjusted_close": 352.56,
+      "volume": 89140700
+    },
+    {
+      "trade_date": "2024-11-25",
+      "open_price": 360.14,
+      "high_price": 361.93,
+      "low_price": 338.2,
+      "close_price": 338.59,
+      "adjusted_close": 338.59,
+      "volume": 95890900
+    },
+    {
+      "trade_date": "2024-11-26",
+      "open_price": 341.0,
+      "high_price": 346.96,
+      "low_price": 335.66,
+      "close_price": 338.23,
+      "adjusted_close": 338.23,
+      "volume": 62295900
+    },
+    {
+      "trade_date": "2024-11-27",
+      "open_price": 341.8,
+      "high_price": 342.55,
+      "low_price": 326.59,
+      "close_price": 332.89,
+      "adjusted_close": 332.89,
+      "volume": 57896400
+    },
+    {
+      "trade_date": "2024-11-29",
+      "open_price": 336.08,
+      "high_price": 345.45,
+      "low_price": 334.65,
+      "close_price": 345.16,
+      "adjusted_close": 345.16,
+      "volume": 37167600
+    },
+    {
+      "trade_date": "2024-12-02",
+      "open_price": 352.38,
+      "high_price": 360.0,
+      "low_price": 351.15,
+      "close_price": 357.09,
+      "adjusted_close": 357.09,
+      "volume": 77986500
+    },
+    {
+      "trade_date": "2024-12-03",
+      "open_price": 351.8,
+      "high_price": 355.69,
+      "low_price": 348.2,
+      "close_price": 351.42,
+      "adjusted_close": 351.42,
+      "volume": 58267200
+    },
+    {
+      "trade_date": "2024-12-04",
+      "open_price": 353.0,
+      "high_price": 358.1,
+      "low_price": 348.6,
+      "close_price": 357.93,
+      "adjusted_close": 357.93,
+      "volume": 50810900
+    },
+    {
+      "trade_date": "2024-12-05",
+      "open_price": 359.87,
+      "high_price": 375.43,
+      "low_price": 359.5,
+      "close_price": 369.49,
+      "adjusted_close": 369.49,
+      "volume": 81403600
+    },
+    {
+      "trade_date": "2024-12-06",
+      "open_price": 377.42,
+      "high_price": 389.49,
+      "low_price": 370.8,
+      "close_price": 389.22,
+      "adjusted_close": 389.22,
+      "volume": 81455800
+    },
+    {
+      "trade_date": "2024-12-09",
+      "open_price": 397.61,
+      "high_price": 404.8,
+      "low_price": 378.01,
+      "close_price": 389.79,
+      "adjusted_close": 389.79,
+      "volume": 96359200
+    },
+    {
+      "trade_date": "2024-12-10",
+      "open_price": 392.68,
+      "high_price": 409.73,
+      "low_price": 390.85,
+      "close_price": 400.99,
+      "adjusted_close": 400.99,
+      "volume": 97563600
+    },
+    {
+      "trade_date": "2024-12-11",
+      "open_price": 409.7,
+      "high_price": 424.88,
+      "low_price": 402.38,
+      "close_price": 424.77,
+      "adjusted_close": 424.77,
+      "volume": 104287600
+    },
+    {
+      "trade_date": "2024-12-12",
+      "open_price": 424.84,
+      "high_price": 429.3,
+      "low_price": 415.0,
+      "close_price": 418.1,
+      "adjusted_close": 418.1,
+      "volume": 87752200
+    },
+    {
+      "trade_date": "2024-12-13",
+      "open_price": 420.0,
+      "high_price": 436.3,
+      "low_price": 415.71,
+      "close_price": 436.23,
+      "adjusted_close": 436.23,
+      "volume": 89000200
+    },
+    {
+      "trade_date": "2024-12-16",
+      "open_price": 441.09,
+      "high_price": 463.19,
+      "low_price": 436.15,
+      "close_price": 463.02,
+      "adjusted_close": 463.02,
+      "volume": 114083800
+    },
+    {
+      "trade_date": "2024-12-17",
+      "open_price": 475.9,
+      "high_price": 483.99,
+      "low_price": 457.51,
+      "close_price": 479.86,
+      "adjusted_close": 479.86,
+      "volume": 131223000
+    },
+    {
+      "trade_date": "2024-12-18",
+      "open_price": 466.5,
+      "high_price": 488.54,
+      "low_price": 427.01,
+      "close_price": 440.13,
+      "adjusted_close": 440.13,
+      "volume": 149340800
+    },
+    {
+      "trade_date": "2024-12-19",
+      "open_price": 451.88,
+      "high_price": 456.36,
+      "low_price": 420.02,
+      "close_price": 436.17,
+      "adjusted_close": 436.17,
+      "volume": 118566100
+    },
+    {
+      "trade_date": "2024-12-20",
+      "open_price": 425.51,
+      "high_price": 447.08,
+      "low_price": 417.64,
+      "close_price": 421.06,
+      "adjusted_close": 421.06,
+      "volume": 132216200
+    },
+    {
+      "trade_date": "2024-12-23",
+      "open_price": 431.0,
+      "high_price": 434.51,
+      "low_price": 415.41,
+      "close_price": 430.6,
+      "adjusted_close": 430.6,
+      "volume": 72698100
+    },
+    {
+      "trade_date": "2024-12-24",
+      "open_price": 435.9,
+      "high_price": 462.78,
+      "low_price": 435.14,
+      "close_price": 462.28,
+      "adjusted_close": 462.28,
+      "volume": 59551800
+    },
+    {
+      "trade_date": "2024-12-26",
+      "open_price": 465.16,
+      "high_price": 465.33,
+      "low_price": 451.02,
+      "close_price": 454.13,
+      "adjusted_close": 454.13,
+      "volume": 76366400
+    },
+    {
+      "trade_date": "2024-12-27",
+      "open_price": 449.52,
+      "high_price": 450.0,
+      "low_price": 426.5,
+      "close_price": 431.66,
+      "adjusted_close": 431.66,
+      "volume": 82666800
+    },
+    {
+      "trade_date": "2024-12-30",
+      "open_price": 419.4,
+      "high_price": 427.0,
+      "low_price": 415.75,
+      "close_price": 417.41,
+      "adjusted_close": 417.41,
+      "volume": 64941000
+    },
+    {
+      "trade_date": "2024-12-31",
+      "open_price": 423.79,
+      "high_price": 427.93,
+      "low_price": 402.54,
+      "close_price": 403.84,
+      "adjusted_close": 403.84,
+      "volume": 76825100
+    },
+    {
+      "trade_date": "2025-01-02",
+      "open_price": 390.1,
+      "high_price": 392.73,
+      "low_price": 373.04,
+      "close_price": 379.28,
+      "adjusted_close": 379.28,
+      "volume": 109710700
+    },
+    {
+      "trade_date": "2025-01-03",
+      "open_price": 381.48,
+      "high_price": 411.88,
+      "low_price": 379.45,
+      "close_price": 410.44,
+      "adjusted_close": 410.44,
+      "volume": 95423300
+    },
+    {
+      "trade_date": "2025-01-06",
+      "open_price": 423.2,
+      "high_price": 426.43,
+      "low_price": 401.7,
+      "close_price": 411.05,
+      "adjusted_close": 411.05,
+      "volume": 85516500
+    },
+    {
+      "trade_date": "2025-01-07",
+      "open_price": 405.83,
+      "high_price": 414.33,
+      "low_price": 390.0,
+      "close_price": 394.36,
+      "adjusted_close": 394.36,
+      "volume": 75699500
+    },
+    {
+      "trade_date": "2025-01-08",
+      "open_price": 392.95,
+      "high_price": 402.5,
+      "low_price": 387.4,
+      "close_price": 394.94,
+      "adjusted_close": 394.94,
+      "volume": 73038800
+    },
+    {
+      "trade_date": "2025-01-10",
+      "open_price": 391.4,
+      "high_price": 399.28,
+      "low_price": 377.29,
+      "close_price": 394.74,
+      "adjusted_close": 394.74,
+      "volume": 62287300
+    },
+    {
+      "trade_date": "2025-01-13",
+      "open_price": 383.21,
+      "high_price": 403.79,
+      "low_price": 380.07,
+      "close_price": 403.31,
+      "adjusted_close": 403.31,
+      "volume": 67580500
+    },
+    {
+      "trade_date": "2025-01-14",
+      "open_price": 414.34,
+      "high_price": 422.64,
+      "low_price": 394.54,
+      "close_price": 396.36,
+      "adjusted_close": 396.36,
+      "volume": 84565000
+    },
+    {
+      "trade_date": "2025-01-15",
+      "open_price": 409.9,
+      "high_price": 429.8,
+      "low_price": 405.66,
+      "close_price": 428.22,
+      "adjusted_close": 428.22,
+      "volume": 81375500
+    },
+    {
+      "trade_date": "2025-01-16",
+      "open_price": 423.49,
+      "high_price": 424.0,
+      "low_price": 409.13,
+      "close_price": 413.82,
+      "adjusted_close": 413.82,
+      "volume": 68335200
+    },
+    {
+      "trade_date": "2025-01-17",
+      "open_price": 421.5,
+      "high_price": 439.74,
+      "low_price": 419.75,
+      "close_price": 426.5,
+      "adjusted_close": 426.5,
+      "volume": 94991400
+    },
+    {
+      "trade_date": "2025-01-21",
+      "open_price": 432.64,
+      "high_price": 433.2,
+      "low_price": 406.31,
+      "close_price": 424.07,
+      "adjusted_close": 424.07,
+      "volume": 87320900
+    },
+    {
+      "trade_date": "2025-01-22",
+      "open_price": 416.81,
+      "high_price": 428.0,
+      "low_price": 414.59,
+      "close_price": 415.11,
+      "adjusted_close": 415.11,
+      "volume": 60963300
+    },
+    {
+      "trade_date": "2025-01-23",
+      "open_price": 416.06,
+      "high_price": 420.73,
+      "low_price": 408.95,
+      "close_price": 412.38,
+      "adjusted_close": 412.38,
+      "volume": 50690600
+    },
+    {
+      "trade_date": "2025-01-24",
+      "open_price": 414.45,
+      "high_price": 418.88,
+      "low_price": 405.78,
+      "close_price": 406.58,
+      "adjusted_close": 406.58,
+      "volume": 56427100
+    },
+    {
+      "trade_date": "2025-01-27",
+      "open_price": 394.8,
+      "high_price": 406.69,
+      "low_price": 389.0,
+      "close_price": 397.15,
+      "adjusted_close": 397.15,
+      "volume": 58125500
+    },
+    {
+      "trade_date": "2025-01-28",
+      "open_price": 396.91,
+      "high_price": 400.59,
+      "low_price": 386.5,
+      "close_price": 398.09,
+      "adjusted_close": 398.09,
+      "volume": 48910700
+    },
+    {
+      "trade_date": "2025-01-29",
+      "open_price": 395.21,
+      "high_price": 398.59,
+      "low_price": 384.48,
+      "close_price": 389.1,
+      "adjusted_close": 389.1,
+      "volume": 68033600
+    },
+    {
+      "trade_date": "2025-01-30",
+      "open_price": 410.78,
+      "high_price": 412.5,
+      "low_price": 384.41,
+      "close_price": 400.28,
+      "adjusted_close": 400.28,
+      "volume": 98092900
+    },
+    {
+      "trade_date": "2025-01-31",
+      "open_price": 401.53,
+      "high_price": 419.99,
+      "low_price": 401.34,
+      "close_price": 404.6,
+      "adjusted_close": 404.6,
+      "volume": 83283600
+    },
+    {
+      "trade_date": "2025-02-03",
+      "open_price": 386.68,
+      "high_price": 389.17,
+      "low_price": 374.36,
+      "close_price": 383.68,
+      "adjusted_close": 383.68,
+      "volume": 93732100
+    },
+    {
+      "trade_date": "2025-02-04",
+      "open_price": 382.63,
+      "high_price": 394.0,
+      "low_price": 381.4,
+      "close_price": 392.21,
+      "adjusted_close": 392.21,
+      "volume": 57072200
+    },
+    {
+      "trade_date": "2025-02-05",
+      "open_price": 387.51,
+      "high_price": 388.39,
+      "low_price": 375.53,
+      "close_price": 378.17,
+      "adjusted_close": 378.17,
+      "volume": 57223300
+    },
+    {
+      "trade_date": "2025-02-06",
+      "open_price": 373.03,
+      "high_price": 375.4,
+      "low_price": 363.18,
+      "close_price": 374.32,
+      "adjusted_close": 374.32,
+      "volume": 77918200
+    },
+    {
+      "trade_date": "2025-02-07",
+      "open_price": 370.19,
+      "high_price": 380.55,
+      "low_price": 360.34,
+      "close_price": 361.62,
+      "adjusted_close": 361.62,
+      "volume": 70298300
+    },
+    {
+      "trade_date": "2025-02-10",
+      "open_price": 356.21,
+      "high_price": 362.7,
+      "low_price": 350.51,
+      "close_price": 350.73,
+      "adjusted_close": 350.73,
+      "volume": 77514900
+    },
+    {
+      "trade_date": "2025-02-11",
+      "open_price": 345.8,
+      "high_price": 349.37,
+      "low_price": 325.1,
+      "close_price": 328.5,
+      "adjusted_close": 328.5,
+      "volume": 118543400
+    },
+    {
+      "trade_date": "2025-02-12",
+      "open_price": 329.94,
+      "high_price": 346.4,
+      "low_price": 329.12,
+      "close_price": 336.51,
+      "adjusted_close": 336.51,
+      "volume": 105382700
+    },
+    {
+      "trade_date": "2025-02-13",
+      "open_price": 345.0,
+      "high_price": 358.69,
+      "low_price": 342.85,
+      "close_price": 355.94,
+      "adjusted_close": 355.94,
+      "volume": 89441500
+    },
+    {
+      "trade_date": "2025-02-14",
+      "open_price": 360.62,
+      "high_price": 362.0,
+      "low_price": 347.5,
+      "close_price": 355.84,
+      "adjusted_close": 355.84,
+      "volume": 68277300
+    },
+    {
+      "trade_date": "2025-02-18",
+      "open_price": 355.01,
+      "high_price": 359.1,
+      "low_price": 350.02,
+      "close_price": 354.11,
+      "adjusted_close": 354.11,
+      "volume": 51631700
+    },
+    {
+      "trade_date": "2025-02-19",
+      "open_price": 354.0,
+      "high_price": 367.34,
+      "low_price": 353.67,
+      "close_price": 360.56,
+      "adjusted_close": 360.56,
+      "volume": 67094400
+    },
+    {
+      "trade_date": "2025-02-20",
+      "open_price": 361.51,
+      "high_price": 362.3,
+      "low_price": 348.0,
+      "close_price": 354.4,
+      "adjusted_close": 354.4,
+      "volume": 45965400
+    },
+    {
+      "trade_date": "2025-02-21",
+      "open_price": 353.44,
+      "high_price": 354.98,
+      "low_price": 334.42,
+      "close_price": 337.8,
+      "adjusted_close": 337.8,
+      "volume": 74058600
+    },
+    {
+      "trade_date": "2025-02-24",
+      "open_price": 338.14,
+      "high_price": 342.4,
+      "low_price": 324.7,
+      "close_price": 330.53,
+      "adjusted_close": 330.53,
+      "volume": 76052300
+    },
+    {
+      "trade_date": "2025-02-25",
+      "open_price": 327.02,
+      "high_price": 328.89,
+      "low_price": 297.25,
+      "close_price": 302.8,
+      "adjusted_close": 302.8,
+      "volume": 134228800
+    },
+    {
+      "trade_date": "2025-02-26",
+      "open_price": 303.71,
+      "high_price": 309.0,
+      "low_price": 288.04,
+      "close_price": 290.8,
+      "adjusted_close": 290.8,
+      "volume": 100118300
+    },
+    {
+      "trade_date": "2025-02-27",
+      "open_price": 291.16,
+      "high_price": 297.23,
+      "low_price": 280.88,
+      "close_price": 281.95,
+      "adjusted_close": 281.95,
+      "volume": 101748200
+    },
+    {
+      "trade_date": "2025-02-28",
+      "open_price": 279.5,
+      "high_price": 293.88,
+      "low_price": 273.6,
+      "close_price": 292.98,
+      "adjusted_close": 292.98,
+      "volume": 115697000
+    },
+    {
+      "trade_date": "2025-03-03",
+      "open_price": 300.34,
+      "high_price": 303.94,
+      "low_price": 277.3,
+      "close_price": 284.65,
+      "adjusted_close": 284.65,
+      "volume": 115551400
+    },
+    {
+      "trade_date": "2025-03-04",
+      "open_price": 270.93,
+      "high_price": 284.35,
+      "low_price": 261.84,
+      "close_price": 272.04,
+      "adjusted_close": 272.04,
+      "volume": 126706600
+    },
+    {
+      "trade_date": "2025-03-05",
+      "open_price": 272.92,
+      "high_price": 279.55,
+      "low_price": 267.71,
+      "close_price": 279.1,
+      "adjusted_close": 279.1,
+      "volume": 94042900
+    },
+    {
+      "trade_date": "2025-03-06",
+      "open_price": 272.06,
+      "high_price": 272.65,
+      "low_price": 260.02,
+      "close_price": 263.45,
+      "adjusted_close": 263.45,
+      "volume": 98451600
+    },
+    {
+      "trade_date": "2025-03-07",
+      "open_price": 259.32,
+      "high_price": 266.25,
+      "low_price": 250.73,
+      "close_price": 262.67,
+      "adjusted_close": 262.67,
+      "volume": 102369600
+    },
+    {
+      "trade_date": "2025-03-10",
+      "open_price": 252.54,
+      "high_price": 253.37,
+      "low_price": 220.0,
+      "close_price": 222.15,
+      "adjusted_close": 222.15,
+      "volume": 189076900
+    },
+    {
+      "trade_date": "2025-03-11",
+      "open_price": 225.31,
+      "high_price": 237.06,
+      "low_price": 217.02,
+      "close_price": 230.58,
+      "adjusted_close": 230.58,
+      "volume": 174896400
+    },
+    {
+      "trade_date": "2025-03-12",
+      "open_price": 247.22,
+      "high_price": 251.84,
+      "low_price": 241.1,
+      "close_price": 248.09,
+      "adjusted_close": 248.09,
+      "volume": 142215700
+    },
+    {
+      "trade_date": "2025-03-13",
+      "open_price": 248.13,
+      "high_price": 248.29,
+      "low_price": 232.6,
+      "close_price": 240.68,
+      "adjusted_close": 240.68,
+      "volume": 114813500
+    },
+    {
+      "trade_date": "2025-03-14",
+      "open_price": 247.31,
+      "high_price": 251.58,
+      "low_price": 240.73,
+      "close_price": 249.98,
+      "adjusted_close": 249.98,
+      "volume": 100242300
+    },
+    {
+      "trade_date": "2025-03-17",
+      "open_price": 245.06,
+      "high_price": 245.4,
+      "low_price": 232.8,
+      "close_price": 238.01,
+      "adjusted_close": 238.01,
+      "volume": 111900600
+    },
+    {
+      "trade_date": "2025-03-18",
+      "open_price": 228.16,
+      "high_price": 230.1,
+      "low_price": 222.28,
+      "close_price": 225.31,
+      "adjusted_close": 225.31,
+      "volume": 111477600
+    },
+    {
+      "trade_date": "2025-03-19",
+      "open_price": 231.61,
+      "high_price": 241.41,
+      "low_price": 229.2,
+      "close_price": 235.86,
+      "adjusted_close": 235.86,
+      "volume": 111993800
+    },
+    {
+      "trade_date": "2025-03-20",
+      "open_price": 233.35,
+      "high_price": 238.0,
+      "low_price": 230.05,
+      "close_price": 236.26,
+      "adjusted_close": 236.26,
+      "volume": 99028300
+    },
+    {
+      "trade_date": "2025-03-21",
+      "open_price": 234.99,
+      "high_price": 249.52,
+      "low_price": 234.55,
+      "close_price": 248.71,
+      "adjusted_close": 248.71,
+      "volume": 132728700
+    },
+    {
+      "trade_date": "2025-03-24",
+      "open_price": 258.08,
+      "high_price": 278.64,
+      "low_price": 256.33,
+      "close_price": 278.39,
+      "adjusted_close": 278.39,
+      "volume": 169079900
+    },
+    {
+      "trade_date": "2025-03-25",
+      "open_price": 283.6,
+      "high_price": 288.2,
+      "low_price": 271.28,
+      "close_price": 288.14,
+      "adjusted_close": 288.14,
+      "volume": 150361500
+    },
+    {
+      "trade_date": "2025-03-26",
+      "open_price": 282.66,
+      "high_price": 284.9,
+      "low_price": 266.51,
+      "close_price": 272.06,
+      "adjusted_close": 272.06,
+      "volume": 153629800
+    },
+    {
+      "trade_date": "2025-03-27",
+      "open_price": 272.48,
+      "high_price": 291.85,
+      "low_price": 271.82,
+      "close_price": 273.13,
+      "adjusted_close": 273.13,
+      "volume": 162572100
+    },
+    {
+      "trade_date": "2025-03-28",
+      "open_price": 275.58,
+      "high_price": 276.1,
+      "low_price": 260.57,
+      "close_price": 263.55,
+      "adjusted_close": 263.55,
+      "volume": 123809400
+    },
+    {
+      "trade_date": "2025-03-31",
+      "open_price": 249.31,
+      "high_price": 260.56,
+      "low_price": 243.36,
+      "close_price": 259.16,
+      "adjusted_close": 259.16,
+      "volume": 134008900
+    },
+    {
+      "trade_date": "2025-04-01",
+      "open_price": 263.8,
+      "high_price": 277.45,
+      "low_price": 259.25,
+      "close_price": 268.46,
+      "adjusted_close": 268.46,
+      "volume": 146486900
+    },
+    {
+      "trade_date": "2025-04-02",
+      "open_price": 254.6,
+      "high_price": 284.99,
+      "low_price": 251.27,
+      "close_price": 282.76,
+      "adjusted_close": 282.76,
+      "volume": 212787800
+    },
+    {
+      "trade_date": "2025-04-03",
+      "open_price": 265.29,
+      "high_price": 276.3,
+      "low_price": 261.51,
+      "close_price": 267.28,
+      "adjusted_close": 267.28,
+      "volume": 136174300
+    },
+    {
+      "trade_date": "2025-04-04",
+      "open_price": 255.38,
+      "high_price": 261.0,
+      "low_price": 236.0,
+      "close_price": 239.43,
+      "adjusted_close": 239.43,
+      "volume": 181229400
+    },
+    {
+      "trade_date": "2025-04-07",
+      "open_price": 223.78,
+      "high_price": 252.0,
+      "low_price": 214.25,
+      "close_price": 233.29,
+      "adjusted_close": 233.29,
+      "volume": 183453800
+    },
+    {
+      "trade_date": "2025-04-08",
+      "open_price": 245.0,
+      "high_price": 250.44,
+      "low_price": 217.8,
+      "close_price": 221.86,
+      "adjusted_close": 221.86,
+      "volume": 171603500
+    },
+    {
+      "trade_date": "2025-04-09",
+      "open_price": 224.69,
+      "high_price": 274.69,
+      "low_price": 223.88,
+      "close_price": 272.2,
+      "adjusted_close": 272.2,
+      "volume": 219433400
+    },
+    {
+      "trade_date": "2025-04-10",
+      "open_price": 260.0,
+      "high_price": 262.49,
+      "low_price": 239.33,
+      "close_price": 252.4,
+      "adjusted_close": 252.4,
+      "volume": 181722600
+    },
+    {
+      "trade_date": "2025-04-11",
+      "open_price": 251.84,
+      "high_price": 257.74,
+      "low_price": 241.36,
+      "close_price": 252.31,
+      "adjusted_close": 252.31,
+      "volume": 128948100
+    },
+    {
+      "trade_date": "2025-04-14",
+      "open_price": 258.36,
+      "high_price": 261.8,
+      "low_price": 245.93,
+      "close_price": 252.35,
+      "adjusted_close": 252.35,
+      "volume": 100135200
+    },
+    {
+      "trade_date": "2025-04-15",
+      "open_price": 249.91,
+      "high_price": 258.75,
+      "low_price": 247.54,
+      "close_price": 254.11,
+      "adjusted_close": 254.11,
+      "volume": 79594300
+    },
+    {
+      "trade_date": "2025-04-16",
+      "open_price": 247.61,
+      "high_price": 251.97,
+      "low_price": 233.89,
+      "close_price": 241.55,
+      "adjusted_close": 241.55,
+      "volume": 112378700
+    },
+    {
+      "trade_date": "2025-04-17",
+      "open_price": 243.47,
+      "high_price": 244.34,
+      "low_price": 237.68,
+      "close_price": 241.37,
+      "adjusted_close": 241.37,
+      "volume": 83404800
+    },
+    {
+      "trade_date": "2025-04-21",
+      "open_price": 230.26,
+      "high_price": 232.21,
+      "low_price": 222.79,
+      "close_price": 227.5,
+      "adjusted_close": 227.5,
+      "volume": 97768000
+    },
+    {
+      "trade_date": "2025-04-22",
+      "open_price": 230.96,
+      "high_price": 242.79,
+      "low_price": 229.85,
+      "close_price": 237.97,
+      "adjusted_close": 237.97,
+      "volume": 120858500
+    },
+    {
+      "trade_date": "2025-04-23",
+      "open_price": 254.86,
+      "high_price": 259.45,
+      "low_price": 244.43,
+      "close_price": 250.74,
+      "adjusted_close": 250.74,
+      "volume": 150381900
+    },
+    {
+      "trade_date": "2025-04-24",
+      "open_price": 250.5,
+      "high_price": 259.54,
+      "low_price": 249.2,
+      "close_price": 259.51,
+      "adjusted_close": 259.51,
+      "volume": 94464200
+    },
+    {
+      "trade_date": "2025-04-25",
+      "open_price": 261.69,
+      "high_price": 286.85,
+      "low_price": 259.63,
+      "close_price": 284.95,
+      "adjusted_close": 284.95,
+      "volume": 167560700
+    },
+    {
+      "trade_date": "2025-04-28",
+      "open_price": 288.98,
+      "high_price": 294.86,
+      "low_price": 272.42,
+      "close_price": 285.88,
+      "adjusted_close": 285.88,
+      "volume": 151731800
+    },
+    {
+      "trade_date": "2025-04-29",
+      "open_price": 285.5,
+      "high_price": 293.32,
+      "low_price": 279.47,
+      "close_price": 292.03,
+      "adjusted_close": 292.03,
+      "volume": 108906600
+    },
+    {
+      "trade_date": "2025-04-30",
+      "open_price": 279.9,
+      "high_price": 284.45,
+      "low_price": 270.78,
+      "close_price": 282.16,
+      "adjusted_close": 282.16,
+      "volume": 128961100
+    },
+    {
+      "trade_date": "2025-05-01",
+      "open_price": 280.01,
+      "high_price": 290.87,
+      "low_price": 279.81,
+      "close_price": 280.52,
+      "adjusted_close": 280.52,
+      "volume": 99659000
+    },
+    {
+      "trade_date": "2025-05-02",
+      "open_price": 284.9,
+      "high_price": 294.78,
+      "low_price": 279.81,
+      "close_price": 287.21,
+      "adjusted_close": 287.21,
+      "volume": 114454700
+    },
+    {
+      "trade_date": "2025-05-05",
+      "open_price": 284.57,
+      "high_price": 284.85,
+      "low_price": 274.4,
+      "close_price": 280.26,
+      "adjusted_close": 280.26,
+      "volume": 94618900
+    },
+    {
+      "trade_date": "2025-05-06",
+      "open_price": 273.11,
+      "high_price": 277.73,
+      "low_price": 271.35,
+      "close_price": 275.35,
+      "adjusted_close": 275.35,
+      "volume": 76715800
+    },
+    {
+      "trade_date": "2025-05-07",
+      "open_price": 276.88,
+      "high_price": 277.92,
+      "low_price": 271.0,
+      "close_price": 276.22,
+      "adjusted_close": 276.22,
+      "volume": 71592600
+    },
+    {
+      "trade_date": "2025-05-08",
+      "open_price": 279.63,
+      "high_price": 289.8,
+      "low_price": 279.41,
+      "close_price": 284.82,
+      "adjusted_close": 284.82,
+      "volume": 97539400
+    },
+    {
+      "trade_date": "2025-05-09",
+      "open_price": 290.21,
+      "high_price": 307.04,
+      "low_price": 290.0,
+      "close_price": 298.26,
+      "adjusted_close": 298.26,
+      "volume": 132387800
+    },
+    {
+      "trade_date": "2025-05-12",
+      "open_price": 321.99,
+      "high_price": 322.21,
+      "low_price": 311.5,
+      "close_price": 318.38,
+      "adjusted_close": 318.38,
+      "volume": 112826700
+    },
+    {
+      "trade_date": "2025-05-13",
+      "open_price": 320.0,
+      "high_price": 337.59,
+      "low_price": 316.8,
+      "close_price": 334.07,
+      "adjusted_close": 334.07,
+      "volume": 136992600
+    },
+    {
+      "trade_date": "2025-05-14",
+      "open_price": 342.5,
+      "high_price": 350.0,
+      "low_price": 337.0,
+      "close_price": 347.68,
+      "adjusted_close": 347.68,
+      "volume": 136997300
+    },
+    {
+      "trade_date": "2025-05-15",
+      "open_price": 340.34,
+      "high_price": 346.14,
+      "low_price": 334.72,
+      "close_price": 342.82,
+      "adjusted_close": 342.82,
+      "volume": 97882600
+    },
+    {
+      "trade_date": "2025-05-16",
+      "open_price": 346.24,
+      "high_price": 351.62,
+      "low_price": 342.33,
+      "close_price": 349.98,
+      "adjusted_close": 349.98,
+      "volume": 95895700
+    },
+    {
+      "trade_date": "2025-05-19",
+      "open_price": 336.3,
+      "high_price": 343.0,
+      "low_price": 333.37,
+      "close_price": 342.09,
+      "adjusted_close": 342.09,
+      "volume": 88869900
+    },
+    {
+      "trade_date": "2025-05-20",
+      "open_price": 347.87,
+      "high_price": 354.99,
+      "low_price": 341.63,
+      "close_price": 343.82,
+      "adjusted_close": 343.82,
+      "volume": 131715500
+    },
+    {
+      "trade_date": "2025-05-21",
+      "open_price": 344.43,
+      "high_price": 347.35,
+      "low_price": 332.2,
+      "close_price": 334.62,
+      "adjusted_close": 334.62,
+      "volume": 102354800
+    },
+    {
+      "trade_date": "2025-05-22",
+      "open_price": 331.9,
+      "high_price": 347.27,
+      "low_price": 331.39,
+      "close_price": 341.04,
+      "adjusted_close": 341.04,
+      "volume": 97113400
+    },
+    {
+      "trade_date": "2025-05-23",
+      "open_price": 337.92,
+      "high_price": 343.18,
+      "low_price": 333.21,
+      "close_price": 339.34,
+      "adjusted_close": 339.34,
+      "volume": 84654800
+    },
+    {
+      "trade_date": "2025-05-27",
+      "open_price": 347.35,
+      "high_price": 363.79,
+      "low_price": 347.32,
+      "close_price": 362.89,
+      "adjusted_close": 362.89,
+      "volume": 120146400
+    },
+    {
+      "trade_date": "2025-05-28",
+      "open_price": 364.84,
+      "high_price": 365.0,
+      "low_price": 355.91,
+      "close_price": 356.9,
+      "adjusted_close": 356.9,
+      "volume": 91404300
+    },
+    {
+      "trade_date": "2025-05-29",
+      "open_price": 365.29,
+      "high_price": 367.71,
+      "low_price": 356.0,
+      "close_price": 358.43,
+      "adjusted_close": 358.43,
+      "volume": 88087800
+    },
+    {
+      "trade_date": "2025-05-30",
+      "open_price": 355.52,
+      "high_price": 363.68,
+      "low_price": 345.29,
+      "close_price": 346.46,
+      "adjusted_close": 346.46,
+      "volume": 123474900
+    },
+    {
+      "trade_date": "2025-06-02",
+      "open_price": 343.5,
+      "high_price": 348.02,
+      "low_price": 333.33,
+      "close_price": 342.69,
+      "adjusted_close": 342.69,
+      "volume": 81873800
+    },
+    {
+      "trade_date": "2025-06-03",
+      "open_price": 346.6,
+      "high_price": 355.4,
+      "low_price": 343.04,
+      "close_price": 344.27,
+      "adjusted_close": 344.27,
+      "volume": 99324500
+    },
+    {
+      "trade_date": "2025-06-04",
+      "open_price": 345.1,
+      "high_price": 345.6,
+      "low_price": 327.33,
+      "close_price": 332.05,
+      "adjusted_close": 332.05,
+      "volume": 98912100
+    },
+    {
+      "trade_date": "2025-06-05",
+      "open_price": 322.49,
+      "high_price": 324.55,
+      "low_price": 273.21,
+      "close_price": 284.7,
+      "adjusted_close": 284.7,
+      "volume": 287499800
+    },
+    {
+      "trade_date": "2025-06-06",
+      "open_price": 298.83,
+      "high_price": 305.5,
+      "low_price": 291.14,
+      "close_price": 295.14,
+      "adjusted_close": 295.14,
+      "volume": 164747700
+    },
+    {
+      "trade_date": "2025-06-09",
+      "open_price": 285.96,
+      "high_price": 309.83,
+      "low_price": 281.85,
+      "close_price": 308.58,
+      "adjusted_close": 308.58,
+      "volume": 140908900
+    },
+    {
+      "trade_date": "2025-06-10",
+      "open_price": 314.94,
+      "high_price": 327.83,
+      "low_price": 310.67,
+      "close_price": 326.09,
+      "adjusted_close": 326.09,
+      "volume": 151256500
+    },
+    {
+      "trade_date": "2025-06-11",
+      "open_price": 334.4,
+      "high_price": 335.5,
+      "low_price": 322.5,
+      "close_price": 326.43,
+      "adjusted_close": 326.43,
+      "volume": 122611400
+    },
+    {
+      "trade_date": "2025-06-12",
+      "open_price": 323.08,
+      "high_price": 332.56,
+      "low_price": 316.86,
+      "close_price": 319.11,
+      "adjusted_close": 319.11,
+      "volume": 105127500
+    },
+    {
+      "trade_date": "2025-06-13",
+      "open_price": 313.97,
+      "high_price": 332.99,
+      "low_price": 313.3,
+      "close_price": 325.31,
+      "adjusted_close": 325.31,
+      "volume": 128964300
+    },
+    {
+      "trade_date": "2025-06-16",
+      "open_price": 331.29,
+      "high_price": 332.05,
+      "low_price": 326.41,
+      "close_price": 329.13,
+      "adjusted_close": 329.13,
+      "volume": 83925900
+    },
+    {
+      "trade_date": "2025-06-17",
+      "open_price": 326.09,
+      "high_price": 327.26,
+      "low_price": 314.74,
+      "close_price": 316.35,
+      "adjusted_close": 316.35,
+      "volume": 88282700
+    },
+    {
+      "trade_date": "2025-06-18",
+      "open_price": 317.31,
+      "high_price": 329.32,
+      "low_price": 315.45,
+      "close_price": 322.05,
+      "adjusted_close": 322.05,
+      "volume": 95137700
+    },
+    {
+      "trade_date": "2025-06-20",
+      "open_price": 327.95,
+      "high_price": 332.36,
+      "low_price": 317.78,
+      "close_price": 322.16,
+      "adjusted_close": 322.16,
+      "volume": 108688000
+    },
+    {
+      "trade_date": "2025-06-23",
+      "open_price": 327.54,
+      "high_price": 357.54,
+      "low_price": 327.48,
+      "close_price": 348.68,
+      "adjusted_close": 348.68,
+      "volume": 190716800
+    },
+    {
+      "trade_date": "2025-06-24",
+      "open_price": 356.17,
+      "high_price": 356.26,
+      "low_price": 340.44,
+      "close_price": 340.47,
+      "adjusted_close": 340.47,
+      "volume": 114736200
+    },
+    {
+      "trade_date": "2025-06-25",
+      "open_price": 342.7,
+      "high_price": 343.0,
+      "low_price": 320.4,
+      "close_price": 327.55,
+      "adjusted_close": 327.55,
+      "volume": 119845100
+    },
+    {
+      "trade_date": "2025-06-26",
+      "open_price": 324.61,
+      "high_price": 331.05,
+      "low_price": 323.61,
+      "close_price": 325.78,
+      "adjusted_close": 325.78,
+      "volume": 80440900
+    },
+    {
+      "trade_date": "2025-06-27",
+      "open_price": 324.51,
+      "high_price": 329.34,
+      "low_price": 317.5,
+      "close_price": 323.63,
+      "adjusted_close": 323.63,
+      "volume": 89067000
+    },
+    {
+      "trade_date": "2025-06-30",
+      "open_price": 319.9,
+      "high_price": 325.58,
+      "low_price": 316.6,
+      "close_price": 317.66,
+      "adjusted_close": 317.66,
+      "volume": 76695100
+    },
+    {
+      "trade_date": "2025-07-01",
+      "open_price": 298.46,
+      "high_price": 305.89,
+      "low_price": 293.21,
+      "close_price": 300.71,
+      "adjusted_close": 300.71,
+      "volume": 145085700
+    },
+    {
+      "trade_date": "2025-07-02",
+      "open_price": 312.63,
+      "high_price": 316.83,
+      "low_price": 303.82,
+      "close_price": 315.65,
+      "adjusted_close": 315.65,
+      "volume": 119483700
+    },
+    {
+      "trade_date": "2025-07-03",
+      "open_price": 317.99,
+      "high_price": 318.45,
+      "low_price": 312.76,
+      "close_price": 315.35,
+      "adjusted_close": 315.35,
+      "volume": 58042300
+    },
+    {
+      "trade_date": "2025-07-07",
+      "open_price": 291.37,
+      "high_price": 296.15,
+      "low_price": 288.77,
+      "close_price": 293.94,
+      "adjusted_close": 293.94,
+      "volume": 131177900
+    },
+    {
+      "trade_date": "2025-07-08",
+      "open_price": 297.0,
+      "high_price": 304.05,
+      "low_price": 294.35,
+      "close_price": 297.81,
+      "adjusted_close": 297.81,
+      "volume": 103246700
+    },
+    {
+      "trade_date": "2025-07-09",
+      "open_price": 297.55,
+      "high_price": 300.15,
+      "low_price": 293.55,
+      "close_price": 295.88,
+      "adjusted_close": 295.88,
+      "volume": 75586800
+    },
+    {
+      "trade_date": "2025-07-10",
+      "open_price": 300.05,
+      "high_price": 310.48,
+      "low_price": 300.0,
+      "close_price": 309.87,
+      "adjusted_close": 309.87,
+      "volume": 104365300
+    },
+    {
+      "trade_date": "2025-07-11",
+      "open_price": 307.89,
+      "high_price": 314.09,
+      "low_price": 305.65,
+      "close_price": 313.51,
+      "adjusted_close": 313.51,
+      "volume": 79236400
+    },
+    {
+      "trade_date": "2025-07-14",
+      "open_price": 317.73,
+      "high_price": 322.6,
+      "low_price": 312.67,
+      "close_price": 316.9,
+      "adjusted_close": 316.9,
+      "volume": 78043400
+    },
+    {
+      "trade_date": "2025-07-15",
+      "open_price": 319.68,
+      "high_price": 321.2,
+      "low_price": 310.5,
+      "close_price": 310.78,
+      "adjusted_close": 310.78,
+      "volume": 77556300
+    },
+    {
+      "trade_date": "2025-07-16",
+      "open_price": 312.8,
+      "high_price": 323.5,
+      "low_price": 312.62,
+      "close_price": 321.67,
+      "adjusted_close": 321.67,
+      "volume": 97284800
+    },
+    {
+      "trade_date": "2025-07-17",
+      "open_price": 323.15,
+      "high_price": 324.34,
+      "low_price": 317.06,
+      "close_price": 319.41,
+      "adjusted_close": 319.41,
+      "volume": 73922900
+    },
+    {
+      "trade_date": "2025-07-18",
+      "open_price": 321.66,
+      "high_price": 330.9,
+      "low_price": 321.42,
+      "close_price": 329.65,
+      "adjusted_close": 329.65,
+      "volume": 94255000
+    },
+    {
+      "trade_date": "2025-07-21",
+      "open_price": 334.4,
+      "high_price": 338.0,
+      "low_price": 326.88,
+      "close_price": 328.49,
+      "adjusted_close": 328.49,
+      "volume": 75768800
+    },
+    {
+      "trade_date": "2025-07-22",
+      "open_price": 329.74,
+      "high_price": 335.41,
+      "low_price": 321.55,
+      "close_price": 332.11,
+      "adjusted_close": 332.11,
+      "volume": 77370400
+    },
+    {
+      "trade_date": "2025-07-23",
+      "open_price": 330.9,
+      "high_price": 336.2,
+      "low_price": 328.67,
+      "close_price": 332.56,
+      "adjusted_close": 332.56,
+      "volume": 92553800
+    },
+    {
+      "trade_date": "2025-07-24",
+      "open_price": 310.0,
+      "high_price": 310.15,
+      "low_price": 300.41,
+      "close_price": 305.3,
+      "adjusted_close": 305.3,
+      "volume": 156966000
+    },
+    {
+      "trade_date": "2025-07-25",
+      "open_price": 308.74,
+      "high_price": 323.63,
+      "low_price": 308.01,
+      "close_price": 316.06,
+      "adjusted_close": 316.06,
+      "volume": 148227000
+    },
+    {
+      "trade_date": "2025-07-28",
+      "open_price": 318.45,
+      "high_price": 330.49,
+      "low_price": 315.69,
+      "close_price": 325.59,
+      "adjusted_close": 325.59,
+      "volume": 112673800
+    },
+    {
+      "trade_date": "2025-07-29",
+      "open_price": 325.55,
+      "high_price": 326.25,
+      "low_price": 318.25,
+      "close_price": 321.2,
+      "adjusted_close": 321.2,
+      "volume": 87358900
+    },
+    {
+      "trade_date": "2025-07-30",
+      "open_price": 322.18,
+      "high_price": 324.45,
+      "low_price": 311.62,
+      "close_price": 319.04,
+      "adjusted_close": 319.04,
+      "volume": 83931900
+    },
+    {
+      "trade_date": "2025-07-31",
+      "open_price": 319.61,
+      "high_price": 321.37,
+      "low_price": 306.1,
+      "close_price": 308.27,
+      "adjusted_close": 308.27,
+      "volume": 85270900
+    },
+    {
+      "trade_date": "2025-08-01",
+      "open_price": 306.21,
+      "high_price": 309.31,
+      "low_price": 297.82,
+      "close_price": 302.63,
+      "adjusted_close": 302.63,
+      "volume": 89121400
+    },
+    {
+      "trade_date": "2025-08-04",
+      "open_price": 309.08,
+      "high_price": 312.12,
+      "low_price": 303.0,
+      "close_price": 309.26,
+      "adjusted_close": 309.26,
+      "volume": 78683900
+    },
+    {
+      "trade_date": "2025-08-05",
+      "open_price": 308.95,
+      "high_price": 312.45,
+      "low_price": 305.5,
+      "close_price": 308.72,
+      "adjusted_close": 308.72,
+      "volume": 57961300
+    },
+    {
+      "trade_date": "2025-08-06",
+      "open_price": 307.89,
+      "high_price": 320.47,
+      "low_price": 306.93,
+      "close_price": 319.91,
+      "adjusted_close": 319.91,
+      "volume": 78523600
+    },
+    {
+      "trade_date": "2025-08-07",
+      "open_price": 319.79,
+      "high_price": 322.4,
+      "low_price": 316.16,
+      "close_price": 322.27,
+      "adjusted_close": 322.27,
+      "volume": 66658700
+    },
+    {
+      "trade_date": "2025-08-08",
+      "open_price": 321.43,
+      "high_price": 335.15,
+      "low_price": 320.98,
+      "close_price": 329.65,
+      "adjusted_close": 329.65,
+      "volume": 91200300
+    },
+    {
+      "trade_date": "2025-08-11",
+      "open_price": 335.0,
+      "high_price": 346.64,
+      "low_price": 334.15,
+      "close_price": 339.03,
+      "adjusted_close": 339.03,
+      "volume": 105320200
+    },
+    {
+      "trade_date": "2025-08-12",
+      "open_price": 345.0,
+      "high_price": 345.26,
+      "low_price": 332.94,
+      "close_price": 340.84,
+      "adjusted_close": 340.84,
+      "volume": 80522100
+    },
+    {
+      "trade_date": "2025-08-13",
+      "open_price": 341.5,
+      "high_price": 348.98,
+      "low_price": 338.2,
+      "close_price": 339.38,
+      "adjusted_close": 339.38,
+      "volume": 67838900
+    },
+    {
+      "trade_date": "2025-08-14",
+      "open_price": 335.76,
+      "high_price": 340.47,
+      "low_price": 330.4,
+      "close_price": 335.58,
+      "adjusted_close": 335.58,
+      "volume": 75000700
+    },
+    {
+      "trade_date": "2025-08-15",
+      "open_price": 337.66,
+      "high_price": 339.3,
+      "low_price": 327.02,
+      "close_price": 330.56,
+      "adjusted_close": 330.56,
+      "volume": 74319800
+    },
+    {
+      "trade_date": "2025-08-18",
+      "open_price": 329.62,
+      "high_price": 336.27,
+      "low_price": 329.59,
+      "close_price": 335.16,
+      "adjusted_close": 335.16,
+      "volume": 56956600
+    },
+    {
+      "trade_date": "2025-08-19",
+      "open_price": 335.79,
+      "high_price": 340.55,
+      "low_price": 327.85,
+      "close_price": 329.31,
+      "adjusted_close": 329.31,
+      "volume": 75956000
+    },
+    {
+      "trade_date": "2025-08-20",
+      "open_price": 329.22,
+      "high_price": 331.37,
+      "low_price": 314.6,
+      "close_price": 323.9,
+      "adjusted_close": 323.9,
+      "volume": 77481800
+    },
+    {
+      "trade_date": "2025-08-21",
+      "open_price": 322.08,
+      "high_price": 324.9,
+      "low_price": 318.68,
+      "close_price": 320.11,
+      "adjusted_close": 320.11,
+      "volume": 55744400
+    },
+    {
+      "trade_date": "2025-08-22",
+      "open_price": 321.66,
+      "high_price": 340.25,
+      "low_price": 319.69,
+      "close_price": 340.01,
+      "adjusted_close": 340.01,
+      "volume": 94016300
+    },
+    {
+      "trade_date": "2025-08-25",
+      "open_price": 338.9,
+      "high_price": 349.53,
+      "low_price": 335.03,
+      "close_price": 346.6,
+      "adjusted_close": 346.6,
+      "volume": 86670000
+    },
+    {
+      "trade_date": "2025-08-26",
+      "open_price": 344.93,
+      "high_price": 351.9,
+      "low_price": 343.72,
+      "close_price": 351.67,
+      "adjusted_close": 351.67,
+      "volume": 76651600
+    },
+    {
+      "trade_date": "2025-08-27",
+      "open_price": 351.94,
+      "high_price": 355.39,
+      "low_price": 349.16,
+      "close_price": 349.6,
+      "adjusted_close": 349.6,
+      "volume": 65519000
+    },
+    {
+      "trade_date": "2025-08-28",
+      "open_price": 350.91,
+      "high_price": 353.55,
+      "low_price": 340.26,
+      "close_price": 345.98,
+      "adjusted_close": 345.98,
+      "volume": 67903200
+    },
+    {
+      "trade_date": "2025-08-29",
+      "open_price": 347.23,
+      "high_price": 348.75,
+      "low_price": 331.7,
+      "close_price": 333.87,
+      "adjusted_close": 333.87,
+      "volume": 81145700
+    },
+    {
+      "trade_date": "2025-09-02",
+      "open_price": 328.23,
+      "high_price": 333.33,
+      "low_price": 325.6,
+      "close_price": 329.36,
+      "adjusted_close": 329.36,
+      "volume": 58392000
+    },
+    {
+      "trade_date": "2025-09-03",
+      "open_price": 335.2,
+      "high_price": 343.33,
+      "low_price": 328.51,
+      "close_price": 334.09,
+      "adjusted_close": 334.09,
+      "volume": 88733300
+    },
+    {
+      "trade_date": "2025-09-04",
+      "open_price": 336.15,
+      "high_price": 338.89,
+      "low_price": 331.48,
+      "close_price": 338.53,
+      "adjusted_close": 338.53,
+      "volume": 60711000
+    },
+    {
+      "trade_date": "2025-09-05",
+      "open_price": 348.0,
+      "high_price": 355.87,
+      "low_price": 344.68,
+      "close_price": 350.84,
+      "adjusted_close": 350.84,
+      "volume": 108989800
+    },
+    {
+      "trade_date": "2025-09-08",
+      "open_price": 354.64,
+      "high_price": 358.44,
+      "low_price": 344.84,
+      "close_price": 346.4,
+      "adjusted_close": 346.4,
+      "volume": 75208300
+    },
+    {
+      "trade_date": "2025-09-09",
+      "open_price": 348.44,
+      "high_price": 350.77,
+      "low_price": 343.82,
+      "close_price": 346.97,
+      "adjusted_close": 346.97,
+      "volume": 53816000
+    },
+    {
+      "trade_date": "2025-09-10",
+      "open_price": 350.55,
+      "high_price": 356.33,
+      "low_price": 346.07,
+      "close_price": 347.79,
+      "adjusted_close": 347.79,
+      "volume": 72121700
+    },
+    {
+      "trade_date": "2025-09-11",
+      "open_price": 350.17,
+      "high_price": 368.99,
+      "low_price": 347.6,
+      "close_price": 368.81,
+      "adjusted_close": 368.81,
+      "volume": 103756000
+    },
+    {
+      "trade_date": "2025-09-12",
+      "open_price": 370.94,
+      "high_price": 396.69,
+      "low_price": 370.24,
+      "close_price": 395.94,
+      "adjusted_close": 395.94,
+      "volume": 168156400
+    },
+    {
+      "trade_date": "2025-09-15",
+      "open_price": 423.13,
+      "high_price": 425.7,
+      "low_price": 402.43,
+      "close_price": 410.04,
+      "adjusted_close": 410.04,
+      "volume": 163823700
+    },
+    {
+      "trade_date": "2025-09-16",
+      "open_price": 414.5,
+      "high_price": 423.25,
+      "low_price": 411.43,
+      "close_price": 421.62,
+      "adjusted_close": 421.62,
+      "volume": 104285700
+    },
+    {
+      "trade_date": "2025-09-17",
+      "open_price": 415.75,
+      "high_price": 428.31,
+      "low_price": 409.67,
+      "close_price": 425.86,
+      "adjusted_close": 425.86,
+      "volume": 106133500
+    },
+    {
+      "trade_date": "2025-09-18",
+      "open_price": 428.87,
+      "high_price": 432.22,
+      "low_price": 416.56,
+      "close_price": 416.85,
+      "adjusted_close": 416.85,
+      "volume": 90454500
+    },
+    {
+      "trade_date": "2025-09-19",
+      "open_price": 421.82,
+      "high_price": 429.47,
+      "low_price": 421.72,
+      "close_price": 426.07,
+      "adjusted_close": 426.07,
+      "volume": 93131000
+    },
+    {
+      "trade_date": "2025-09-22",
+      "open_price": 431.11,
+      "high_price": 444.98,
+      "low_price": 429.13,
+      "close_price": 434.21,
+      "adjusted_close": 434.21,
+      "volume": 97108800
+    },
+    {
+      "trade_date": "2025-09-23",
+      "open_price": 439.88,
+      "high_price": 440.97,
+      "low_price": 423.72,
+      "close_price": 425.85,
+      "adjusted_close": 425.85,
+      "volume": 83422700
+    },
+    {
+      "trade_date": "2025-09-24",
+      "open_price": 429.83,
+      "high_price": 444.21,
+      "low_price": 429.03,
+      "close_price": 442.79,
+      "adjusted_close": 442.79,
+      "volume": 93133600
+    },
+    {
+      "trade_date": "2025-09-25",
+      "open_price": 435.24,
+      "high_price": 435.35,
+      "low_price": 419.08,
+      "close_price": 423.39,
+      "adjusted_close": 423.39,
+      "volume": 96746400
+    },
+    {
+      "trade_date": "2025-09-26",
+      "open_price": 428.3,
+      "high_price": 440.47,
+      "low_price": 421.02,
+      "close_price": 440.4,
+      "adjusted_close": 440.4,
+      "volume": 101628200
+    },
+    {
+      "trade_date": "2025-09-29",
+      "open_price": 444.35,
+      "high_price": 450.98,
+      "low_price": 439.5,
+      "close_price": 443.21,
+      "adjusted_close": 443.21,
+      "volume": 79491500
+    },
+    {
+      "trade_date": "2025-09-30",
+      "open_price": 441.52,
+      "high_price": 445.0,
+      "low_price": 433.12,
+      "close_price": 444.72,
+      "adjusted_close": 444.72,
+      "volume": 74358000
+    },
+    {
+      "trade_date": "2025-10-01",
+      "open_price": 443.8,
+      "high_price": 462.29,
+      "low_price": 440.75,
+      "close_price": 459.46,
+      "adjusted_close": 459.46,
+      "volume": 98122300
+    },
+    {
+      "trade_date": "2025-10-02",
+      "open_price": 470.54,
+      "high_price": 470.75,
+      "low_price": 435.57,
+      "close_price": 436.0,
+      "adjusted_close": 436.0,
+      "volume": 137009000
+    },
+    {
+      "trade_date": "2025-10-03",
+      "open_price": 443.29,
+      "high_price": 446.77,
+      "low_price": 416.58,
+      "close_price": 429.83,
+      "adjusted_close": 429.83,
+      "volume": 133188200
+    },
+    {
+      "trade_date": "2025-10-06",
+      "open_price": 440.75,
+      "high_price": 453.55,
+      "low_price": 436.69,
+      "close_price": 453.25,
+      "adjusted_close": 453.25,
+      "volume": 85324900
+    },
+    {
+      "trade_date": "2025-10-07",
+      "open_price": 447.82,
+      "high_price": 452.68,
+      "low_price": 432.45,
+      "close_price": 433.09,
+      "adjusted_close": 433.09,
+      "volume": 102296100
+    },
+    {
+      "trade_date": "2025-10-08",
+      "open_price": 437.57,
+      "high_price": 441.33,
+      "low_price": 425.23,
+      "close_price": 438.69,
+      "adjusted_close": 438.69,
+      "volume": 71192100
+    },
+    {
+      "trade_date": "2025-10-09",
+      "open_price": 431.81,
+      "high_price": 436.35,
+      "low_price": 426.18,
+      "close_price": 435.54,
+      "adjusted_close": 435.54,
+      "volume": 69339900
+    },
+    {
+      "trade_date": "2025-10-10",
+      "open_price": 436.54,
+      "high_price": 443.13,
+      "low_price": 411.45,
+      "close_price": 413.49,
+      "adjusted_close": 413.49,
+      "volume": 112107900
+    },
+    {
+      "trade_date": "2025-10-13",
+      "open_price": 423.53,
+      "high_price": 436.89,
+      "low_price": 419.7,
+      "close_price": 435.9,
+      "adjusted_close": 435.9,
+      "volume": 79552800
+    },
+    {
+      "trade_date": "2025-10-14",
+      "open_price": 426.79,
+      "high_price": 434.2,
+      "low_price": 417.86,
+      "close_price": 429.24,
+      "adjusted_close": 429.24,
+      "volume": 72669400
+    },
+    {
+      "trade_date": "2025-10-15",
+      "open_price": 434.9,
+      "high_price": 440.51,
+      "low_price": 426.33,
+      "close_price": 435.15,
+      "adjusted_close": 435.15,
+      "volume": 71558200
+    },
+    {
+      "trade_date": "2025-10-16",
+      "open_price": 434.73,
+      "high_price": 439.35,
+      "low_price": 421.31,
+      "close_price": 428.75,
+      "adjusted_close": 428.75,
+      "volume": 77189900
+    },
+    {
+      "trade_date": "2025-10-17",
+      "open_price": 425.5,
+      "high_price": 441.46,
+      "low_price": 423.6,
+      "close_price": 439.31,
+      "adjusted_close": 439.31,
+      "volume": 89331600
+    },
+    {
+      "trade_date": "2025-10-20",
+      "open_price": 443.87,
+      "high_price": 449.8,
+      "low_price": 440.61,
+      "close_price": 447.43,
+      "adjusted_close": 447.43,
+      "volume": 63719000
+    },
+    {
+      "trade_date": "2025-10-21",
+      "open_price": 445.76,
+      "high_price": 449.3,
+      "low_price": 442.05,
+      "close_price": 442.6,
+      "adjusted_close": 442.6,
+      "volume": 54412200
+    },
+    {
+      "trade_date": "2025-10-22",
+      "open_price": 443.45,
+      "high_price": 445.54,
+      "low_price": 429.0,
+      "close_price": 438.97,
+      "adjusted_close": 438.97,
+      "volume": 84023500
+    },
+    {
+      "trade_date": "2025-10-23",
+      "open_price": 420.0,
+      "high_price": 449.4,
+      "low_price": 413.9,
+      "close_price": 448.98,
+      "adjusted_close": 448.98,
+      "volume": 126709800
+    },
+    {
+      "trade_date": "2025-10-24",
+      "open_price": 446.83,
+      "high_price": 451.68,
+      "low_price": 430.17,
+      "close_price": 433.72,
+      "adjusted_close": 433.72,
+      "volume": 94727800
+    },
+    {
+      "trade_date": "2025-10-27",
+      "open_price": 439.98,
+      "high_price": 460.16,
+      "low_price": 438.69,
+      "close_price": 452.42,
+      "adjusted_close": 452.42,
+      "volume": 105867500
+    },
+    {
+      "trade_date": "2025-10-28",
+      "open_price": 454.78,
+      "high_price": 467.0,
+      "low_price": 451.6,
+      "close_price": 460.55,
+      "adjusted_close": 460.55,
+      "volume": 80185700
+    },
+    {
+      "trade_date": "2025-10-29",
+      "open_price": 462.5,
+      "high_price": 465.7,
+      "low_price": 452.65,
+      "close_price": 461.51,
+      "adjusted_close": 461.51,
+      "volume": 67983500
+    },
+    {
+      "trade_date": "2025-10-30",
+      "open_price": 451.05,
+      "high_price": 455.06,
+      "low_price": 439.61,
+      "close_price": 440.1,
+      "adjusted_close": 440.1,
+      "volume": 72447900
+    },
+    {
+      "trade_date": "2025-10-31",
+      "open_price": 446.75,
+      "high_price": 458.0,
+      "low_price": 443.69,
+      "close_price": 456.56,
+      "adjusted_close": 456.56,
+      "volume": 83135800
+    },
+    {
+      "trade_date": "2025-11-03",
+      "open_price": 455.99,
+      "high_price": 474.07,
+      "low_price": 453.8,
+      "close_price": 468.37,
+      "adjusted_close": 468.37,
+      "volume": 84595200
+    },
+    {
+      "trade_date": "2025-11-04",
+      "open_price": 454.46,
+      "high_price": 460.22,
+      "low_price": 443.6,
+      "close_price": 444.26,
+      "adjusted_close": 444.26,
+      "volume": 87756600
+    },
+    {
+      "trade_date": "2025-11-05",
+      "open_price": 452.05,
+      "high_price": 466.33,
+      "low_price": 440.71,
+      "close_price": 462.07,
+      "adjusted_close": 462.07,
+      "volume": 85573000
+    },
+    {
+      "trade_date": "2025-11-06",
+      "open_price": 461.96,
+      "high_price": 467.45,
+      "low_price": 435.09,
+      "close_price": 445.91,
+      "adjusted_close": 445.91,
+      "volume": 109622900
+    },
+    {
+      "trade_date": "2025-11-07",
+      "open_price": 437.92,
+      "high_price": 439.36,
+      "low_price": 421.88,
+      "close_price": 429.52,
+      "adjusted_close": 429.52,
+      "volume": 103471500
+    },
+    {
+      "trade_date": "2025-11-10",
+      "open_price": 439.6,
+      "high_price": 449.67,
+      "low_price": 433.36,
+      "close_price": 445.23,
+      "adjusted_close": 445.23,
+      "volume": 76515900
+    },
+    {
+      "trade_date": "2025-11-11",
+      "open_price": 439.4,
+      "high_price": 442.49,
+      "low_price": 432.36,
+      "close_price": 439.62,
+      "adjusted_close": 439.62,
+      "volume": 60533200
+    },
+    {
+      "trade_date": "2025-11-12",
+      "open_price": 442.15,
+      "high_price": 442.33,
+      "low_price": 426.56,
+      "close_price": 430.6,
+      "adjusted_close": 430.6,
+      "volume": 58513500
+    },
+    {
+      "trade_date": "2025-11-13",
+      "open_price": 423.13,
+      "high_price": 424.5,
+      "low_price": 396.34,
+      "close_price": 401.99,
+      "adjusted_close": 401.99,
+      "volume": 118948000
+    },
+    {
+      "trade_date": "2025-11-14",
+      "open_price": 386.3,
+      "high_price": 412.19,
+      "low_price": 382.78,
+      "close_price": 404.35,
+      "adjusted_close": 404.35,
+      "volume": 105506700
+    },
+    {
+      "trade_date": "2025-11-17",
+      "open_price": 398.74,
+      "high_price": 423.96,
+      "low_price": 398.74,
+      "close_price": 408.92,
+      "adjusted_close": 408.92,
+      "volume": 102214300
+    },
+    {
+      "trade_date": "2025-11-18",
+      "open_price": 405.38,
+      "high_price": 408.9,
+      "low_price": 393.71,
+      "close_price": 401.25,
+      "adjusted_close": 401.25,
+      "volume": 80688600
+    },
+    {
+      "trade_date": "2025-11-19",
+      "open_price": 406.18,
+      "high_price": 411.78,
+      "low_price": 398.5,
+      "close_price": 403.99,
+      "adjusted_close": 403.99,
+      "volume": 72047700
+    },
+    {
+      "trade_date": "2025-11-20",
+      "open_price": 414.63,
+      "high_price": 428.94,
+      "low_price": 394.74,
+      "close_price": 395.23,
+      "adjusted_close": 395.23,
+      "volume": 113548800
+    },
+    {
+      "trade_date": "2025-11-21",
+      "open_price": 402.32,
+      "high_price": 402.8,
+      "low_price": 383.76,
+      "close_price": 391.09,
+      "adjusted_close": 391.09,
+      "volume": 100460600
+    },
+    {
+      "trade_date": "2025-11-24",
+      "open_price": 402.17,
+      "high_price": 421.72,
+      "low_price": 401.09,
+      "close_price": 417.78,
+      "adjusted_close": 417.78,
+      "volume": 96806400
+    },
+    {
+      "trade_date": "2025-11-25",
+      "open_price": 414.42,
+      "high_price": 420.48,
+      "low_price": 405.95,
+      "close_price": 419.4,
+      "adjusted_close": 419.4,
+      "volume": 71915600
+    },
+    {
+      "trade_date": "2025-11-26",
+      "open_price": 423.95,
+      "high_price": 426.94,
+      "low_price": 416.89,
+      "close_price": 426.58,
+      "adjusted_close": 426.58,
+      "volume": 63463000
+    },
+    {
+      "trade_date": "2025-11-28",
+      "open_price": 426.59,
+      "high_price": 432.93,
+      "low_price": 426.2,
+      "close_price": 430.17,
+      "adjusted_close": 430.17,
+      "volume": 36252900
+    },
+    {
+      "trade_date": "2025-12-01",
+      "open_price": 425.32,
+      "high_price": 433.66,
+      "low_price": 425.29,
+      "close_price": 430.14,
+      "adjusted_close": 430.14,
+      "volume": 57463600
+    },
+    {
+      "trade_date": "2025-12-02",
+      "open_price": 430.81,
+      "high_price": 436.8,
+      "low_price": 422.12,
+      "close_price": 429.24,
+      "adjusted_close": 429.24,
+      "volume": 69336600
+    },
+    {
+      "trade_date": "2025-12-03",
+      "open_price": 432.1,
+      "high_price": 447.92,
+      "low_price": 431.11,
+      "close_price": 446.74,
+      "adjusted_close": 446.74,
+      "volume": 87483000
+    },
+    {
+      "trade_date": "2025-12-04",
+      "open_price": 449.94,
+      "high_price": 454.63,
+      "low_price": 445.39,
+      "close_price": 454.53,
+      "adjusted_close": 454.53,
+      "volume": 71906500
+    },
+    {
+      "trade_date": "2025-12-05",
+      "open_price": 453.03,
+      "high_price": 458.87,
+      "low_price": 451.66,
+      "close_price": 455.0,
+      "adjusted_close": 455.0,
+      "volume": 56427500
+    },
+    {
+      "trade_date": "2025-12-08",
+      "open_price": 447.45,
+      "high_price": 449.75,
+      "low_price": 435.25,
+      "close_price": 439.58,
+      "adjusted_close": 439.58,
+      "volume": 69165800
+    },
+    {
+      "trade_date": "2025-12-09",
+      "open_price": 437.54,
+      "high_price": 452.39,
+      "low_price": 435.7,
+      "close_price": 445.17,
+      "adjusted_close": 445.17,
+      "volume": 62367400
+    },
+    {
+      "trade_date": "2025-12-10",
+      "open_price": 446.07,
+      "high_price": 456.88,
+      "low_price": 443.61,
+      "close_price": 451.45,
+      "adjusted_close": 451.45,
+      "volume": 63257500
+    },
+    {
+      "trade_date": "2025-12-11",
+      "open_price": 448.95,
+      "high_price": 449.27,
+      "low_price": 440.33,
+      "close_price": 446.89,
+      "adjusted_close": 446.89,
+      "volume": 55979500
+    },
+    {
+      "trade_date": "2025-12-12",
+      "open_price": 448.09,
+      "high_price": 463.01,
+      "low_price": 441.67,
+      "close_price": 458.96,
+      "adjusted_close": 458.96,
+      "volume": 95656700
+    },
+    {
+      "trade_date": "2025-12-15",
+      "open_price": 469.44,
+      "high_price": 481.77,
+      "low_price": 467.66,
+      "close_price": 475.31,
+      "adjusted_close": 475.31,
+      "volume": 114542200
+    },
+    {
+      "trade_date": "2025-12-16",
+      "open_price": 472.21,
+      "high_price": 491.5,
+      "low_price": 465.83,
+      "close_price": 489.88,
+      "adjusted_close": 489.88,
+      "volume": 107608100
+    },
+    {
+      "trade_date": "2025-12-17",
+      "open_price": 488.22,
+      "high_price": 495.28,
+      "low_price": 466.2,
+      "close_price": 467.26,
+      "adjusted_close": 467.26,
+      "volume": 106490400
+    },
+    {
+      "trade_date": "2025-12-18",
+      "open_price": 478.16,
+      "high_price": 490.86,
+      "low_price": 473.12,
+      "close_price": 483.37,
+      "adjusted_close": 483.37,
+      "volume": 95168400
+    },
+    {
+      "trade_date": "2025-12-19",
+      "open_price": 488.12,
+      "high_price": 490.49,
+      "low_price": 474.72,
+      "close_price": 481.2,
+      "adjusted_close": 481.2,
+      "volume": 103305400
+    },
+    {
+      "trade_date": "2025-12-22",
+      "open_price": 489.88,
+      "high_price": 498.83,
+      "low_price": 485.33,
+      "close_price": 488.73,
+      "adjusted_close": 488.73,
+      "volume": 86916100
+    },
+    {
+      "trade_date": "2025-12-23",
+      "open_price": 489.4,
+      "high_price": 491.97,
+      "low_price": 482.84,
+      "close_price": 485.56,
+      "adjusted_close": 485.56,
+      "volume": 58223600
+    },
+    {
+      "trade_date": "2025-12-24",
+      "open_price": 488.48,
+      "high_price": 490.9,
+      "low_price": 476.8,
+      "close_price": 485.4,
+      "adjusted_close": 485.4,
+      "volume": 41285400
+    },
+    {
+      "trade_date": "2025-12-26",
+      "open_price": 485.23,
+      "high_price": 489.09,
+      "low_price": 473.82,
+      "close_price": 475.19,
+      "adjusted_close": 475.19,
+      "volume": 58780700
+    },
+    {
+      "trade_date": "2025-12-29",
+      "open_price": 469.0,
+      "high_price": 469.4,
+      "low_price": 459.0,
+      "close_price": 459.64,
+      "adjusted_close": 459.64,
+      "volume": 66263000
+    },
+    {
+      "trade_date": "2025-12-30",
+      "open_price": 461.09,
+      "high_price": 463.12,
+      "low_price": 453.83,
+      "close_price": 454.43,
+      "adjusted_close": 454.43,
+      "volume": 59238500
+    },
+    {
+      "trade_date": "2025-12-31",
+      "open_price": 456.1,
+      "high_price": 456.55,
+      "low_price": 449.3,
+      "close_price": 449.72,
+      "adjusted_close": 449.72,
+      "volume": 49078000
+    },
+    {
+      "trade_date": "2026-01-02",
+      "open_price": 457.8,
+      "high_price": 458.34,
+      "low_price": 435.3,
+      "close_price": 438.07,
+      "adjusted_close": 438.07,
+      "volume": 85535400
+    },
+    {
+      "trade_date": "2026-01-05",
+      "open_price": 447.99,
+      "high_price": 457.55,
+      "low_price": 444.57,
+      "close_price": 451.67,
+      "adjusted_close": 451.67,
+      "volume": 67940800
+    },
+    {
+      "trade_date": "2026-01-06",
+      "open_price": 446.38,
+      "high_price": 448.25,
+      "low_price": 428.78,
+      "close_price": 432.96,
+      "adjusted_close": 432.96,
+      "volume": 89093800
+    },
+    {
+      "trade_date": "2026-01-07",
+      "open_price": 435.9,
+      "high_price": 438.37,
+      "low_price": 431.29,
+      "close_price": 431.41,
+      "adjusted_close": 431.41,
+      "volume": 59828800
+    },
+    {
+      "trade_date": "2026-01-08",
+      "open_price": 427.89,
+      "high_price": 436.89,
+      "low_price": 424.37,
+      "close_price": 435.8,
+      "adjusted_close": 435.8,
+      "volume": 57041100
+    },
+    {
+      "trade_date": "2026-01-09",
+      "open_price": 435.95,
+      "high_price": 449.05,
+      "low_price": 430.39,
+      "close_price": 445.01,
+      "adjusted_close": 445.01,
+      "volume": 67331500
+    },
+    {
+      "trade_date": "2026-01-12",
+      "open_price": 441.23,
+      "high_price": 454.3,
+      "low_price": 438.0,
+      "close_price": 448.96,
+      "adjusted_close": 448.96,
+      "volume": 61649600
+    },
+    {
+      "trade_date": "2026-01-13",
+      "open_price": 450.2,
+      "high_price": 451.81,
+      "low_price": 443.95,
+      "close_price": 447.2,
+      "adjusted_close": 447.2,
+      "volume": 53719200
+    },
+    {
+      "trade_date": "2026-01-14",
+      "open_price": 442.81,
+      "high_price": 443.91,
+      "low_price": 434.22,
+      "close_price": 439.2,
+      "adjusted_close": 439.2,
+      "volume": 57259500
+    },
+    {
+      "trade_date": "2026-01-15",
+      "open_price": 441.13,
+      "high_price": 445.36,
+      "low_price": 437.65,
+      "close_price": 438.57,
+      "adjusted_close": 438.57,
+      "volume": 49465800
+    },
+    {
+      "trade_date": "2026-01-16",
+      "open_price": 439.5,
+      "high_price": 447.25,
+      "low_price": 435.26,
+      "close_price": 437.5,
+      "adjusted_close": 437.5,
+      "volume": 60220600
+    },
+    {
+      "trade_date": "2026-01-20",
+      "open_price": 429.36,
+      "high_price": 430.73,
+      "low_price": 417.44,
+      "close_price": 419.25,
+      "adjusted_close": 419.25,
+      "volume": 63187300
+    },
+    {
+      "trade_date": "2026-01-21",
+      "open_price": 421.66,
+      "high_price": 438.2,
+      "low_price": 419.62,
+      "close_price": 431.44,
+      "adjusted_close": 431.44,
+      "volume": 68124000
+    },
+    {
+      "trade_date": "2026-01-22",
+      "open_price": 435.16,
+      "high_price": 449.5,
+      "low_price": 432.63,
+      "close_price": 449.36,
+      "adjusted_close": 449.36,
+      "volume": 71546700
+    },
+    {
+      "trade_date": "2026-01-23",
+      "open_price": 447.43,
+      "high_price": 452.43,
+      "low_price": 444.04,
+      "close_price": 449.06,
+      "adjusted_close": 449.06,
+      "volume": 56771400
+    },
+    {
+      "trade_date": "2026-01-26",
+      "open_price": 445.0,
+      "high_price": 445.04,
+      "low_price": 434.28,
+      "close_price": 435.2,
+      "adjusted_close": 435.2,
+      "volume": 49397400
+    },
+    {
+      "trade_date": "2026-01-27",
+      "open_price": 437.41,
+      "high_price": 437.52,
+      "low_price": 430.69,
+      "close_price": 430.9,
+      "adjusted_close": 430.9,
+      "volume": 37733100
+    },
+    {
+      "trade_date": "2026-01-28",
+      "open_price": 431.91,
+      "high_price": 438.26,
+      "low_price": 430.1,
+      "close_price": 431.46,
+      "adjusted_close": 431.46,
+      "volume": 54857400
+    },
+    {
+      "trade_date": "2026-01-29",
+      "open_price": 437.8,
+      "high_price": 440.23,
+      "low_price": 414.62,
+      "close_price": 416.56,
+      "adjusted_close": 416.56,
+      "volume": 81686100
+    },
+    {
+      "trade_date": "2026-01-30",
+      "open_price": 425.35,
+      "high_price": 439.88,
+      "low_price": 422.7,
+      "close_price": 430.41,
+      "adjusted_close": 430.41,
+      "volume": 82626100
+    },
+    {
+      "trade_date": "2026-02-02",
+      "open_price": 421.29,
+      "high_price": 427.15,
+      "low_price": 414.5,
+      "close_price": 421.81,
+      "adjusted_close": 421.81,
+      "volume": 58739500
+    },
+    {
+      "trade_date": "2026-02-03",
+      "open_price": 424.27,
+      "high_price": 428.56,
+      "low_price": 413.69,
+      "close_price": 421.96,
+      "adjusted_close": 421.96,
+      "volume": 56886500
+    },
+    {
+      "trade_date": "2026-02-04",
+      "open_price": 420.46,
+      "high_price": 423.9,
+      "low_price": 399.18,
+      "close_price": 406.01,
+      "adjusted_close": 406.01,
+      "volume": 74606900
+    },
+    {
+      "trade_date": "2026-02-05",
+      "open_price": 397.02,
+      "high_price": 402.1,
+      "low_price": 387.53,
+      "close_price": 397.21,
+      "adjusted_close": 397.21,
+      "volume": 72819800
+    },
+    {
+      "trade_date": "2026-02-06",
+      "open_price": 400.87,
+      "high_price": 414.55,
+      "low_price": 397.75,
+      "close_price": 411.11,
+      "adjusted_close": 411.11,
+      "volume": 62677100
+    },
+    {
+      "trade_date": "2026-02-09",
+      "open_price": 409.91,
+      "high_price": 421.25,
+      "low_price": 407.29,
+      "close_price": 417.32,
+      "adjusted_close": 417.32,
+      "volume": 54484300
+    },
+    {
+      "trade_date": "2026-02-10",
+      "open_price": 418.08,
+      "high_price": 427.25,
+      "low_price": 417.0,
+      "close_price": 425.21,
+      "adjusted_close": 425.21,
+      "volume": 64450200
+    },
+    {
+      "trade_date": "2026-02-11",
+      "open_price": 427.96,
+      "high_price": 436.35,
+      "low_price": 420.03,
+      "close_price": 428.27,
+      "adjusted_close": 428.27,
+      "volume": 57362000
+    },
+    {
+      "trade_date": "2026-02-12",
+      "open_price": 430.3,
+      "high_price": 436.23,
+      "low_price": 414.0,
+      "close_price": 417.07,
+      "adjusted_close": 417.07,
+      "volume": 61933400
+    },
+    {
+      "trade_date": "2026-02-13",
+      "open_price": 414.31,
+      "high_price": 424.06,
+      "low_price": 410.88,
+      "close_price": 417.44,
+      "adjusted_close": 417.44,
+      "volume": 51434100
+    },
+    {
+      "trade_date": "2026-02-17",
+      "open_price": 412.36,
+      "high_price": 413.72,
+      "low_price": 400.51,
+      "close_price": 410.63,
+      "adjusted_close": 410.63,
+      "volume": 59678800
+    },
+    {
+      "trade_date": "2026-02-18",
+      "open_price": 411.11,
+      "high_price": 416.9,
+      "low_price": 409.58,
+      "close_price": 411.32,
+      "adjusted_close": 411.32,
+      "volume": 45921400
+    },
+    {
+      "trade_date": "2026-02-19",
+      "open_price": 407.25,
+      "high_price": 415.25,
+      "low_price": 404.11,
+      "close_price": 411.71,
+      "adjusted_close": 411.71,
+      "volume": 51019600
+    },
+    {
+      "trade_date": "2026-02-20",
+      "open_price": 408.3,
+      "high_price": 414.7,
+      "low_price": 405.5,
+      "close_price": 411.82,
+      "adjusted_close": 411.82,
+      "volume": 57912200
+    },
+    {
+      "trade_date": "2026-02-23",
+      "open_price": 407.29,
+      "high_price": 407.7,
+      "low_price": 394.04,
+      "close_price": 399.83,
+      "adjusted_close": 399.83,
+      "volume": 69680000
+    },
+    {
+      "trade_date": "2026-02-24",
+      "open_price": 399.5,
+      "high_price": 410.82,
+      "low_price": 397.64,
+      "close_price": 409.38,
+      "adjusted_close": 409.38,
+      "volume": 58579500
+    },
+    {
+      "trade_date": "2026-02-25",
+      "open_price": 412.15,
+      "high_price": 420.34,
+      "low_price": 412.15,
+      "close_price": 417.4,
+      "adjusted_close": 417.4,
+      "volume": 54809700
+    },
+    {
+      "trade_date": "2026-02-26",
+      "open_price": 414.42,
+      "high_price": 416.81,
+      "low_price": 403.66,
+      "close_price": 408.58,
+      "adjusted_close": 408.58,
+      "volume": 53602500
+    },
+    {
+      "trade_date": "2026-02-27",
+      "open_price": 402.94,
+      "high_price": 407.12,
+      "low_price": 398.11,
+      "close_price": 402.51,
+      "adjusted_close": 402.51,
+      "volume": 56890100
+    },
+    {
+      "trade_date": "2026-03-02",
+      "open_price": 390.6,
+      "high_price": 404.54,
+      "low_price": 388.25,
+      "close_price": 403.32,
+      "adjusted_close": 403.32,
+      "volume": 55088300
+    },
+    {
+      "trade_date": "2026-03-03",
+      "open_price": 395.09,
+      "high_price": 396.34,
+      "low_price": 385.39,
+      "close_price": 392.43,
+      "adjusted_close": 392.43,
+      "volume": 62617300
+    },
+    {
+      "trade_date": "2026-03-04",
+      "open_price": 397.85,
+      "high_price": 408.33,
+      "low_price": 394.58,
+      "close_price": 405.94,
+      "adjusted_close": 405.94,
+      "volume": 68305500
+    },
+    {
+      "trade_date": "2026-03-05",
+      "open_price": 401.57,
+      "high_price": 408.62,
+      "low_price": 399.42,
+      "close_price": 405.55,
+      "adjusted_close": 405.55,
+      "volume": 51925900
+    },
+    {
+      "trade_date": "2026-03-06",
+      "open_price": 398.09,
+      "high_price": 402.35,
+      "low_price": 394.21,
+      "close_price": 396.73,
+      "adjusted_close": 396.73,
+      "volume": 64054600
+    },
+    {
+      "trade_date": "2026-03-09",
+      "open_price": 390.05,
+      "high_price": 401.59,
+      "low_price": 381.4,
+      "close_price": 398.68,
+      "adjusted_close": 398.68,
+      "volume": 67018900
+    },
+    {
+      "trade_date": "2026-03-10",
+      "open_price": 402.22,
+      "high_price": 406.59,
+      "low_price": 398.19,
+      "close_price": 399.24,
+      "adjusted_close": 399.24,
+      "volume": 59258700
+    },
+    {
+      "trade_date": "2026-03-11",
+      "open_price": 402.28,
+      "high_price": 416.38,
+      "low_price": 402.15,
+      "close_price": 407.82,
+      "adjusted_close": 407.82,
+      "volume": 62559900
+    },
+    {
+      "trade_date": "2026-03-12",
+      "open_price": 405.18,
+      "high_price": 406.5,
+      "low_price": 394.65,
+      "close_price": 395.01,
+      "adjusted_close": 395.01,
+      "volume": 60973800
+    },
+    {
+      "trade_date": "2026-03-13",
+      "open_price": 399.17,
+      "high_price": 400.2,
+      "low_price": 389.95,
+      "close_price": 391.2,
+      "adjusted_close": 391.2,
+      "volume": 58504100
+    },
+    {
+      "trade_date": "2026-03-16",
+      "open_price": 396.22,
+      "high_price": 403.73,
+      "low_price": 394.42,
+      "close_price": 395.56,
+      "adjusted_close": 395.56,
+      "volume": 58068300
+    },
+    {
+      "trade_date": "2026-03-17",
+      "open_price": 395.69,
+      "high_price": 400.12,
+      "low_price": 393.0,
+      "close_price": 399.27,
+      "adjusted_close": 399.27,
+      "volume": 46890500
+    },
+    {
+      "trade_date": "2026-03-18",
+      "open_price": 399.0,
+      "high_price": 403.07,
+      "low_price": 392.31,
+      "close_price": 392.78,
+      "adjusted_close": 392.78,
+      "volume": 50853100
+    },
+    {
+      "trade_date": "2026-03-19",
+      "open_price": 387.27,
+      "high_price": 387.27,
+      "low_price": 378.73,
+      "close_price": 380.3,
+      "adjusted_close": 380.3,
+      "volume": 67078300
+    },
+    {
+      "trade_date": "2026-03-20",
+      "open_price": 379.85,
+      "high_price": 379.89,
+      "low_price": 364.46,
+      "close_price": 367.96,
+      "adjusted_close": 367.96,
+      "volume": 78628600
+    },
+    {
+      "trade_date": "2026-03-23",
+      "open_price": 373.09,
+      "high_price": 385.33,
+      "low_price": 372.73,
+      "close_price": 380.85,
+      "adjusted_close": 380.85,
+      "volume": 74606000
+    },
+    {
+      "trade_date": "2026-03-24",
+      "open_price": 376.56,
+      "high_price": 387.48,
+      "low_price": 376.31,
+      "close_price": 383.03,
+      "adjusted_close": 383.03,
+      "volume": 60004900
+    },
+    {
+      "trade_date": "2026-03-25",
+      "open_price": 389.99,
+      "high_price": 396.23,
+      "low_price": 385.01,
+      "close_price": 385.95,
+      "adjusted_close": 385.95,
+      "volume": 55157300
+    },
+    {
+      "trade_date": "2026-03-26",
+      "open_price": 381.6,
+      "high_price": 384.44,
+      "low_price": 371.87,
+      "close_price": 372.11,
+      "adjusted_close": 372.11,
+      "volume": 55522900
+    },
+    {
+      "trade_date": "2026-03-27",
+      "open_price": 369.69,
+      "high_price": 369.86,
+      "low_price": 359.47,
+      "close_price": 361.83,
+      "adjusted_close": 361.83,
+      "volume": 62065700
+    },
+    {
+      "trade_date": "2026-03-30",
+      "open_price": 365.86,
+      "high_price": 367.29,
+      "low_price": 352.14,
+      "close_price": 355.28,
+      "adjusted_close": 355.28,
+      "volume": 67954400
+    },
+    {
+      "trade_date": "2026-03-31",
+      "open_price": 361.51,
+      "high_price": 373.33,
+      "low_price": 361.0,
+      "close_price": 371.75,
+      "adjusted_close": 371.75,
+      "volume": 75534900
+    },
+    {
+      "trade_date": "2026-04-01",
+      "open_price": 378.63,
+      "high_price": 383.14,
+      "low_price": 374.08,
+      "close_price": 381.26,
+      "adjusted_close": 381.26,
+      "volume": 58683800
+    },
+    {
+      "trade_date": "2026-04-02",
+      "open_price": 364.2,
+      "high_price": 370.28,
+      "low_price": 359.03,
+      "close_price": 360.59,
+      "adjusted_close": 360.59,
+      "volume": 83031200
+    },
+    {
+      "trade_date": "2026-04-06",
+      "open_price": 362.59,
+      "high_price": 367.72,
+      "low_price": 346.64,
+      "close_price": 352.82,
+      "adjusted_close": 352.82,
+      "volume": 77697600
+    },
+    {
+      "trade_date": "2026-04-07",
+      "open_price": 346.44,
+      "high_price": 348.02,
+      "low_price": 337.24,
+      "close_price": 346.65,
+      "adjusted_close": 346.65,
+      "volume": 74515400
+    },
+    {
+      "trade_date": "2026-04-08",
+      "open_price": 363.79,
+      "high_price": 364.5,
+      "low_price": 339.67,
+      "close_price": 343.25,
+      "adjusted_close": 343.25,
+      "volume": 78838600
+    },
+    {
+      "trade_date": "2026-04-09",
+      "open_price": 343.15,
+      "high_price": 348.88,
+      "low_price": 337.25,
+      "close_price": 345.62,
+      "adjusted_close": 345.62,
+      "volume": 62164000
+    },
+    {
+      "trade_date": "2026-04-10",
+      "open_price": 346.29,
+      "high_price": 350.36,
+      "low_price": 342.74,
+      "close_price": 348.95,
+      "adjusted_close": 348.95,
+      "volume": 51336000
+    },
+    {
+      "trade_date": "2026-04-13",
+      "open_price": 350.07,
+      "high_price": 356.35,
+      "low_price": 348.57,
+      "close_price": 352.42,
+      "adjusted_close": 352.42,
+      "volume": 53617500
+    },
+    {
+      "trade_date": "2026-04-14",
+      "open_price": 357.67,
+      "high_price": 367.63,
+      "low_price": 354.77,
+      "close_price": 364.2,
+      "adjusted_close": 364.2,
+      "volume": 59979600
+    },
+    {
+      "trade_date": "2026-04-15",
+      "open_price": 366.83,
+      "high_price": 394.65,
+      "low_price": 362.5,
+      "close_price": 391.95,
+      "adjusted_close": 391.95,
+      "volume": 113810400
+    },
+    {
+      "trade_date": "2026-04-16",
+      "open_price": 393.81,
+      "high_price": 394.06,
+      "low_price": 381.8,
+      "close_price": 388.9,
+      "adjusted_close": 388.9,
+      "volume": 63515100
+    },
+    {
+      "trade_date": "2026-04-17",
+      "open_price": 395.92,
+      "high_price": 409.28,
+      "low_price": 391.65,
+      "close_price": 400.62,
+      "adjusted_close": 400.62,
+      "volume": 90640000
+    },
+    {
+      "trade_date": "2026-04-20",
+      "open_price": 402.58,
+      "high_price": 406.8,
+      "low_price": 388.33,
+      "close_price": 392.5,
+      "adjusted_close": 392.5,
+      "volume": 64603900
+    },
+    {
+      "trade_date": "2026-04-21",
+      "open_price": 393.0,
+      "high_price": 393.95,
+      "low_price": 385.22,
+      "close_price": 386.42,
+      "adjusted_close": 386.42,
+      "volume": 50530600
+    },
+    {
+      "trade_date": "2026-04-22",
+      "open_price": 387.57,
+      "high_price": 393.01,
+      "low_price": 385.3,
+      "close_price": 387.51,
+      "adjusted_close": 387.51,
+      "volume": 62362800
+    },
+    {
+      "trade_date": "2026-04-23",
+      "open_price": 375.28,
+      "high_price": 386.0,
+      "low_price": 368.39,
+      "close_price": 373.72,
+      "adjusted_close": 373.72,
+      "volume": 93969500
+    },
+    {
+      "trade_date": "2026-04-24",
+      "open_price": 373.5,
+      "high_price": 382.76,
+      "low_price": 370.73,
+      "close_price": 376.3,
+      "adjusted_close": 376.3,
+      "volume": 62893300
+    },
+    {
+      "trade_date": "2026-04-27",
+      "open_price": 372.09,
+      "high_price": 380.78,
+      "low_price": 364.02,
+      "close_price": 378.67,
+      "adjusted_close": 378.67,
+      "volume": 66735800
+    },
+    {
+      "trade_date": "2026-04-28",
+      "open_price": 374.68,
+      "high_price": 382.29,
+      "low_price": 372.54,
+      "close_price": 376.02,
+      "adjusted_close": 376.02,
+      "volume": 50864400
+    },
+    {
+      "trade_date": "2026-04-29",
+      "open_price": 375.4,
+      "high_price": 376.4,
+      "low_price": 370.04,
+      "close_price": 372.8,
+      "adjusted_close": 372.8,
+      "volume": 45384800
+    },
+    {
+      "trade_date": "2026-04-30",
+      "open_price": 372.75,
+      "high_price": 384.75,
+      "low_price": 368.17,
+      "close_price": 381.63,
+      "adjusted_close": 381.63,
+      "volume": 51076000
+    },
+    {
+      "trade_date": "2026-05-01",
+      "open_price": 382.49,
+      "high_price": 397.82,
+      "low_price": 378.8,
+      "close_price": 390.82,
+      "adjusted_close": 390.82,
+      "volume": 65338300
+    },
+    {
+      "trade_date": "2026-05-04",
+      "open_price": 390.23,
+      "high_price": 394.64,
+      "low_price": 384.8,
+      "close_price": 392.51,
+      "adjusted_close": 392.51,
+      "volume": 48765100
+    },
+    {
+      "trade_date": "2026-05-05",
+      "open_price": 395.19,
+      "high_price": 402.12,
+      "low_price": 389.0,
+      "close_price": 389.37,
+      "adjusted_close": 389.37,
+      "volume": 47780600
+    },
+    {
+      "trade_date": "2026-05-06",
+      "open_price": 386.25,
+      "high_price": 401.68,
+      "low_price": 384.02,
+      "close_price": 398.73,
+      "adjusted_close": 398.73,
+      "volume": 53465400
+    },
+    {
+      "trade_date": "2026-05-07",
+      "open_price": 407.48,
+      "high_price": 415.83,
+      "low_price": 402.12,
+      "close_price": 411.79,
+      "adjusted_close": 411.79,
+      "volume": 64294200
+    },
+    {
+      "trade_date": "2026-05-08",
+      "open_price": 416.48,
+      "high_price": 431.2,
+      "low_price": 416.39,
+      "close_price": 428.35,
+      "adjusted_close": 428.35,
+      "volume": 65050000
+    },
+    {
+      "trade_date": "2026-05-11",
+      "open_price": 422.16,
+      "high_price": 449.16,
+      "low_price": 416.8,
+      "close_price": 445.0,
+      "adjusted_close": 445.0,
+      "volume": 78376100
+    },
+    {
+      "trade_date": "2026-05-12",
+      "open_price": 441.41,
+      "high_price": 447.8,
+      "low_price": 422.26,
+      "close_price": 433.45,
+      "adjusted_close": 433.45,
+      "volume": 60569300
+    },
+    {
+      "trade_date": "2026-05-13",
+      "open_price": 436.67,
+      "high_price": 453.4,
+      "low_price": 430.21,
+      "close_price": 445.27,
+      "adjusted_close": 445.27,
+      "volume": 68283200
+    },
+    {
+      "trade_date": "2026-05-14",
+      "open_price": 446.49,
+      "high_price": 451.98,
+      "low_price": 441.16,
+      "close_price": 443.3,
+      "adjusted_close": 443.3,
+      "volume": 46070400
+    },
+    {
+      "trade_date": "2026-05-15",
+      "open_price": 433.98,
+      "high_price": 434.66,
+      "low_price": 422.0,
+      "close_price": 422.24,
+      "adjusted_close": 422.24,
+      "volume": 52688700
+    },
+    {
+      "trade_date": "2026-05-18",
+      "open_price": 419.27,
+      "high_price": 421.13,
+      "low_price": 405.33,
+      "close_price": 409.99,
+      "adjusted_close": 409.99,
+      "volume": 52474200
+    },
+    {
+      "trade_date": "2026-05-19",
+      "open_price": 403.16,
+      "high_price": 405.63,
+      "low_price": 393.63,
+      "close_price": 404.11,
+      "adjusted_close": 404.11,
+      "volume": 46500600
+    },
+    {
+      "trade_date": "2026-05-20",
+      "open_price": 407.6,
+      "high_price": 417.46,
+      "low_price": 406.39,
+      "close_price": 417.26,
+      "adjusted_close": 417.26,
+      "volume": 45294700
+    },
+    {
+      "trade_date": "2026-05-21",
+      "open_price": 422.18,
+      "high_price": 426.95,
+      "low_price": 412.9,
+      "close_price": 417.85,
+      "adjusted_close": 417.85,
+      "volume": 42636900
+    },
+    {
+      "trade_date": "2026-05-22",
+      "open_price": 422.67,
+      "high_price": 431.51,
+      "low_price": 420.51,
+      "close_price": 426.01,
+      "adjusted_close": 426.01,
+      "volume": 46104700
+    },
+    {
+      "trade_date": "2026-05-26",
+      "open_price": 430.26,
+      "high_price": 435.2,
+      "low_price": 426.12,
+      "close_price": 433.59,
+      "adjusted_close": 433.59,
+      "volume": 45658900
+    },
+    {
+      "trade_date": "2026-05-27",
+      "open_price": 442.89,
+      "high_price": 445.6,
+      "low_price": 435.52,
+      "close_price": 440.36,
+      "adjusted_close": 440.36,
+      "volume": 44656500
+    },
+    {
+      "trade_date": "2026-05-28",
+      "open_price": 437.62,
+      "high_price": 443.96,
+      "low_price": 436.3,
+      "close_price": 442.1,
+      "adjusted_close": 442.1,
+      "volume": 32435000
+    },
+    {
+      "trade_date": "2026-05-29",
+      "open_price": 439.85,
+      "high_price": 441.07,
+      "low_price": 428.14,
+      "close_price": 435.79,
+      "adjusted_close": 435.79,
+      "volume": 45176800
+    },
+    {
+      "trade_date": "2026-06-01",
+      "open_price": 427.49,
+      "high_price": 429.6,
+      "low_price": 415.43,
+      "close_price": 415.88,
+      "adjusted_close": 415.88,
+      "volume": 44937900
+    },
+    {
+      "trade_date": "2026-06-02",
+      "open_price": 418.22,
+      "high_price": 424.42,
+      "low_price": 413.65,
+      "close_price": 423.74,
+      "adjusted_close": 423.74,
+      "volume": 37596000
+    },
+    {
+      "trade_date": "2026-06-03",
+      "open_price": 418.7,
+      "high_price": 433.6,
+      "low_price": 416.0,
+      "close_price": 423.7,
+      "adjusted_close": 423.7,
+      "volume": 44500700
+    },
+    {
+      "trade_date": "2026-06-04",
+      "open_price": 419.84,
+      "high_price": 426.35,
+      "low_price": 417.16,
+      "close_price": 418.45,
+      "adjusted_close": 418.45,
+      "volume": 35323300
+    },
+    {
+      "trade_date": "2026-06-05",
+      "open_price": 420.5,
+      "high_price": 424.68,
+      "low_price": 388.59,
+      "close_price": 391.0,
+      "adjusted_close": 391.0,
+      "volume": 63420200
+    },
+    {
+      "trade_date": "2026-06-08",
+      "open_price": 396.33,
+      "high_price": 412.94,
+      "low_price": 394.72,
+      "close_price": 408.95,
+      "adjusted_close": 408.95,
+      "volume": 50328800
+    },
+    {
+      "trade_date": "2026-06-09",
+      "open_price": 411.03,
+      "high_price": 418.5,
+      "low_price": 384.24,
+      "close_price": 396.68,
+      "adjusted_close": 396.68,
+      "volume": 59940200
+    },
+    {
+      "trade_date": "2026-06-10",
+      "open_price": 391.54,
+      "high_price": 397.09,
+      "low_price": 380.15,
+      "close_price": 381.59,
+      "adjusted_close": 381.59,
+      "volume": 49695600
+    },
+    {
+      "trade_date": "2026-06-11",
+      "open_price": 388.28,
+      "high_price": 399.54,
+      "low_price": 380.66,
+      "close_price": 399.15,
+      "adjusted_close": 399.15,
+      "volume": 45324300
+    },
+    {
+      "trade_date": "2026-06-12",
+      "open_price": 399.49,
+      "high_price": 406.68,
+      "low_price": 386.76,
+      "close_price": 406.43,
+      "adjusted_close": 406.43,
+      "volume": 63514500
+    },
+    {
+      "trade_date": "2026-06-15",
+      "open_price": 412.37,
+      "high_price": 416.0,
+      "low_price": 407.1,
+      "close_price": 411.15,
+      "adjusted_close": 411.15,
+      "volume": 45620500
+    },
+    {
+      "trade_date": "2026-06-16",
+      "open_price": 404.11,
+      "high_price": 412.42,
+      "low_price": 400.54,
+      "close_price": 404.66,
+      "adjusted_close": 404.66,
+      "volume": 40255500
+    },
+    {
+      "trade_date": "2026-06-17",
+      "open_price": 401.53,
+      "high_price": 405.94,
+      "low_price": 393.76,
+      "close_price": 396.38,
+      "adjusted_close": 396.38,
+      "volume": 43534300
+    },
+    {
+      "trade_date": "2026-06-18",
+      "open_price": 398.1,
+      "high_price": 402.52,
+      "low_price": 384.7,
+      "close_price": 400.49,
+      "adjusted_close": 400.49,
+      "volume": 58384700
+    },
+    {
+      "trade_date": "2026-06-22",
+      "open_price": 394.85,
+      "high_price": 414.75,
+      "low_price": 394.4,
+      "close_price": 405.05,
+      "adjusted_close": 405.05,
+      "volume": 47819500
+    },
+    {
+      "trade_date": "2026-06-23",
+      "open_price": 392.61,
+      "high_price": 392.87,
+      "low_price": 379.06,
+      "close_price": 381.61,
+      "adjusted_close": 381.61,
+      "volume": 50420200
+    },
+    {
+      "trade_date": "2026-06-24",
+      "open_price": 380.08,
+      "high_price": 384.58,
+      "low_price": 373.05,
+      "close_price": 375.53,
+      "adjusted_close": 375.53,
+      "volume": 37081400
+    },
+    {
+      "trade_date": "2026-06-25",
+      "open_price": 375.27,
+      "high_price": 379.12,
+      "low_price": 371.22,
+      "close_price": 375.12,
+      "adjusted_close": 375.12,
+      "volume": 30138800
+    },
+    {
+      "trade_date": "2026-06-26",
+      "open_price": 370.15,
+      "high_price": 387.8,
+      "low_price": 368.6,
+      "close_price": 379.71,
+      "adjusted_close": 379.71,
+      "volume": 53434100
+    },
+    {
+      "trade_date": "2026-06-29",
+      "open_price": 381.79,
+      "high_price": 413.27,
+      "low_price": 379.3,
+      "close_price": 411.84,
+      "adjusted_close": 411.84,
+      "volume": 57645800
+    },
+    {
+      "trade_date": "2026-06-30",
+      "open_price": 406.0,
+      "high_price": 424.54,
+      "low_price": 406.0,
+      "close_price": 420.6,
+      "adjusted_close": 420.6,
+      "volume": 43385600
+    },
+    {
+      "trade_date": "2026-07-01",
+      "open_price": 421.46,
+      "high_price": 432.86,
+      "low_price": 418.09,
+      "close_price": 425.3,
+      "adjusted_close": 425.3,
+      "volume": 40127900
+    },
+    {
+      "trade_date": "2026-07-02",
+      "open_price": 428.01,
+      "high_price": 432.35,
+      "low_price": 389.3,
+      "close_price": 393.45,
+      "adjusted_close": 393.45,
+      "volume": 73717700
+    },
+    {
+      "trade_date": "2026-07-06",
+      "open_price": 397.5,
+      "high_price": 420.0,
+      "low_price": 390.5,
+      "close_price": 419.77,
+      "adjusted_close": 419.77,
+      "volume": 54727900
+    },
+    {
+      "trade_date": "2026-07-07",
+      "open_price": 416.96,
+      "high_price": 419.56,
+      "low_price": 401.88,
+      "close_price": 402.9,
+      "adjusted_close": 402.9,
+      "volume": 38149900
+    },
+    {
+      "trade_date": "2026-07-08",
+      "open_price": 399.38,
+      "high_price": 399.63,
+      "low_price": 390.51,
+      "close_price": 394.06,
+      "adjusted_close": 394.06,
+      "volume": 33844900
+    },
+    {
+      "trade_date": "2026-07-09",
+      "open_price": 393.99,
+      "high_price": 407.86,
+      "low_price": 390.86,
+      "close_price": 406.55,
+      "adjusted_close": 406.55,
+      "volume": 37835000
+    },
+    {
+      "trade_date": "2026-07-10",
+      "open_price": 410.49,
+      "high_price": 413.16,
+      "low_price": 402.81,
+      "close_price": 407.76,
+      "adjusted_close": 407.76,
+      "volume": 33410000
+    },
+    {
+      "trade_date": "2026-07-13",
+      "open_price": 404.61,
+      "high_price": 405.57,
+      "low_price": 391.37,
+      "close_price": 394.76,
+      "adjusted_close": 394.76,
+      "volume": 32809200
+    },
+    {
+      "trade_date": "2026-07-14",
+      "open_price": 399.05,
+      "high_price": 402.22,
+      "low_price": 394.76,
+      "close_price": 396.18,
+      "adjusted_close": 396.18,
+      "volume": 23385000
+    },
+    {
+      "trade_date": "2026-07-15",
+      "open_price": 399.4,
+      "high_price": 406.59,
+      "low_price": 390.66,
+      "close_price": 394.46,
+      "adjusted_close": 394.46,
+      "volume": 31549800
+    },
+    {
+      "trade_date": "2026-07-16",
+      "open_price": 392.35,
+      "high_price": 395.31,
+      "low_price": 385.32,
+      "close_price": 391.06,
+      "adjusted_close": 391.06,
+      "volume": 29269100
+    },
+    {
+      "trade_date": "2026-07-17",
+      "open_price": 381.78,
+      "high_price": 385.69,
+      "low_price": 377.22,
+      "close_price": 380.84,
+      "adjusted_close": 380.84,
+      "volume": 31394600
+    }
+  ],
+  "sec_snapshots": [
+    {
+      "cik": "0001318605",
+      "entity_name": "Tesla, Inc.",
+      "filing": {
+        "form": "10-K",
+        "accession": "0001628280-25-003063",
+        "filed_at": "2025-01-30",
+        "accepted_at": "2025-01-30T01:42:33.000Z",
+        "period_end": "2024-12-31",
+        "primary_document": "tsla-20241231.htm"
+      },
+      "facts": {
+        "revenue": {
+          "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+          "label": "Revenue from Contract with Customer, Excluding Assessed Tax",
+          "history": [
+            {
+              "period_start": "2022-01-01",
+              "period_end": "2022-12-31",
+              "value": 81462000000,
+              "unit": "USD",
+              "fiscal_year": 2024,
+              "fiscal_period": "FY",
+              "frame": "CY2022"
+            },
+            {
+              "period_start": "2023-01-01",
+              "period_end": "2023-12-31",
+              "value": 96773000000,
+              "unit": "USD",
+              "fiscal_year": 2024,
+              "fiscal_period": "FY",
+              "frame": null
+            },
+            {
+              "period_start": "2024-01-01",
+              "period_end": "2024-12-31",
+              "value": 97690000000,
+              "unit": "USD",
+              "fiscal_year": 2024,
+              "fiscal_period": "FY",
+              "frame": null
+            }
+          ]
+        },
+        "gross_profit": {
+          "tag": "GrossProfit",
+          "label": "Gross Profit",
+          "history": [
+            {
+              "period_start": "2022-01-01",
+              "period_end": "2022-12-31",
+              "value": 20853000000,
+              "unit": "USD",
+              "fiscal_year": 2024,
+              "fiscal_period": "FY",
+              "frame": "CY2022"
+            },
+            {
+              "period_start": "2023-01-01",
+              "period_end": "2023-12-31",
+              "value": 17660000000,
+              "unit": "USD",
+              "fiscal_year": 2024,
+              "fiscal_period": "FY",
+              "frame": null
+            },
+            {
+              "period_start": "2024-01-01",
+              "period_end": "2024-12-31",
+              "value": 17450000000,
+              "unit": "USD",
+              "fiscal_year": 2024,
+              "fiscal_period": "FY",
+              "frame": null
+            }
+          ]
+        },
+        "operating_income": {
+          "tag": "OperatingIncomeLoss",
+          "label": "Operating Income (Loss)",
+          "history": [
+            {
+              "period_start": "2022-01-01",
+              "period_end": "2022-12-31",
+              "value": 13656000000,
+              "unit": "USD",
+              "fiscal_year": 2024,
+              "fiscal_period": "FY",
+              "frame": "CY2022"
+            },
+            {
+              "period_start": "2023-01-01",
+              "period_end": "2023-12-31",
+              "value": 8891000000,
+              "unit": "USD",
+              "fiscal_year": 2024,
+              "fiscal_period": "FY",
+              "frame": null
+            },
+            {
+              "period_start": "2024-01-01",
+              "period_end": "2024-12-31",
+              "value": 7076000000,
+              "unit": "USD",
+              "fiscal_year": 2024,
+              "fiscal_period": "FY",
+              "frame": null
+            }
+          ]
+        },
+        "net_income": {
+          "tag": "NetIncomeLoss",
+          "label": "Net Income (Loss) Attributable to Parent",
+          "history": [
+            {
+              "period_start": "2022-01-01",
+              "period_end": "2022-12-31",
+              "value": 12556000000,
+              "unit": "USD",
+              "fiscal_year": 2024,
+              "fiscal_period": "FY",
+              "frame": "CY2022"
+            },
+            {
+              "period_start": "2023-01-01",
+              "period_end": "2023-12-31",
+              "value": 14997000000,
+              "unit": "USD",
+              "fiscal_year": 2024,
+              "fiscal_period": "FY",
+              "frame": null
+            },
+            {
+              "period_start": "2024-01-01",
+              "period_end": "2024-03-31",
+              "value": 1129000000,
+              "unit": "USD",
+              "fiscal_year": 2024,
+              "fiscal_period": "FY",
+              "frame": null
+            },
+            {
+              "period_start": "2024-04-01",
+              "period_end": "2024-06-30",
+              "value": 1478000000,
+              "unit": "USD",
+              "fiscal_year": 2024,
+              "fiscal_period": "FY",
+              "frame": null
+            },
+            {
+              "period_start": "2024-07-01",
+              "period_end": "2024-09-30",
+              "value": 2167000000,
+              "unit": "USD",
+              "fiscal_year": 2024,
+              "fiscal_period": "FY",
+              "frame": null
+            },
+            {
+              "period_start": "2024-01-01",
+              "period_end": "2024-12-31",
+              "value": 7091000000,
+              "unit": "USD",
+              "fiscal_year": 2024,
+              "fiscal_period": "FY",
+              "frame": null
+            }
+          ]
+        },
+        "diluted_eps": {
+          "tag": "EarningsPerShareDiluted",
+          "label": "Earnings Per Share, Diluted",
+          "history": [
+            {
+              "period_start": "2022-01-01",
+              "period_end": "2022-12-31",
+              "value": 3.62,
+              "unit": "USD/shares",
+              "fiscal_year": 2024,
+              "fiscal_period": "FY",
+              "frame": "CY2022"
+            },
+            {
+              "period_start": "2023-01-01",
+              "period_end": "2023-12-31",
+              "value": 4.3,
+              "unit": "USD/shares",
+              "fiscal_year": 2024,
+              "fiscal_period": "FY",
+              "frame": null
+            },
+            {
+              "period_start": "2024-01-01",
+              "period_end": "2024-03-31",
+              "value": 0.34,
+              "unit": "USD/shares",
+              "fiscal_year": 2024,
+              "fiscal_period": "FY",
+              "frame": null
+            },
+            {
+              "period_start": "2024-04-01",
+              "period_end": "2024-06-30",
+              "value": 0.42,
+              "unit": "USD/shares",
+              "fiscal_year": 2024,
+              "fiscal_period": "FY",
+              "frame": null
+            },
+            {
+              "period_start": "2024-07-01",
+              "period_end": "2024-09-30",
+              "value": 0.62,
+              "unit": "USD/shares",
+              "fiscal_year": 2024,
+              "fiscal_period": "FY",
+              "frame": null
+            },
+            {
+              "period_start": "2024-01-01",
+              "period_end": "2024-12-31",
+              "value": 2.04,
+              "unit": "USD/shares",
+              "fiscal_year": 2024,
+              "fiscal_period": "FY",
+              "frame": null
+            }
+          ]
+        },
+        "total_assets": {
+          "tag": "Assets",
+          "label": "Assets",
+          "history": [
+            {
+              "period_start": null,
+              "period_end": "2023-12-31",
+              "value": 106618000000,
+              "unit": "USD",
+              "fiscal_year": 2024,
+              "fiscal_period": "FY",
+              "frame": "CY2023Q4I"
+            },
+            {
+              "period_start": null,
+              "period_end": "2024-12-31",
+              "value": 122070000000,
+              "unit": "USD",
+              "fiscal_year": 2024,
+              "fiscal_period": "FY",
+              "frame": null
+            }
+          ]
+        },
+        "total_liabilities": {
+          "tag": "Liabilities",
+          "label": "Liabilities",
+          "history": [
+            {
+              "period_start": null,
+              "period_end": "2023-12-31",
+              "value": 43009000000,
+              "unit": "USD",
+              "fiscal_year": 2024,
+              "fiscal_period": "FY",
+              "frame": "CY2023Q4I"
+            },
+            {
+              "period_start": null,
+              "period_end": "2024-12-31",
+              "value": 48390000000,
+              "unit": "USD",
+              "fiscal_year": 2024,
+              "fiscal_period": "FY",
+              "frame": null
+            }
+          ]
+        },
+        "stockholders_equity": {
+          "tag": "StockholdersEquity",
+          "label": "Stockholders' Equity Attributable to Parent",
+          "history": [
+            {
+              "period_start": null,
+              "period_end": "2023-12-31",
+              "value": 62634000000,
+              "unit": "USD",
+              "fiscal_year": 2024,
+              "fiscal_period": "FY",
+              "frame": "CY2023Q4I"
+            },
+            {
+              "period_start": null,
+              "period_end": "2024-12-31",
+              "value": 72913000000,
+              "unit": "USD",
+              "fiscal_year": 2024,
+              "fiscal_period": "FY",
+              "frame": null
+            }
+          ]
+        },
+        "cash": {
+          "tag": "CashAndCashEquivalentsAtCarryingValue",
+          "label": "Cash and Cash Equivalents, at Carrying Value",
+          "history": [
+            {
+              "period_start": null,
+              "period_end": "2022-12-31",
+              "value": 16253000000,
+              "unit": "USD",
+              "fiscal_year": 2024,
+              "fiscal_period": "FY",
+              "frame": "CY2022Q4I"
+            },
+            {
+              "period_start": null,
+              "period_end": "2023-12-31",
+              "value": 16398000000,
+              "unit": "USD",
+              "fiscal_year": 2024,
+              "fiscal_period": "FY",
+              "frame": null
+            },
+            {
+              "period_start": null,
+              "period_end": "2024-12-31",
+              "value": 16139000000,
+              "unit": "USD",
+              "fiscal_year": 2024,
+              "fiscal_period": "FY",
+              "frame": null
+            }
+          ]
+        },
+        "long_term_debt_current": null,
+        "long_term_debt_noncurrent": null,
+        "long_term_debt_total": {
+          "tag": "LongTermDebt",
+          "label": "Long-term Debt",
+          "history": [
+            {
+              "period_start": null,
+              "period_end": "2023-12-31",
+              "value": 2682000000,
+              "unit": "USD",
+              "fiscal_year": 2024,
+              "fiscal_period": "FY",
+              "frame": "CY2023Q4I"
+            },
+            {
+              "period_start": null,
+              "period_end": "2024-12-31",
+              "value": 5535000000,
+              "unit": "USD",
+              "fiscal_year": 2024,
+              "fiscal_period": "FY",
+              "frame": null
+            }
+          ]
+        },
+        "operating_cash_flow": {
+          "tag": "NetCashProvidedByUsedInOperatingActivities",
+          "label": "Net Cash Provided by (Used in) Operating Activities",
+          "history": [
+            {
+              "period_start": "2022-01-01",
+              "period_end": "2022-12-31",
+              "value": 14724000000,
+              "unit": "USD",
+              "fiscal_year": 2024,
+              "fiscal_period": "FY",
+              "frame": "CY2022"
+            },
+            {
+              "period_start": "2023-01-01",
+              "period_end": "2023-12-31",
+              "value": 13256000000,
+              "unit": "USD",
+              "fiscal_year": 2024,
+              "fiscal_period": "FY",
+              "frame": null
+            },
+            {
+              "period_start": "2024-01-01",
+              "period_end": "2024-12-31",
+              "value": 14923000000,
+              "unit": "USD",
+              "fiscal_year": 2024,
+              "fiscal_period": "FY",
+              "frame": null
+            }
+          ]
+        },
+        "capital_expenditures": {
+          "tag": "PaymentsToAcquirePropertyPlantAndEquipment",
+          "label": "Payments to Acquire Property, Plant, and Equipment",
+          "history": [
+            {
+              "period_start": "2022-01-01",
+              "period_end": "2022-12-31",
+              "value": 7158000000,
+              "unit": "USD",
+              "fiscal_year": 2024,
+              "fiscal_period": "FY",
+              "frame": "CY2022"
+            },
+            {
+              "period_start": "2023-01-01",
+              "period_end": "2023-12-31",
+              "value": 8898000000,
+              "unit": "USD",
+              "fiscal_year": 2024,
+              "fiscal_period": "FY",
+              "frame": null
+            },
+            {
+              "period_start": "2024-01-01",
+              "period_end": "2024-12-31",
+              "value": 11339000000,
+              "unit": "USD",
+              "fiscal_year": 2024,
+              "fiscal_period": "FY",
+              "frame": null
+            }
+          ]
+        },
+        "shares_outstanding": {
+          "tag": "CommonStockSharesOutstanding",
+          "label": "Common Stock, Shares, Outstanding",
+          "history": [
+            {
+              "period_start": null,
+              "period_end": "2023-12-31",
+              "value": 3185000000,
+              "unit": "shares",
+              "fiscal_year": 2024,
+              "fiscal_period": "FY",
+              "frame": "CY2023Q4I"
+            },
+            {
+              "period_start": null,
+              "period_end": "2024-12-31",
+              "value": 3216000000,
+              "unit": "shares",
+              "fiscal_year": 2024,
+              "fiscal_period": "FY",
+              "frame": null
+            }
+          ]
+        }
+      }
+    },
+    {
+      "cik": "0001318605",
+      "entity_name": "Tesla, Inc.",
+      "filing": {
+        "form": "10-Q",
+        "accession": "0001628280-25-045968",
+        "filed_at": "2025-10-23",
+        "accepted_at": "2025-10-23T01:08:43.000Z",
+        "period_end": "2025-09-30",
+        "primary_document": "tsla-20250930.htm"
+      },
+      "facts": {
+        "revenue": {
+          "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+          "label": "Revenue from Contract with Customer, Excluding Assessed Tax",
+          "history": [
+            {
+              "period_start": "2024-01-01",
+              "period_end": "2024-09-30",
+              "value": 71983000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "Q3",
+              "frame": null
+            },
+            {
+              "period_start": "2024-07-01",
+              "period_end": "2024-09-30",
+              "value": 25182000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "Q3",
+              "frame": "CY2024Q3"
+            },
+            {
+              "period_start": "2025-01-01",
+              "period_end": "2025-09-30",
+              "value": 69926000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "Q3",
+              "frame": null
+            },
+            {
+              "period_start": "2025-07-01",
+              "period_end": "2025-09-30",
+              "value": 28095000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "Q3",
+              "frame": "CY2025Q3"
+            }
+          ]
+        },
+        "gross_profit": {
+          "tag": "GrossProfit",
+          "label": "Gross Profit",
+          "history": [
+            {
+              "period_start": "2024-01-01",
+              "period_end": "2024-09-30",
+              "value": 13271000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "Q3",
+              "frame": null
+            },
+            {
+              "period_start": "2024-07-01",
+              "period_end": "2024-09-30",
+              "value": 4997000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "Q3",
+              "frame": "CY2024Q3"
+            },
+            {
+              "period_start": "2025-01-01",
+              "period_end": "2025-09-30",
+              "value": 12085000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "Q3",
+              "frame": null
+            },
+            {
+              "period_start": "2025-07-01",
+              "period_end": "2025-09-30",
+              "value": 5054000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "Q3",
+              "frame": "CY2025Q3"
+            }
+          ]
+        },
+        "operating_income": {
+          "tag": "OperatingIncomeLoss",
+          "label": "Operating Income (Loss)",
+          "history": [
+            {
+              "period_start": "2024-01-01",
+              "period_end": "2024-09-30",
+              "value": 5493000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "Q3",
+              "frame": null
+            },
+            {
+              "period_start": "2024-07-01",
+              "period_end": "2024-09-30",
+              "value": 2717000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "Q3",
+              "frame": "CY2024Q3"
+            },
+            {
+              "period_start": "2025-01-01",
+              "period_end": "2025-09-30",
+              "value": 2946000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "Q3",
+              "frame": null
+            },
+            {
+              "period_start": "2025-07-01",
+              "period_end": "2025-09-30",
+              "value": 1624000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "Q3",
+              "frame": "CY2025Q3"
+            }
+          ]
+        },
+        "net_income": {
+          "tag": "NetIncomeLoss",
+          "label": "Net Income (Loss) Attributable to Parent",
+          "history": [
+            {
+              "period_start": "2024-01-01",
+              "period_end": "2024-09-30",
+              "value": 4963000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "Q3",
+              "frame": null
+            },
+            {
+              "period_start": "2024-07-01",
+              "period_end": "2024-09-30",
+              "value": 2173000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "Q3",
+              "frame": "CY2024Q3"
+            },
+            {
+              "period_start": "2025-01-01",
+              "period_end": "2025-09-30",
+              "value": 2954000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "Q3",
+              "frame": null
+            },
+            {
+              "period_start": "2025-07-01",
+              "period_end": "2025-09-30",
+              "value": 1373000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "Q3",
+              "frame": "CY2025Q3"
+            }
+          ]
+        },
+        "diluted_eps": {
+          "tag": "EarningsPerShareDiluted",
+          "label": "Earnings Per Share, Diluted",
+          "history": [
+            {
+              "period_start": "2024-01-01",
+              "period_end": "2024-09-30",
+              "value": 1.43,
+              "unit": "USD/shares",
+              "fiscal_year": 2025,
+              "fiscal_period": "Q3",
+              "frame": null
+            },
+            {
+              "period_start": "2024-07-01",
+              "period_end": "2024-09-30",
+              "value": 0.62,
+              "unit": "USD/shares",
+              "fiscal_year": 2025,
+              "fiscal_period": "Q3",
+              "frame": "CY2024Q3"
+            },
+            {
+              "period_start": "2025-01-01",
+              "period_end": "2025-09-30",
+              "value": 0.84,
+              "unit": "USD/shares",
+              "fiscal_year": 2025,
+              "fiscal_period": "Q3",
+              "frame": null
+            },
+            {
+              "period_start": "2025-07-01",
+              "period_end": "2025-09-30",
+              "value": 0.39,
+              "unit": "USD/shares",
+              "fiscal_year": 2025,
+              "fiscal_period": "Q3",
+              "frame": "CY2025Q3"
+            }
+          ]
+        },
+        "total_assets": {
+          "tag": "Assets",
+          "label": "Assets",
+          "history": [
+            {
+              "period_start": null,
+              "period_end": "2024-12-31",
+              "value": 122070000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "Q3",
+              "frame": null
+            },
+            {
+              "period_start": null,
+              "period_end": "2025-09-30",
+              "value": 133735000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "Q3",
+              "frame": "CY2025Q3I"
+            }
+          ]
+        },
+        "total_liabilities": {
+          "tag": "Liabilities",
+          "label": "Liabilities",
+          "history": [
+            {
+              "period_start": null,
+              "period_end": "2024-12-31",
+              "value": 48390000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "Q3",
+              "frame": null
+            },
+            {
+              "period_start": null,
+              "period_end": "2025-09-30",
+              "value": 53019000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "Q3",
+              "frame": "CY2025Q3I"
+            }
+          ]
+        },
+        "stockholders_equity": {
+          "tag": "StockholdersEquity",
+          "label": "Stockholders' Equity Attributable to Parent",
+          "history": [
+            {
+              "period_start": null,
+              "period_end": "2024-12-31",
+              "value": 72913000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "Q3",
+              "frame": null
+            },
+            {
+              "period_start": null,
+              "period_end": "2025-09-30",
+              "value": 79970000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "Q3",
+              "frame": "CY2025Q3I"
+            }
+          ]
+        },
+        "cash": {
+          "tag": "CashAndCashEquivalentsAtCarryingValue",
+          "label": "Cash and Cash Equivalents, at Carrying Value",
+          "history": [
+            {
+              "period_start": null,
+              "period_end": "2023-12-31",
+              "value": 16398000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "Q3",
+              "frame": null
+            },
+            {
+              "period_start": null,
+              "period_end": "2024-09-30",
+              "value": 18111000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "Q3",
+              "frame": "CY2024Q3I"
+            },
+            {
+              "period_start": null,
+              "period_end": "2024-12-31",
+              "value": 16139000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "Q3",
+              "frame": null
+            },
+            {
+              "period_start": null,
+              "period_end": "2025-09-30",
+              "value": 18289000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "Q3",
+              "frame": "CY2025Q3I"
+            }
+          ]
+        },
+        "long_term_debt_current": null,
+        "long_term_debt_noncurrent": null,
+        "long_term_debt_total": {
+          "tag": "LongTermDebt",
+          "label": "Long-term Debt",
+          "history": [
+            {
+              "period_start": null,
+              "period_end": "2024-12-31",
+              "value": 5535000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "Q3",
+              "frame": null
+            },
+            {
+              "period_start": null,
+              "period_end": "2025-09-30",
+              "value": 5609000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "Q3",
+              "frame": "CY2025Q3I"
+            }
+          ]
+        },
+        "operating_cash_flow": {
+          "tag": "NetCashProvidedByUsedInOperatingActivities",
+          "label": "Net Cash Provided by (Used in) Operating Activities",
+          "history": [
+            {
+              "period_start": "2024-01-01",
+              "period_end": "2024-09-30",
+              "value": 10109000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "Q3",
+              "frame": null
+            },
+            {
+              "period_start": "2025-01-01",
+              "period_end": "2025-09-30",
+              "value": 10934000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "Q3",
+              "frame": null
+            }
+          ]
+        },
+        "capital_expenditures": {
+          "tag": "PaymentsToAcquirePropertyPlantAndEquipment",
+          "label": "Payments to Acquire Property, Plant, and Equipment",
+          "history": [
+            {
+              "period_start": "2024-01-01",
+              "period_end": "2024-09-30",
+              "value": 8562000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "Q3",
+              "frame": null
+            },
+            {
+              "period_start": "2025-01-01",
+              "period_end": "2025-09-30",
+              "value": 6134000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "Q3",
+              "frame": null
+            }
+          ]
+        },
+        "shares_outstanding": {
+          "tag": "CommonStockSharesOutstanding",
+          "label": "Common Stock, Shares, Outstanding",
+          "history": [
+            {
+              "period_start": null,
+              "period_end": "2024-12-31",
+              "value": 3216000000,
+              "unit": "shares",
+              "fiscal_year": 2025,
+              "fiscal_period": "Q3",
+              "frame": null
+            },
+            {
+              "period_start": null,
+              "period_end": "2025-09-30",
+              "value": 3324000000,
+              "unit": "shares",
+              "fiscal_year": 2025,
+              "fiscal_period": "Q3",
+              "frame": "CY2025Q3I"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "cik": "0001318605",
+      "entity_name": "Tesla, Inc.",
+      "filing": {
+        "form": "10-K",
+        "accession": "0001628280-26-003952",
+        "filed_at": "2026-01-29",
+        "accepted_at": "2026-01-29T01:55:03.000Z",
+        "period_end": "2025-12-31",
+        "primary_document": "tsla-20251231.htm"
+      },
+      "facts": {
+        "revenue": {
+          "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+          "label": "Revenue from Contract with Customer, Excluding Assessed Tax",
+          "history": [
+            {
+              "period_start": "2023-01-01",
+              "period_end": "2023-12-31",
+              "value": 96773000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "FY",
+              "frame": "CY2023"
+            },
+            {
+              "period_start": "2024-01-01",
+              "period_end": "2024-12-31",
+              "value": 97690000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "FY",
+              "frame": "CY2024"
+            },
+            {
+              "period_start": "2025-01-01",
+              "period_end": "2025-12-31",
+              "value": 94827000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "FY",
+              "frame": "CY2025"
+            }
+          ]
+        },
+        "gross_profit": {
+          "tag": "GrossProfit",
+          "label": "Gross Profit",
+          "history": [
+            {
+              "period_start": "2023-01-01",
+              "period_end": "2023-12-31",
+              "value": 17660000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "FY",
+              "frame": "CY2023"
+            },
+            {
+              "period_start": "2024-01-01",
+              "period_end": "2024-12-31",
+              "value": 17450000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "FY",
+              "frame": "CY2024"
+            },
+            {
+              "period_start": "2025-01-01",
+              "period_end": "2025-12-31",
+              "value": 17094000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "FY",
+              "frame": "CY2025"
+            }
+          ]
+        },
+        "operating_income": {
+          "tag": "OperatingIncomeLoss",
+          "label": "Operating Income (Loss)",
+          "history": [
+            {
+              "period_start": "2023-01-01",
+              "period_end": "2023-12-31",
+              "value": 8891000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "FY",
+              "frame": "CY2023"
+            },
+            {
+              "period_start": "2024-01-01",
+              "period_end": "2024-12-31",
+              "value": 7076000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "FY",
+              "frame": "CY2024"
+            },
+            {
+              "period_start": "2025-01-01",
+              "period_end": "2025-12-31",
+              "value": 4355000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "FY",
+              "frame": "CY2025"
+            }
+          ]
+        },
+        "net_income": {
+          "tag": "NetIncomeLoss",
+          "label": "Net Income (Loss) Attributable to Parent",
+          "history": [
+            {
+              "period_start": "2023-01-01",
+              "period_end": "2023-12-31",
+              "value": 14997000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "FY",
+              "frame": "CY2023"
+            },
+            {
+              "period_start": "2024-01-01",
+              "period_end": "2024-12-31",
+              "value": 7091000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "FY",
+              "frame": "CY2024"
+            },
+            {
+              "period_start": "2025-01-01",
+              "period_end": "2025-12-31",
+              "value": 3794000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "FY",
+              "frame": "CY2025"
+            }
+          ]
+        },
+        "diluted_eps": {
+          "tag": "EarningsPerShareDiluted",
+          "label": "Earnings Per Share, Diluted",
+          "history": [
+            {
+              "period_start": "2023-01-01",
+              "period_end": "2023-12-31",
+              "value": 4.3,
+              "unit": "USD/shares",
+              "fiscal_year": 2025,
+              "fiscal_period": "FY",
+              "frame": "CY2023"
+            },
+            {
+              "period_start": "2024-01-01",
+              "period_end": "2024-12-31",
+              "value": 2.04,
+              "unit": "USD/shares",
+              "fiscal_year": 2025,
+              "fiscal_period": "FY",
+              "frame": "CY2024"
+            },
+            {
+              "period_start": "2025-01-01",
+              "period_end": "2025-12-31",
+              "value": 1.08,
+              "unit": "USD/shares",
+              "fiscal_year": 2025,
+              "fiscal_period": "FY",
+              "frame": "CY2025"
+            }
+          ]
+        },
+        "total_assets": {
+          "tag": "Assets",
+          "label": "Assets",
+          "history": [
+            {
+              "period_start": null,
+              "period_end": "2024-12-31",
+              "value": 122070000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "FY",
+              "frame": "CY2024Q4I"
+            },
+            {
+              "period_start": null,
+              "period_end": "2025-12-31",
+              "value": 137806000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "FY",
+              "frame": null
+            }
+          ]
+        },
+        "total_liabilities": {
+          "tag": "Liabilities",
+          "label": "Liabilities",
+          "history": [
+            {
+              "period_start": null,
+              "period_end": "2024-12-31",
+              "value": 48390000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "FY",
+              "frame": "CY2024Q4I"
+            },
+            {
+              "period_start": null,
+              "period_end": "2025-12-31",
+              "value": 54941000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "FY",
+              "frame": null
+            }
+          ]
+        },
+        "stockholders_equity": {
+          "tag": "StockholdersEquity",
+          "label": "Stockholders' Equity Attributable to Parent",
+          "history": [
+            {
+              "period_start": null,
+              "period_end": "2024-12-31",
+              "value": 72913000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "FY",
+              "frame": "CY2024Q4I"
+            },
+            {
+              "period_start": null,
+              "period_end": "2025-12-31",
+              "value": 82137000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "FY",
+              "frame": null
+            }
+          ]
+        },
+        "cash": {
+          "tag": "CashAndCashEquivalentsAtCarryingValue",
+          "label": "Cash and Cash Equivalents, at Carrying Value",
+          "history": [
+            {
+              "period_start": null,
+              "period_end": "2023-12-31",
+              "value": 16398000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "FY",
+              "frame": "CY2023Q4I"
+            },
+            {
+              "period_start": null,
+              "period_end": "2024-12-31",
+              "value": 16139000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "FY",
+              "frame": null
+            },
+            {
+              "period_start": null,
+              "period_end": "2025-12-31",
+              "value": 16513000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "FY",
+              "frame": null
+            }
+          ]
+        },
+        "long_term_debt_current": null,
+        "long_term_debt_noncurrent": null,
+        "long_term_debt_total": {
+          "tag": "LongTermDebt",
+          "label": "Long-term Debt",
+          "history": [
+            {
+              "period_start": null,
+              "period_end": "2024-12-31",
+              "value": 5535000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "FY",
+              "frame": "CY2024Q4I"
+            },
+            {
+              "period_start": null,
+              "period_end": "2025-12-31",
+              "value": 6584000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "FY",
+              "frame": null
+            }
+          ]
+        },
+        "operating_cash_flow": {
+          "tag": "NetCashProvidedByUsedInOperatingActivities",
+          "label": "Net Cash Provided by (Used in) Operating Activities",
+          "history": [
+            {
+              "period_start": "2023-01-01",
+              "period_end": "2023-12-31",
+              "value": 13256000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "FY",
+              "frame": "CY2023"
+            },
+            {
+              "period_start": "2024-01-01",
+              "period_end": "2024-12-31",
+              "value": 14923000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "FY",
+              "frame": "CY2024"
+            },
+            {
+              "period_start": "2025-01-01",
+              "period_end": "2025-12-31",
+              "value": 14747000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "FY",
+              "frame": "CY2025"
+            }
+          ]
+        },
+        "capital_expenditures": {
+          "tag": "PaymentsToAcquirePropertyPlantAndEquipment",
+          "label": "Payments to Acquire Property, Plant, and Equipment",
+          "history": [
+            {
+              "period_start": "2023-01-01",
+              "period_end": "2023-12-31",
+              "value": 8899000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "FY",
+              "frame": "CY2023"
+            },
+            {
+              "period_start": "2024-01-01",
+              "period_end": "2024-12-31",
+              "value": 11342000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "FY",
+              "frame": "CY2024"
+            },
+            {
+              "period_start": "2025-01-01",
+              "period_end": "2025-12-31",
+              "value": 8527000000,
+              "unit": "USD",
+              "fiscal_year": 2025,
+              "fiscal_period": "FY",
+              "frame": "CY2025"
+            }
+          ]
+        },
+        "shares_outstanding": {
+          "tag": "CommonStockSharesOutstanding",
+          "label": "Common Stock, Shares, Outstanding",
+          "history": [
+            {
+              "period_start": null,
+              "period_end": "2024-12-31",
+              "value": 3216000000,
+              "unit": "shares",
+              "fiscal_year": 2025,
+              "fiscal_period": "FY",
+              "frame": "CY2024Q4I"
+            },
+            {
+              "period_start": null,
+              "period_end": "2025-12-31",
+              "value": 3751000000,
+              "unit": "shares",
+              "fiscal_year": 2025,
+              "fiscal_period": "FY",
+              "frame": null
+            }
+          ]
+        }
+      }
+    },
+    {
+      "cik": "0001318605",
+      "entity_name": "Tesla, Inc.",
+      "filing": {
+        "form": "10-Q",
+        "accession": "0001628280-26-026673",
+        "filed_at": "2026-04-23",
+        "accepted_at": "2026-04-23T01:43:00.000Z",
+        "period_end": "2026-03-31",
+        "primary_document": "tsla-20260331.htm"
+      },
+      "facts": {
+        "revenue": {
+          "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+          "label": "Revenue from Contract with Customer, Excluding Assessed Tax",
+          "history": [
+            {
+              "period_start": "2025-01-01",
+              "period_end": "2025-03-31",
+              "value": 19335000000,
+              "unit": "USD",
+              "fiscal_year": 2026,
+              "fiscal_period": "Q1",
+              "frame": "CY2025Q1"
+            },
+            {
+              "period_start": "2026-01-01",
+              "period_end": "2026-03-31",
+              "value": 22387000000,
+              "unit": "USD",
+              "fiscal_year": 2026,
+              "fiscal_period": "Q1",
+              "frame": "CY2026Q1"
+            }
+          ]
+        },
+        "gross_profit": {
+          "tag": "GrossProfit",
+          "label": "Gross Profit",
+          "history": [
+            {
+              "period_start": "2025-01-01",
+              "period_end": "2025-03-31",
+              "value": 3153000000,
+              "unit": "USD",
+              "fiscal_year": 2026,
+              "fiscal_period": "Q1",
+              "frame": "CY2025Q1"
+            },
+            {
+              "period_start": "2026-01-01",
+              "period_end": "2026-03-31",
+              "value": 4720000000,
+              "unit": "USD",
+              "fiscal_year": 2026,
+              "fiscal_period": "Q1",
+              "frame": "CY2026Q1"
+            }
+          ]
+        },
+        "operating_income": {
+          "tag": "OperatingIncomeLoss",
+          "label": "Operating Income (Loss)",
+          "history": [
+            {
+              "period_start": "2025-01-01",
+              "period_end": "2025-03-31",
+              "value": 399000000,
+              "unit": "USD",
+              "fiscal_year": 2026,
+              "fiscal_period": "Q1",
+              "frame": "CY2025Q1"
+            },
+            {
+              "period_start": "2026-01-01",
+              "period_end": "2026-03-31",
+              "value": 941000000,
+              "unit": "USD",
+              "fiscal_year": 2026,
+              "fiscal_period": "Q1",
+              "frame": "CY2026Q1"
+            }
+          ]
+        },
+        "net_income": {
+          "tag": "NetIncomeLoss",
+          "label": "Net Income (Loss) Attributable to Parent",
+          "history": [
+            {
+              "period_start": "2025-01-01",
+              "period_end": "2025-03-31",
+              "value": 409000000,
+              "unit": "USD",
+              "fiscal_year": 2026,
+              "fiscal_period": "Q1",
+              "frame": "CY2025Q1"
+            },
+            {
+              "period_start": "2026-01-01",
+              "period_end": "2026-03-31",
+              "value": 477000000,
+              "unit": "USD",
+              "fiscal_year": 2026,
+              "fiscal_period": "Q1",
+              "frame": "CY2026Q1"
+            }
+          ]
+        },
+        "diluted_eps": {
+          "tag": "EarningsPerShareDiluted",
+          "label": "Earnings Per Share, Diluted",
+          "history": [
+            {
+              "period_start": "2025-01-01",
+              "period_end": "2025-03-31",
+              "value": 0.12,
+              "unit": "USD/shares",
+              "fiscal_year": 2026,
+              "fiscal_period": "Q1",
+              "frame": "CY2025Q1"
+            },
+            {
+              "period_start": "2026-01-01",
+              "period_end": "2026-03-31",
+              "value": 0.13,
+              "unit": "USD/shares",
+              "fiscal_year": 2026,
+              "fiscal_period": "Q1",
+              "frame": "CY2026Q1"
+            }
+          ]
+        },
+        "total_assets": {
+          "tag": "Assets",
+          "label": "Assets",
+          "history": [
+            {
+              "period_start": null,
+              "period_end": "2025-12-31",
+              "value": 137806000000,
+              "unit": "USD",
+              "fiscal_year": 2026,
+              "fiscal_period": "Q1",
+              "frame": "CY2025Q4I"
+            },
+            {
+              "period_start": null,
+              "period_end": "2026-03-31",
+              "value": 143724000000,
+              "unit": "USD",
+              "fiscal_year": 2026,
+              "fiscal_period": "Q1",
+              "frame": "CY2026Q1I"
+            }
+          ]
+        },
+        "total_liabilities": {
+          "tag": "Liabilities",
+          "label": "Liabilities",
+          "history": [
+            {
+              "period_start": null,
+              "period_end": "2025-12-31",
+              "value": 54941000000,
+              "unit": "USD",
+              "fiscal_year": 2026,
+              "fiscal_period": "Q1",
+              "frame": "CY2025Q4I"
+            },
+            {
+              "period_start": null,
+              "period_end": "2026-03-31",
+              "value": 58922000000,
+              "unit": "USD",
+              "fiscal_year": 2026,
+              "fiscal_period": "Q1",
+              "frame": "CY2026Q1I"
+            }
+          ]
+        },
+        "stockholders_equity": {
+          "tag": "StockholdersEquity",
+          "label": "Stockholders' Equity Attributable to Parent",
+          "history": [
+            {
+              "period_start": null,
+              "period_end": "2025-12-31",
+              "value": 82137000000,
+              "unit": "USD",
+              "fiscal_year": 2026,
+              "fiscal_period": "Q1",
+              "frame": "CY2025Q4I"
+            },
+            {
+              "period_start": null,
+              "period_end": "2026-03-31",
+              "value": 84116000000,
+              "unit": "USD",
+              "fiscal_year": 2026,
+              "fiscal_period": "Q1",
+              "frame": "CY2026Q1I"
+            }
+          ]
+        },
+        "cash": {
+          "tag": "CashAndCashEquivalentsAtCarryingValue",
+          "label": "Cash and Cash Equivalents, at Carrying Value",
+          "history": [
+            {
+              "period_start": null,
+              "period_end": "2024-12-31",
+              "value": 16139000000,
+              "unit": "USD",
+              "fiscal_year": 2026,
+              "fiscal_period": "Q1",
+              "frame": "CY2024Q4I"
+            },
+            {
+              "period_start": null,
+              "period_end": "2025-03-31",
+              "value": 16352000000,
+              "unit": "USD",
+              "fiscal_year": 2026,
+              "fiscal_period": "Q1",
+              "frame": "CY2025Q1I"
+            },
+            {
+              "period_start": null,
+              "period_end": "2025-12-31",
+              "value": 16513000000,
+              "unit": "USD",
+              "fiscal_year": 2026,
+              "fiscal_period": "Q1",
+              "frame": "CY2025Q4I"
+            },
+            {
+              "period_start": null,
+              "period_end": "2026-03-31",
+              "value": 16603000000,
+              "unit": "USD",
+              "fiscal_year": 2026,
+              "fiscal_period": "Q1",
+              "frame": "CY2026Q1I"
+            }
+          ]
+        },
+        "long_term_debt_current": null,
+        "long_term_debt_noncurrent": null,
+        "long_term_debt_total": {
+          "tag": "LongTermDebt",
+          "label": "Long-term Debt",
+          "history": [
+            {
+              "period_start": null,
+              "period_end": "2025-12-31",
+              "value": 6584000000,
+              "unit": "USD",
+              "fiscal_year": 2026,
+              "fiscal_period": "Q1",
+              "frame": "CY2025Q4I"
+            },
+            {
+              "period_start": null,
+              "period_end": "2026-03-31",
+              "value": 7645000000,
+              "unit": "USD",
+              "fiscal_year": 2026,
+              "fiscal_period": "Q1",
+              "frame": "CY2026Q1I"
+            }
+          ]
+        },
+        "operating_cash_flow": {
+          "tag": "NetCashProvidedByUsedInOperatingActivities",
+          "label": "Net Cash Provided by (Used in) Operating Activities",
+          "history": [
+            {
+              "period_start": "2025-01-01",
+              "period_end": "2025-03-31",
+              "value": 2156000000,
+              "unit": "USD",
+              "fiscal_year": 2026,
+              "fiscal_period": "Q1",
+              "frame": "CY2025Q1"
+            },
+            {
+              "period_start": "2026-01-01",
+              "period_end": "2026-03-31",
+              "value": 3937000000,
+              "unit": "USD",
+              "fiscal_year": 2026,
+              "fiscal_period": "Q1",
+              "frame": "CY2026Q1"
+            }
+          ]
+        },
+        "capital_expenditures": {
+          "tag": "PaymentsToAcquirePropertyPlantAndEquipment",
+          "label": "Payments to Acquire Property, Plant, and Equipment",
+          "history": [
+            {
+              "period_start": "2025-01-01",
+              "period_end": "2025-03-31",
+              "value": 1492000000,
+              "unit": "USD",
+              "fiscal_year": 2026,
+              "fiscal_period": "Q1",
+              "frame": "CY2025Q1"
+            },
+            {
+              "period_start": "2026-01-01",
+              "period_end": "2026-03-31",
+              "value": 2493000000,
+              "unit": "USD",
+              "fiscal_year": 2026,
+              "fiscal_period": "Q1",
+              "frame": "CY2026Q1"
+            }
+          ]
+        },
+        "shares_outstanding": {
+          "tag": "CommonStockSharesOutstanding",
+          "label": "Common Stock, Shares, Outstanding",
+          "history": [
+            {
+              "period_start": null,
+              "period_end": "2025-12-31",
+              "value": 3751000000,
+              "unit": "shares",
+              "fiscal_year": 2026,
+              "fiscal_period": "Q1",
+              "frame": "CY2025Q4I"
+            },
+            {
+              "period_start": null,
+              "period_end": "2026-03-31",
+              "value": 3755000000,
+              "unit": "shares",
+              "fiscal_year": 2026,
+              "fiscal_period": "Q1",
+              "frame": "CY2026Q1I"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "recent_8k_events": [
+    {
+      "accessionNumber": "0001628280-26-046717",
+      "filingDate": "2026-07-02",
+      "reportDate": "2026-07-02",
+      "acceptanceDateTime": "2026-07-02T13:01:26.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-20260702.htm"
+    },
+    {
+      "accessionNumber": "0001628280-26-026551",
+      "filingDate": "2026-04-22",
+      "reportDate": "2026-04-22",
+      "acceptanceDateTime": "2026-04-22T20:10:44.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-20260422.htm"
+    },
+    {
+      "accessionNumber": "0001628280-26-022956",
+      "filingDate": "2026-04-02",
+      "reportDate": "2026-04-02",
+      "acceptanceDateTime": "2026-04-02T13:07:13.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-20260402.htm"
+    },
+    {
+      "accessionNumber": "0001628280-26-003837",
+      "filingDate": "2026-01-28",
+      "reportDate": "2026-01-28",
+      "acceptanceDateTime": "2026-01-28T21:11:04.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-20260128.htm"
+    },
+    {
+      "accessionNumber": "0001628280-26-000016",
+      "filingDate": "2026-01-02",
+      "reportDate": "2026-01-02",
+      "acceptanceDateTime": "2026-01-02T14:20:13.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-20260102.htm"
+    },
+    {
+      "accessionNumber": "0001104659-25-108507",
+      "filingDate": "2025-11-07",
+      "reportDate": "2025-11-06",
+      "acceptanceDateTime": "2025-11-07T21:27:23.000Z",
+      "form": "8-K",
+      "primaryDocument": "tm2530590d1_8k.htm"
+    },
+    {
+      "accessionNumber": "0001628280-25-045861",
+      "filingDate": "2025-10-22",
+      "reportDate": "2025-10-22",
+      "acceptanceDateTime": "2025-10-22T20:06:36.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-20251022.htm"
+    },
+    {
+      "accessionNumber": "0001628280-25-043530",
+      "filingDate": "2025-10-02",
+      "reportDate": "2025-10-02",
+      "acceptanceDateTime": "2025-10-02T13:04:54.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-20251002.htm"
+    },
+    {
+      "accessionNumber": "0001104659-25-087862",
+      "filingDate": "2025-09-05",
+      "reportDate": "2025-09-03",
+      "acceptanceDateTime": "2025-09-05T20:46:03.000Z",
+      "form": "8-K",
+      "primaryDocument": "tm2525337d1_8k.htm"
+    },
+    {
+      "accessionNumber": "0001104659-25-073263",
+      "filingDate": "2025-08-04",
+      "reportDate": "2025-08-03",
+      "acceptanceDateTime": "2025-08-04T10:03:14.000Z",
+      "form": "8-K",
+      "primaryDocument": "tm2522385d1_8k.htm"
+    },
+    {
+      "accessionNumber": "0001628280-25-035738",
+      "filingDate": "2025-07-23",
+      "reportDate": "2025-07-23",
+      "acceptanceDateTime": "2025-07-23T20:14:09.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-20250723.htm"
+    },
+    {
+      "accessionNumber": "0001628280-25-034692",
+      "filingDate": "2025-07-10",
+      "reportDate": "2025-07-09",
+      "acceptanceDateTime": "2025-07-10T01:18:15.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-20250709.htm"
+    },
+    {
+      "accessionNumber": "0001628280-25-033842",
+      "filingDate": "2025-07-02",
+      "reportDate": "2025-07-02",
+      "acceptanceDateTime": "2025-07-02T13:05:13.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-20250702.htm"
+    },
+    {
+      "accessionNumber": "0001104659-25-050072",
+      "filingDate": "2025-05-16",
+      "reportDate": "2025-05-15",
+      "acceptanceDateTime": "2025-05-16T21:01:19.000Z",
+      "form": "8-K",
+      "primaryDocument": "tm2515421d1_8k.htm"
+    },
+    {
+      "accessionNumber": "0001628280-25-026148",
+      "filingDate": "2025-05-16",
+      "reportDate": "2025-05-15",
+      "acceptanceDateTime": "2025-05-16T11:00:28.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-20250515.htm"
+    },
+    {
+      "accessionNumber": "0001628280-25-018851",
+      "filingDate": "2025-04-22",
+      "reportDate": "2025-04-22",
+      "acceptanceDateTime": "2025-04-22T20:10:12.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-20250422.htm"
+    },
+    {
+      "accessionNumber": "0001628280-25-016070",
+      "filingDate": "2025-04-02",
+      "reportDate": "2025-04-02",
+      "acceptanceDateTime": "2025-04-02T13:05:22.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-20250402.htm"
+    },
+    {
+      "accessionNumber": "0001628280-25-002993",
+      "filingDate": "2025-01-29",
+      "reportDate": "2025-01-29",
+      "acceptanceDateTime": "2025-01-29T21:09:13.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-20250129.htm"
+    },
+    {
+      "accessionNumber": "0001628280-25-000007",
+      "filingDate": "2025-01-02",
+      "reportDate": "2025-01-02",
+      "acceptanceDateTime": "2025-01-02T14:06:39.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-20250102.htm"
+    },
+    {
+      "accessionNumber": "0001628280-24-043432",
+      "filingDate": "2024-10-23",
+      "reportDate": "2024-10-23",
+      "acceptanceDateTime": "2024-10-23T20:09:26.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-20241023.htm"
+    },
+    {
+      "accessionNumber": "0001628280-24-041816",
+      "filingDate": "2024-10-02",
+      "reportDate": "2024-10-02",
+      "acceptanceDateTime": "2024-10-02T13:06:34.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-20241002.htm"
+    },
+    {
+      "accessionNumber": "0001628280-24-032603",
+      "filingDate": "2024-07-23",
+      "reportDate": "2024-07-23",
+      "acceptanceDateTime": "2024-07-23T20:32:27.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-20240723.htm"
+    },
+    {
+      "accessionNumber": "0001628280-24-030714",
+      "filingDate": "2024-07-02",
+      "reportDate": "2024-07-02",
+      "acceptanceDateTime": "2024-07-02T13:24:01.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-20240702.htm"
+    },
+    {
+      "accessionNumber": "0001104659-24-071439",
+      "filingDate": "2024-06-14",
+      "reportDate": "2024-06-13",
+      "acceptanceDateTime": "2024-06-14T10:02:55.000Z",
+      "form": "8-K",
+      "primaryDocument": "tm2413800d31_8k.htm"
+    },
+    {
+      "accessionNumber": "0000950170-24-046895",
+      "filingDate": "2024-04-23",
+      "reportDate": "2024-04-23",
+      "acceptanceDateTime": "2024-04-23T20:09:55.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-20240423.htm"
+    },
+    {
+      "accessionNumber": "0000950170-24-044588",
+      "filingDate": "2024-04-16",
+      "reportDate": "2024-04-14",
+      "acceptanceDateTime": "2024-04-16T10:07:17.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-20240414.htm"
+    },
+    {
+      "accessionNumber": "0000950170-24-040274",
+      "filingDate": "2024-04-02",
+      "reportDate": "2024-04-02",
+      "acceptanceDateTime": "2024-04-02T20:47:22.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-20240402.htm"
+    },
+    {
+      "accessionNumber": "0000950170-24-007073",
+      "filingDate": "2024-01-24",
+      "reportDate": "2024-01-24",
+      "acceptanceDateTime": "2024-01-24T22:24:27.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-20240124.htm"
+    },
+    {
+      "accessionNumber": "0000950170-24-000282",
+      "filingDate": "2024-01-02",
+      "reportDate": "2024-01-02",
+      "acceptanceDateTime": "2024-01-02T21:29:17.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-20240102.htm"
+    },
+    {
+      "accessionNumber": "0001628280-23-034588",
+      "filingDate": "2023-10-18",
+      "reportDate": "2023-10-18",
+      "acceptanceDateTime": "2023-10-18T20:15:00.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-20231018.htm"
+    },
+    {
+      "accessionNumber": "0000950170-23-050938",
+      "filingDate": "2023-10-02",
+      "reportDate": "2023-10-02",
+      "acceptanceDateTime": "2023-10-02T13:05:38.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-20231002.htm"
+    },
+    {
+      "accessionNumber": "0000950170-23-038779",
+      "filingDate": "2023-08-07",
+      "reportDate": "2023-08-04",
+      "acceptanceDateTime": "2023-08-07T13:02:20.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-20230804.htm"
+    },
+    {
+      "accessionNumber": "0000950170-23-033695",
+      "filingDate": "2023-07-20",
+      "reportDate": "2023-07-19",
+      "acceptanceDateTime": "2023-07-20T21:17:28.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-20230719.htm"
+    },
+    {
+      "accessionNumber": "0000950170-23-033544",
+      "filingDate": "2023-07-19",
+      "reportDate": "2023-07-19",
+      "acceptanceDateTime": "2023-07-19T20:46:20.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-20230719.htm"
+    },
+    {
+      "accessionNumber": "0000950170-23-031241",
+      "filingDate": "2023-07-03",
+      "reportDate": "2023-07-02",
+      "acceptanceDateTime": "2023-07-03T10:05:58.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-20230702.htm"
+    },
+    {
+      "accessionNumber": "0001564590-23-007379",
+      "filingDate": "2023-05-22",
+      "reportDate": "2023-05-16",
+      "acceptanceDateTime": "2023-05-22T20:51:02.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20230516.htm"
+    },
+    {
+      "accessionNumber": "0001564590-23-005959",
+      "filingDate": "2023-04-19",
+      "reportDate": "2023-04-19",
+      "acceptanceDateTime": "2023-04-19T21:25:10.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20230419.htm"
+    },
+    {
+      "accessionNumber": "0001564590-23-005462",
+      "filingDate": "2023-04-05",
+      "reportDate": "2023-03-30",
+      "acceptanceDateTime": "2023-04-05T20:10:33.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20230330.htm"
+    },
+    {
+      "accessionNumber": "0001564590-23-005126",
+      "filingDate": "2023-04-03",
+      "reportDate": "2023-04-02",
+      "acceptanceDateTime": "2023-04-03T11:02:44.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20230402.htm"
+    },
+    {
+      "accessionNumber": "0001564590-23-000799",
+      "filingDate": "2023-01-25",
+      "reportDate": "2023-01-20",
+      "acceptanceDateTime": "2023-01-25T21:41:18.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20230120.htm"
+    },
+    {
+      "accessionNumber": "0001564590-23-000002",
+      "filingDate": "2023-01-03",
+      "reportDate": "2023-01-02",
+      "acceptanceDateTime": "2023-01-03T11:08:47.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20230102.htm"
+    },
+    {
+      "accessionNumber": "0001564590-22-034639",
+      "filingDate": "2022-10-19",
+      "reportDate": "2022-10-19",
+      "acceptanceDateTime": "2022-10-19T21:15:46.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20221019.htm"
+    },
+    {
+      "accessionNumber": "0001564590-22-033053",
+      "filingDate": "2022-10-03",
+      "reportDate": "2022-10-02",
+      "acceptanceDateTime": "2022-10-03T10:05:40.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20221002.htm"
+    },
+    {
+      "accessionNumber": "0001564590-22-032575",
+      "filingDate": "2022-09-28",
+      "reportDate": "2022-09-25",
+      "acceptanceDateTime": "2022-09-28T20:15:27.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20220925.htm"
+    },
+    {
+      "accessionNumber": "0001564590-22-028207",
+      "filingDate": "2022-08-05",
+      "reportDate": "2022-08-04",
+      "acceptanceDateTime": "2022-08-05T20:11:22.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20220804.htm"
+    },
+    {
+      "accessionNumber": "0001564590-22-026048",
+      "filingDate": "2022-07-20",
+      "reportDate": "2022-07-20",
+      "acceptanceDateTime": "2022-07-20T20:43:32.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20220720.htm"
+    },
+    {
+      "accessionNumber": "0001564590-22-025153",
+      "filingDate": "2022-07-05",
+      "reportDate": "2022-07-02",
+      "acceptanceDateTime": "2022-07-05T10:16:41.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20220702.htm"
+    },
+    {
+      "accessionNumber": "0001564590-22-017214",
+      "filingDate": "2022-05-03",
+      "reportDate": "2022-05-02",
+      "acceptanceDateTime": "2022-05-03T10:04:55.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20220502.htm"
+    },
+    {
+      "accessionNumber": "0001564590-22-014917",
+      "filingDate": "2022-04-20",
+      "reportDate": "2022-04-20",
+      "acceptanceDateTime": "2022-04-20T20:12:16.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20220420.htm"
+    },
+    {
+      "accessionNumber": "0001564590-22-013264",
+      "filingDate": "2022-04-04",
+      "reportDate": "2022-04-02",
+      "acceptanceDateTime": "2022-04-04T10:07:24.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20220402.htm"
+    },
+    {
+      "accessionNumber": "0001564590-22-011875",
+      "filingDate": "2022-03-28",
+      "reportDate": "2022-03-28",
+      "acceptanceDateTime": "2022-03-28T10:06:47.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20220328.htm"
+    },
+    {
+      "accessionNumber": "0001564590-22-002476",
+      "filingDate": "2022-01-26",
+      "reportDate": "2022-01-26",
+      "acceptanceDateTime": "2022-01-26T21:26:43.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20220126.htm"
+    },
+    {
+      "accessionNumber": "0001564590-22-000009",
+      "filingDate": "2022-01-03",
+      "reportDate": "2022-01-02",
+      "acceptanceDateTime": "2022-01-03T11:06:42.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20220102.htm"
+    },
+    {
+      "accessionNumber": "0001564590-21-058953",
+      "filingDate": "2021-12-01",
+      "reportDate": "2021-12-01",
+      "acceptanceDateTime": "2021-12-01T21:08:40.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20211201.htm"
+    },
+    {
+      "accessionNumber": "0001564590-21-051307",
+      "filingDate": "2021-10-20",
+      "reportDate": "2021-10-20",
+      "acceptanceDateTime": "2021-10-20T21:14:23.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20211020.htm"
+    },
+    {
+      "accessionNumber": "0001564590-21-050737",
+      "filingDate": "2021-10-13",
+      "reportDate": "2021-10-07",
+      "acceptanceDateTime": "2021-10-13T20:07:03.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20211007.htm"
+    },
+    {
+      "accessionNumber": "0001564590-21-049874",
+      "filingDate": "2021-10-04",
+      "reportDate": "2021-10-02",
+      "acceptanceDateTime": "2021-10-04T10:09:14.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20211002.htm"
+    },
+    {
+      "accessionNumber": "0001564590-21-046390",
+      "filingDate": "2021-08-30",
+      "reportDate": "2021-08-27",
+      "acceptanceDateTime": "2021-08-30T21:06:32.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20210827.htm"
+    },
+    {
+      "accessionNumber": "0001564590-21-037953",
+      "filingDate": "2021-07-26",
+      "reportDate": "2021-07-26",
+      "acceptanceDateTime": "2021-07-26T20:25:13.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20210726.htm"
+    },
+    {
+      "accessionNumber": "0000950170-21-000423",
+      "filingDate": "2021-07-02",
+      "reportDate": "2021-07-02",
+      "acceptanceDateTime": "2021-07-02T12:32:50.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-20210702.htm"
+    },
+    {
+      "accessionNumber": "0001564590-21-031976",
+      "filingDate": "2021-06-07",
+      "reportDate": "2021-06-03",
+      "acceptanceDateTime": "2021-06-07T21:09:44.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20210603.htm"
+    },
+    {
+      "accessionNumber": "0001564590-21-020558",
+      "filingDate": "2021-04-26",
+      "reportDate": "2021-04-26",
+      "acceptanceDateTime": "2021-04-26T20:53:31.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20210426.htm"
+    },
+    {
+      "accessionNumber": "0001564590-21-017443",
+      "filingDate": "2021-04-02",
+      "reportDate": "2021-04-02",
+      "acceptanceDateTime": "2021-04-02T12:38:07.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20210402.htm"
+    },
+    {
+      "accessionNumber": "0001564590-21-012981",
+      "filingDate": "2021-03-15",
+      "reportDate": "2021-03-15",
+      "acceptanceDateTime": "2021-03-15T10:05:17.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20210315.htm"
+    },
+    {
+      "accessionNumber": "0001564590-21-012962",
+      "filingDate": "2021-03-15",
+      "reportDate": "2021-03-11",
+      "acceptanceDateTime": "2021-03-13T01:11:19.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20210311.htm"
+    },
+    {
+      "accessionNumber": "0001564590-21-002645",
+      "filingDate": "2021-01-27",
+      "reportDate": "2021-01-27",
+      "acceptanceDateTime": "2021-01-27T22:11:12.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20210127.htm"
+    },
+    {
+      "accessionNumber": "0001564590-21-000010",
+      "filingDate": "2021-01-04",
+      "reportDate": "2020-12-29",
+      "acceptanceDateTime": "2021-01-04T11:07:40.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20201229.htm"
+    },
+    {
+      "accessionNumber": "0001564590-21-000008",
+      "filingDate": "2021-01-04",
+      "reportDate": "2021-01-02",
+      "acceptanceDateTime": "2021-01-04T11:05:26.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20210102.htm"
+    },
+    {
+      "accessionNumber": "0001564590-20-056725",
+      "filingDate": "2020-12-10",
+      "reportDate": "2020-12-09",
+      "acceptanceDateTime": "2020-12-10T21:14:39.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20201209.htm"
+    },
+    {
+      "accessionNumber": "0001193125-20-312194",
+      "filingDate": "2020-12-08",
+      "reportDate": "2020-12-08",
+      "acceptanceDateTime": "2020-12-08T11:06:03.000Z",
+      "form": "8-K",
+      "primaryDocument": "d60067d8k.htm"
+    },
+    {
+      "accessionNumber": "0001564590-20-047108",
+      "filingDate": "2020-10-21",
+      "reportDate": "2020-10-21",
+      "acceptanceDateTime": "2020-10-21T20:38:49.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20201021.htm"
+    },
+    {
+      "accessionNumber": "0001564590-20-045592",
+      "filingDate": "2020-10-02",
+      "reportDate": "2020-10-02",
+      "acceptanceDateTime": "2020-10-02T12:00:56.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20201002.htm"
+    },
+    {
+      "accessionNumber": "0001564590-20-044548",
+      "filingDate": "2020-09-24",
+      "reportDate": "2020-09-22",
+      "acceptanceDateTime": "2020-09-24T21:15:23.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20200922.htm"
+    },
+    {
+      "accessionNumber": "0001564590-20-042696",
+      "filingDate": "2020-09-08",
+      "reportDate": "2020-09-04",
+      "acceptanceDateTime": "2020-09-08T10:17:02.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20200904.htm"
+    },
+    {
+      "accessionNumber": "0001193125-20-236678",
+      "filingDate": "2020-09-01",
+      "reportDate": "2020-08-28",
+      "acceptanceDateTime": "2020-09-01T11:12:06.000Z",
+      "form": "8-K",
+      "primaryDocument": "d21598d8k.htm"
+    },
+    {
+      "accessionNumber": "0001564590-20-039353",
+      "filingDate": "2020-08-11",
+      "reportDate": "2020-08-11",
+      "acceptanceDateTime": "2020-08-11T21:07:35.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20200811.htm"
+    },
+    {
+      "accessionNumber": "0001564590-20-033069",
+      "filingDate": "2020-07-22",
+      "reportDate": "2020-07-22",
+      "acceptanceDateTime": "2020-07-22T20:54:41.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20200722.htm"
+    },
+    {
+      "accessionNumber": "0001564590-20-031568",
+      "filingDate": "2020-07-02",
+      "reportDate": "2020-07-02",
+      "acceptanceDateTime": "2020-07-02T12:01:54.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20200702.htm"
+    },
+    {
+      "accessionNumber": "0001564590-20-031314",
+      "filingDate": "2020-06-30",
+      "reportDate": "2020-06-24",
+      "acceptanceDateTime": "2020-06-30T21:22:43.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20200624.htm"
+    },
+    {
+      "accessionNumber": "0001564590-20-029536",
+      "filingDate": "2020-06-16",
+      "reportDate": "2020-06-10",
+      "acceptanceDateTime": "2020-06-16T20:24:51.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20200610.htm"
+    },
+    {
+      "accessionNumber": "0001564590-20-023655",
+      "filingDate": "2020-05-08",
+      "reportDate": "2020-05-07",
+      "acceptanceDateTime": "2020-05-08T21:13:27.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20200507.htm"
+    },
+    {
+      "accessionNumber": "0001564590-20-022062",
+      "filingDate": "2020-05-06",
+      "reportDate": "2020-04-30",
+      "acceptanceDateTime": "2020-05-06T21:22:42.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20200430.htm"
+    },
+    {
+      "accessionNumber": "0001564590-20-019776",
+      "filingDate": "2020-04-29",
+      "reportDate": "2020-04-29",
+      "acceptanceDateTime": "2020-04-29T20:56:22.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20200429.htm"
+    },
+    {
+      "accessionNumber": "0001564590-20-018196",
+      "filingDate": "2020-04-23",
+      "reportDate": "2020-04-23",
+      "acceptanceDateTime": "2020-04-23T20:10:40.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20200423.htm"
+    },
+    {
+      "accessionNumber": "0001564590-20-014992",
+      "filingDate": "2020-04-02",
+      "reportDate": "2020-04-02",
+      "acceptanceDateTime": "2020-04-02T20:09:37.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20200402.htm"
+    },
+    {
+      "accessionNumber": "0001564590-20-011823",
+      "filingDate": "2020-03-19",
+      "reportDate": "2020-03-19",
+      "acceptanceDateTime": "2020-03-19T20:56:17.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20200319.htm"
+    },
+    {
+      "accessionNumber": "0001564590-20-005288",
+      "filingDate": "2020-02-19",
+      "reportDate": "2020-02-13",
+      "acceptanceDateTime": "2020-02-19T21:15:53.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20200213.htm"
+    },
+    {
+      "accessionNumber": "0001564590-20-002489",
+      "filingDate": "2020-01-29",
+      "reportDate": "2020-01-29",
+      "acceptanceDateTime": "2020-01-29T22:12:18.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20200129.htm"
+    },
+    {
+      "accessionNumber": "0001564590-20-000161",
+      "filingDate": "2020-01-03",
+      "reportDate": "2020-01-03",
+      "acceptanceDateTime": "2020-01-03T13:21:52.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20200103.htm"
+    },
+    {
+      "accessionNumber": "0001564590-19-046961",
+      "filingDate": "2019-12-26",
+      "reportDate": "2019-12-18",
+      "acceptanceDateTime": "2019-12-26T22:01:55.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20191218.htm"
+    },
+    {
+      "accessionNumber": "0001564590-19-037581",
+      "filingDate": "2019-10-23",
+      "reportDate": "2019-10-23",
+      "acceptanceDateTime": "2019-10-23T21:25:52.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20191023.htm"
+    },
+    {
+      "accessionNumber": "0001564590-19-036274",
+      "filingDate": "2019-10-02",
+      "reportDate": "2019-09-26",
+      "acceptanceDateTime": "2019-10-02T21:26:27.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20190926.htm"
+    },
+    {
+      "accessionNumber": "0001564590-19-032484",
+      "filingDate": "2019-08-16",
+      "reportDate": "2019-08-16",
+      "acceptanceDateTime": "2019-08-16T21:03:32.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20190816.htm"
+    },
+    {
+      "accessionNumber": "0001564590-19-025855",
+      "filingDate": "2019-07-24",
+      "reportDate": "2019-07-24",
+      "acceptanceDateTime": "2019-07-24T20:56:43.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20190724.htm"
+    },
+    {
+      "accessionNumber": "0001564590-19-024414",
+      "filingDate": "2019-07-02",
+      "reportDate": "2019-07-02",
+      "acceptanceDateTime": "2019-07-02T20:22:57.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20190702.htm"
+    },
+    {
+      "accessionNumber": "0001564590-19-022354",
+      "filingDate": "2019-06-12",
+      "reportDate": "2019-06-11",
+      "acceptanceDateTime": "2019-06-12T21:29:16.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20190611.htm"
+    },
+    {
+      "accessionNumber": "0001564590-19-018876",
+      "filingDate": "2019-05-13",
+      "reportDate": "2019-05-13",
+      "acceptanceDateTime": "2019-05-13T20:59:18.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20190513.htm"
+    },
+    {
+      "accessionNumber": "0001564590-19-016764",
+      "filingDate": "2019-05-08",
+      "reportDate": "2019-05-03",
+      "acceptanceDateTime": "2019-05-08T00:55:47.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20190503.htm"
+    },
+    {
+      "accessionNumber": "0001193125-19-135910",
+      "filingDate": "2019-05-03",
+      "reportDate": "2019-05-01",
+      "acceptanceDateTime": "2019-05-03T12:16:33.000Z",
+      "form": "8-K",
+      "primaryDocument": "d730491d8k.htm"
+    },
+    {
+      "accessionNumber": "0001564590-19-012758",
+      "filingDate": "2019-04-24",
+      "reportDate": "2019-04-24",
+      "acceptanceDateTime": "2019-04-24T21:15:37.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20190424.htm"
+    },
+    {
+      "accessionNumber": "0001564590-19-012122",
+      "filingDate": "2019-04-19",
+      "reportDate": "2019-04-18",
+      "acceptanceDateTime": "2019-04-19T21:31:09.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20190418.htm"
+    },
+    {
+      "accessionNumber": "0001564590-19-010743",
+      "filingDate": "2019-04-04",
+      "reportDate": "2019-04-03",
+      "acceptanceDateTime": "2019-04-04T00:22:00.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20190403.htm"
+    },
+    {
+      "accessionNumber": "0001564590-19-007669",
+      "filingDate": "2019-03-14",
+      "reportDate": "2019-03-13",
+      "acceptanceDateTime": "2019-03-14T12:32:05.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20190313.htm"
+    },
+    {
+      "accessionNumber": "0001564590-19-007080",
+      "filingDate": "2019-03-11",
+      "reportDate": "2019-03-10",
+      "acceptanceDateTime": "2019-03-11T10:07:48.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20190310.htm"
+    },
+    {
+      "accessionNumber": "0001564590-19-006788",
+      "filingDate": "2019-03-07",
+      "reportDate": "2019-03-01",
+      "acceptanceDateTime": "2019-03-07T21:13:33.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20190301.htm"
+    },
+    {
+      "accessionNumber": "0001564590-19-005560",
+      "filingDate": "2019-03-01",
+      "reportDate": "2019-02-28",
+      "acceptanceDateTime": "2019-02-28T23:04:39.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20190228.htm"
+    },
+    {
+      "accessionNumber": "0001564590-19-001597",
+      "filingDate": "2019-02-01",
+      "reportDate": "2019-01-29",
+      "acceptanceDateTime": "2019-02-01T11:09:09.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20190129.htm"
+    },
+    {
+      "accessionNumber": "0001564590-19-001399",
+      "filingDate": "2019-01-30",
+      "reportDate": "2019-01-30",
+      "acceptanceDateTime": "2019-01-30T21:17:55.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20190130.htm"
+    },
+    {
+      "accessionNumber": "0001564590-19-000740",
+      "filingDate": "2019-01-18",
+      "reportDate": "2019-01-18",
+      "acceptanceDateTime": "2019-01-18T11:04:43.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20190118.htm"
+    },
+    {
+      "accessionNumber": "0001564590-19-000190",
+      "filingDate": "2019-01-04",
+      "reportDate": "2018-12-28",
+      "acceptanceDateTime": "2019-01-04T21:09:50.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20181228.htm"
+    },
+    {
+      "accessionNumber": "0001564590-19-000013",
+      "filingDate": "2019-01-02",
+      "reportDate": "2019-01-02",
+      "acceptanceDateTime": "2019-01-02T13:38:32.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20190102.htm"
+    },
+    {
+      "accessionNumber": "0001564590-18-031477",
+      "filingDate": "2018-12-28",
+      "reportDate": "2018-12-27",
+      "acceptanceDateTime": "2018-12-28T13:27:19.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20181227.htm"
+    },
+    {
+      "accessionNumber": "0001564590-18-028241",
+      "filingDate": "2018-11-08",
+      "reportDate": "2018-11-07",
+      "acceptanceDateTime": "2018-11-08T11:05:56.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20181107.htm"
+    },
+    {
+      "accessionNumber": "0001564590-18-024902",
+      "filingDate": "2018-10-24",
+      "reportDate": "2018-10-24",
+      "acceptanceDateTime": "2018-10-24T20:27:39.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20181024.htm"
+    },
+    {
+      "accessionNumber": "0001564590-18-024373",
+      "filingDate": "2018-10-17",
+      "reportDate": "2018-10-16",
+      "acceptanceDateTime": "2018-10-17T12:37:34.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20181016.htm"
+    },
+    {
+      "accessionNumber": "0001564590-18-023815",
+      "filingDate": "2018-10-02",
+      "reportDate": "2018-10-02",
+      "acceptanceDateTime": "2018-10-02T12:35:28.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20181002.htm"
+    },
+    {
+      "accessionNumber": "0001564590-18-023716",
+      "filingDate": "2018-10-01",
+      "reportDate": "2018-09-30",
+      "acceptanceDateTime": "2018-10-01T10:14:24.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20180930.htm"
+    },
+    {
+      "accessionNumber": "0001564590-18-022798",
+      "filingDate": "2018-09-07",
+      "reportDate": "2018-09-04",
+      "acceptanceDateTime": "2018-09-07T12:32:20.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20180904.htm"
+    },
+    {
+      "accessionNumber": "0001564590-18-022131",
+      "filingDate": "2018-08-21",
+      "reportDate": "2018-08-16",
+      "acceptanceDateTime": "2018-08-21T20:32:18.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20180816.htm"
+    },
+    {
+      "accessionNumber": "0001564590-18-021585",
+      "filingDate": "2018-08-14",
+      "reportDate": "2018-08-14",
+      "acceptanceDateTime": "2018-08-14T12:34:57.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20180814.htm"
+    },
+    {
+      "accessionNumber": "0001564590-18-018490",
+      "filingDate": "2018-08-01",
+      "reportDate": "2018-08-01",
+      "acceptanceDateTime": "2018-08-01T20:32:05.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20180801.htm"
+    },
+    {
+      "accessionNumber": "0001564590-18-017908",
+      "filingDate": "2018-07-30",
+      "reportDate": "2018-07-30",
+      "acceptanceDateTime": "2018-07-30T20:54:30.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20180730.htm"
+    },
+    {
+      "accessionNumber": "0001564590-18-016494",
+      "filingDate": "2018-07-02",
+      "reportDate": "2018-06-27",
+      "acceptanceDateTime": "2018-07-02T20:07:56.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20180702.htm"
+    },
+    {
+      "accessionNumber": "0001564590-18-016465",
+      "filingDate": "2018-07-02",
+      "reportDate": "2018-07-02",
+      "acceptanceDateTime": "2018-07-02T13:04:06.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20180702.htm"
+    },
+    {
+      "accessionNumber": "0001564590-18-015129",
+      "filingDate": "2018-06-06",
+      "reportDate": "2018-06-05",
+      "acceptanceDateTime": "2018-06-06T17:18:54.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20180611.htm"
+    },
+    {
+      "accessionNumber": "0001564590-18-010306",
+      "filingDate": "2018-05-02",
+      "reportDate": "2018-05-02",
+      "acceptanceDateTime": "2018-05-02T20:12:38.000Z",
+      "form": "8-K",
+      "primaryDocument": "tsla-8k_20180502.htm"
+    }
+  ],
+  "sources": {
+    "prices": "Yahoo Finance via yfinance",
+    "fundamentals": "SEC companyfacts 10-K/10-Q, filtered by accession and filing date",
+    "filings": "SEC submissions JSON"
+  }
+}

@@ -13,6 +13,10 @@ _MIN_CALL_INTERVAL_SECONDS = 1.0
 _last_call_at = 0.0
 
 
+class FinnhubNewsError(RuntimeError):
+    """Raised when a strict news request cannot be completed safely."""
+
+
 def _pace():
     """Ensure at least one second between Finnhub requests."""
     global _last_call_at
@@ -22,7 +26,13 @@ def _pace():
     _last_call_at = time.time()
 
 
-def get_company_news(symbol: str, from_date: str, to_date: str, max_retries: int = 2):
+def get_company_news(
+    symbol: str,
+    from_date: str,
+    to_date: str,
+    max_retries: int = 2,
+    strict: bool = False,
+):
     """
     Fetch company news for a symbol in the inclusive date range.
 
@@ -31,12 +41,16 @@ def get_company_news(symbol: str, from_date: str, to_date: str, max_retries: int
     """
     api_key = config.FINNHUB_API_KEY
     if not api_key:
-        print("⚠️ [Finnhub] FINNHUB_API_KEY is not configured; skipping news ingestion")
+        message = "FINNHUB_API_KEY is not configured"
+        if strict:
+            raise FinnhubNewsError(message)
+        print(f"⚠️ [Finnhub] {message}; skipping news ingestion")
         return []
 
     symbol = symbol.upper()
     params = {"symbol": symbol, "from": from_date, "to": to_date, "token": api_key}
 
+    last_error = None
     for attempt in range(max_retries + 1):
         _pace()
         try:
@@ -52,18 +66,27 @@ def get_company_news(symbol: str, from_date: str, to_date: str, max_retries: int
             data = response.json()
 
             if not isinstance(data, list):
-                print(f"⚠️ [Finnhub] {symbol} returned an unexpected response: {data}")
+                message = f"{symbol} returned a non-list company-news response"
+                if strict:
+                    raise FinnhubNewsError(message)
+                print(f"⚠️ [Finnhub] {message}: {data}")
                 return []
 
             return data
 
         except Exception as e:
+            last_error = e
             if attempt < max_retries:
                 print(f"⚠️ [Finnhub] Request {attempt + 1} failed for {symbol}: {e}; retrying...")
                 time.sleep(2)
             else:
                 print(f"❌ [Finnhub] News fetch failed for {symbol}; skipping: {e}")
 
+    if strict:
+        raise FinnhubNewsError(
+            f"Finnhub company-news failed for {symbol} from {from_date} to {to_date}: "
+            f"{last_error}"
+        )
     return []
 
 

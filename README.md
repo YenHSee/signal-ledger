@@ -175,7 +175,7 @@ market performance.
 
 ### Planned
 
-- [ ] **Report timeline UI** — browse every report for a ticker from earliest to
+- [x] **Report timeline UI** — browse every report for a ticker from earliest to
       latest and compare price-at-generation with subsequent performance
 - [ ] **Bring your own LLM** — configure provider, API key, model, and optional
       OpenAI-compatible base URL without changing application code

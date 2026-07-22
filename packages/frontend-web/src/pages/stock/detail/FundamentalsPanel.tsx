@@ -12,6 +12,7 @@ import {
 interface FundamentalsPanelProps {
   fundamentalsProfile: FundamentalsProfile | null;
   riskLevel: string | null;
+  contextLabel?: string;
 }
 
 function Row({
@@ -119,6 +120,7 @@ function RangeBar({
 export default function FundamentalsPanel({
   fundamentalsProfile,
   riskLevel,
+  contextLabel,
 }: FundamentalsPanelProps) {
   if (!fundamentalsProfile) {
     return (
@@ -147,6 +149,9 @@ export default function FundamentalsPanel({
       <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-2 border-b border-gray-700 pb-2">
         Fundamentals
       </h3>
+      {contextLabel && (
+        <div className="text-[11px] text-blue-400/80 mb-3">{contextLabel}</div>
+      )}
 
       <SectionHeading>Valuation</SectionHeading>
       <ul className="space-y-2.5">

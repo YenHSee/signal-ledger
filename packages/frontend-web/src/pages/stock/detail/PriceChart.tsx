@@ -200,7 +200,8 @@ export default function PriceChart({
     const maxSignalDiffMs = 4 * 24 * 60 * 60 * 1000;
     const signalMarkers = history
       .map((item) => {
-        const generatedTime = new Date(item.generatedAt.slice(0, 10)).getTime();
+        const reportDate = item.analysisAsOf ?? item.generatedAt;
+        const generatedTime = new Date(reportDate.slice(0, 10)).getTime();
         if (Number.isNaN(generatedTime)) return null;
 
         let closestIndex = -1;
@@ -283,7 +284,7 @@ export default function PriceChart({
     <div className="bg-gray-800 rounded-xl border border-gray-700 p-6 shadow-xl">
       <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
         <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider">
-          12-Month Price Action
+          2026 Year-to-Date Price Action
         </h3>
         <div className="flex items-center gap-3 text-[10px] text-gray-500">
           <LegendDot color={CONCLUSION_COLORS.BUY} label="AI Buy" />
@@ -572,7 +573,10 @@ export default function PriceChart({
               {hoveredSignal.history.conclusion || hoveredSignal.kind}
             </div>
             <div className="text-gray-400">
-              {formatDate(hoveredSignal.history.generatedAt)}
+              {formatDate(
+                hoveredSignal.history.analysisAsOf ??
+                  hoveredSignal.history.generatedAt,
+              )}
             </div>
             <div className="text-gray-300">
               Price then:{" "}

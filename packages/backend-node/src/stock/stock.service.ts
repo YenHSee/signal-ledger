@@ -16,6 +16,7 @@ import type {
 import { Stock } from './entities/stock.entity';
 import { DailyPrice } from './entities/daily-price.entity';
 import { StockNews } from './entities/stock-news.entity';
+import { getAppMode } from '../runtime-mode';
 
 interface RawStockRow {
   symbol: string;
@@ -194,13 +195,16 @@ export class StockService {
       .reverse();
   }
 
-  async getCompanyNews(ticker: string, days = 30): Promise<StockNewsItem[]> {
+  async getCompanyNews(
+    ticker: string,
+    days?: number,
+  ): Promise<StockNewsItem[]> {
     const symbol = ticker.toUpperCase();
-    const rows = await this.stockNewsRepository
+    const query = this.stockNewsRepository
       .createQueryBuilder('news')
       .select([
         'news.finnhub_id AS finnhub_id',
-        'news.trade_date AS trade_date',
+        'news.trade_date::text AS trade_date',
         'news.datetime AS datetime',
         'news.headline AS headline',
         'news.summary AS summary',
@@ -208,17 +212,24 @@ export class StockService {
         'news.url AS url',
       ])
       .where('news.symbol = :symbol', { symbol })
-      .andWhere(`news.trade_date >= CURRENT_DATE - INTERVAL '${days} days'`)
-      .orderBy('news.datetime', 'DESC')
-      .getRawMany<{
-        finnhub_id: string | number;
-        trade_date: string;
-        datetime: string | number;
-        headline: string;
-        summary: string | null;
-        source: string | null;
-        url: string | null;
-      }>();
+      .orderBy('news.datetime', 'DESC');
+
+    if (getAppMode() === 'live') {
+      query.andWhere(
+        "news.trade_date >= CURRENT_DATE - (:days * INTERVAL '1 day')",
+        { days: days ?? 30 },
+      );
+    }
+
+    const rows = await query.getRawMany<{
+      finnhub_id: string | number;
+      trade_date: string;
+      datetime: string | number;
+      headline: string;
+      summary: string | null;
+      source: string | null;
+      url: string | null;
+    }>();
 
     return rows.map((row) => ({
       id: Number(row.finnhub_id),

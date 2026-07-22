@@ -18,6 +18,8 @@ env/
 .poetry/
 packages/data-python/data_cache/
 packages/data-python/reports/*.json
+sample-data/*/.news-backfill.checkpoint.json
+sample-data/*/.investment_reports.checkpoint.json
 
 .DS_Store
 .vscode/

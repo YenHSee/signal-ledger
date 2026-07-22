@@ -3,7 +3,7 @@ from pydantic import BaseModel, Field
 from langgraph.prebuilt import create_react_agent
 from langchain_core.output_parsers import PydanticOutputParser
 
-from core.llm_factory import get_llm, ModelTier
+from core.llm_factory import get_llm, ModelTier, ModelSpec
 
 
 class InvestmentReport(BaseModel):
@@ -14,21 +14,21 @@ class InvestmentReport(BaseModel):
     reasoning: str = Field(description="Core investment rationale in no more than 200 words")
     risk_level: str = Field(description="High, Medium, Low")
     full_report: str = Field(
-        description="""An institutional-style Markdown research report containing:
-        1. Executive Summary
-        2. Business and Revenue Mix
-        3. Financial Performance, with a table of key metrics
-        4. Valuation Analysis using the supplied valuation metrics
-        5. Bull, Base, and Bear Scenarios
-        6. Key Risks and Probability
-        Use clear headings and an analytical, precise, professional tone."""
+        description="""An institutional-style Markdown research report containing every
+        exact H2 heading: ## Executive Summary; ## Business Moat and Catalysts;
+        ## Financial and Valuation Analysis; ## Bull, Base, and Bear Scenarios;
+        ## Risk Assessment; ## Data Limitations. None may be omitted. Use an analytical,
+        precise, professional tone."""
     )
 
 
-def create_analyst_agent(tier: ModelTier = ModelTier.LOCAL):
+def create_analyst_agent(
+    tier: ModelTier = ModelTier.LOCAL,
+    model_spec: ModelSpec | None = None,
+):
     """Create the financial analyst graph and its structured-output parser."""
     
-    llm = get_llm(tier=tier, temperature=0.1)
+    llm = get_llm(tier=tier, temperature=0.1, spec=model_spec)
     tools = []
     parser = PydanticOutputParser(pydantic_object=InvestmentReport)
     
@@ -54,15 +54,24 @@ def create_analyst_agent(tier: ModelTier = ModelTier.LOCAL):
            If it is empty, do not invent news or catalysts.
         5. State material data limitations and reduce conviction when important evidence is
            missing or stale.
+        6. Respect every supplied statement period. Never combine annual revenue with YTD cash
+           flow in a margin or ratio, and never assign a quarterly period end to annual figures.
+        7. Present the target as an illustrative 12-month scenario target. State the EPS basis,
+           EPS period, assumed growth, derived forward EPS, assumed exit P/E, and the explicit
+           multiplication used to calculate the target. Assumptions must not be described as
+           reported facts or analyst consensus.
 
         FULL_REPORT REQUIREMENTS
-        The `full_report` value must be valid Markdown and contain these sections:
-        - Executive Summary: one concise conclusion and its supporting rationale.
-        - Business Moat and Catalysts: business model, competitive context, and supplied news.
-        - Financial and Valuation Analysis: a Markdown table of supplied key metrics.
-        - Bull, Base, and Bear Scenarios: explicit assumptions for each scenario.
-        - Risk Assessment: two or three material risks with High, Medium, or Low probability.
-        - Data Limitations: important missing or stale inputs that affect confidence.
+        The `full_report` value must be valid Markdown and must contain every one of these
+        exact H2 headings, even when the relevant evidence is unavailable:
+        - ## Executive Summary
+        - ## Business Moat and Catalysts
+        - ## Financial and Valuation Analysis
+        - ## Bull, Base, and Bear Scenarios
+        - ## Risk Assessment
+        - ## Data Limitations
+        Do not omit Risk Assessment or Data Limitations. Under the scenario heading, explicitly
+        label the Bull, Base, and Bear cases.
 
         OUTPUT RULES
         Return only JSON that conforms to the schema below. Do not add code fences,

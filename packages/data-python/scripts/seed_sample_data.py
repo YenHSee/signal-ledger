@@ -1,6 +1,7 @@
 """Load a versioned frozen fixture into the dedicated sample database."""
 
 import argparse
+import copy
 import json
 import re
 import sys
@@ -59,19 +60,28 @@ TABLE_SPECS = {
     },
     "stock_news": {
         "required": {"finnhub_id", "symbol", "trade_date", "datetime", "headline"},
-        "conflict": ("finnhub_id",),
+        "conflict": ("finnhub_id", "symbol"),
         "allowed": {
             "finnhub_id", "symbol", "trade_date", "datetime", "headline",
             "summary", "source", "url", "fetched_at",
         },
     },
     "investment_reports": {
-        "required": {"ticker", "model_tier", "conclusion", "generated_at"},
-        "conflict": ("ticker", "generated_at", "model_tier"),
+        "required": {
+            "report_schema_version", "ticker", "analysis_as_of", "generated_at",
+            "generation_mode", "model_tier", "model_provider", "model_name",
+            "prompt_version", "conclusion", "agent_outputs", "generation_metadata",
+        },
+        "conflict": (
+            "ticker", "analysis_as_of", "model_provider", "model_name", "prompt_version",
+        ),
         "allowed": {
-            "ticker", "model_tier", "conclusion", "conviction_level",
+            "report_schema_version", "ticker", "analysis_as_of", "generation_mode",
+            "model_tier", "model_provider", "model_name", "prompt_version",
+            "conclusion", "conviction_level",
             "target_price", "upside_downside_pct", "risk_level", "reasoning",
             "full_report", "raw_financial_data", "generated_at", "created_at",
+            "agent_outputs", "generation_metadata",
         },
     },
 }
@@ -82,9 +92,11 @@ class DatasetValidationError(ValueError):
 
 
 REPORT_REQUIRED_FIELDS = {
-    "ticker", "model_tier", "conclusion", "conviction_level", "target_price",
+    "report_schema_version", "ticker", "analysis_as_of", "generation_mode",
+    "model_tier", "model_provider", "model_name", "prompt_version",
+    "conclusion", "conviction_level", "target_price",
     "upside_downside_pct", "risk_level", "reasoning", "full_report",
-    "raw_financial_data", "generated_at",
+    "raw_financial_data", "agent_outputs", "generation_metadata", "generated_at",
 }
 REPORT_SNAPSHOT_SECTIONS = {
     "company_identity",
@@ -104,8 +116,8 @@ REPORT_MARKDOWN_SECTIONS = (
     "risk",
     "data limitations",
 )
-REPORT_GENERATED_AT_PATTERN = re.compile(
-    r"generated\s+at\s*:\s*(\d{4}-\d{2}-\d{2})",
+REPORT_ANALYSIS_AS_OF_PATTERN = re.compile(
+    r"analysis\s+as\s+of\s*:\s*(\d{4}-\d{2}-\d{2})",
     re.IGNORECASE,
 )
 PERCENT_PATTERN = re.compile(r"^([+-]?\d+(?:\.\d+)?)%$")
@@ -129,20 +141,20 @@ def _validate_iso_date(value: Any, field: str, nullable: bool = False) -> None:
         raise DatasetValidationError(f"{field} must use YYYY-MM-DD.") from error
 
 
-def _parse_report_datetime(value: Any, row_number: int) -> datetime:
+def _parse_report_datetime(value: Any, row_number: int, field: str = "generated_at") -> datetime:
     if not isinstance(value, str):
         raise DatasetValidationError(
-            f"investment_reports row {row_number} generated_at must be an ISO datetime."
+            f"investment_reports row {row_number} {field} must be an ISO datetime."
         )
     try:
         parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
     except ValueError as error:
         raise DatasetValidationError(
-            f"investment_reports row {row_number} generated_at must be an ISO datetime."
+            f"investment_reports row {row_number} {field} must be an ISO datetime."
         ) from error
     if parsed.utcoffset() is None:
         raise DatasetValidationError(
-            f"investment_reports row {row_number} generated_at must include a timezone."
+            f"investment_reports row {row_number} {field} must include a timezone."
         )
     return parsed
 
@@ -216,11 +228,23 @@ def _validate_investment_reports(manifest: dict, data: dict[str, list[dict]]) ->
                     f"investment_reports row {row_number} {field} must be non-empty."
                 )
 
-        generated_at = _parse_report_datetime(row["generated_at"], row_number)
-        generated_date = generated_at.date()
-        if not price_start <= generated_date <= price_end or generated_date > data_as_of:
+        _parse_report_datetime(row["generated_at"], row_number)
+        analysis_as_of = _parse_report_datetime(
+            row["analysis_as_of"], row_number, "analysis_as_of"
+        )
+        analysis_date = analysis_as_of.date()
+        if not price_start <= analysis_date <= price_end or analysis_date > data_as_of:
             raise DatasetValidationError(
-                f"investment_reports row {row_number} generated_at is outside the frozen range."
+                f"investment_reports row {row_number} analysis_as_of is outside the frozen range."
+            )
+
+        if row["report_schema_version"] != 2:
+            raise DatasetValidationError(
+                f"investment_reports row {row_number} report_schema_version must be 2."
+            )
+        if row["generation_mode"] != "historical_backfill":
+            raise DatasetValidationError(
+                f"investment_reports row {row_number} must use historical_backfill mode."
             )
 
         if row["model_tier"] not in {"L", "N"}:
@@ -250,6 +274,18 @@ def _validate_investment_reports(manifest: dict, data: dict[str, list[dict]]) ->
             raise DatasetValidationError(
                 f"investment_reports row {row_number} snapshot ticker does not match."
             )
+        for item in snapshot.get("recent_sec_filings", []):
+            filed_at = item.get("date") if isinstance(item, dict) else None
+            if filed_at and date.fromisoformat(filed_at) > analysis_date:
+                raise DatasetValidationError(
+                    f"investment_reports row {row_number} contains a future SEC filing."
+                )
+        for item in snapshot.get("recent_catalysts", []):
+            news_date = item.get("date") if isinstance(item, dict) else None
+            if news_date and date.fromisoformat(news_date) > analysis_date:
+                raise DatasetValidationError(
+                    f"investment_reports row {row_number} contains future news."
+                )
 
         target_price = _number(row["target_price"], "target_price", row_number)
         snapshot_price = _number(
@@ -260,7 +296,7 @@ def _validate_investment_reports(manifest: dict, data: dict[str, list[dict]]) ->
         recent_prices = [
             close
             for trade_date, close in prices_by_ticker.get(row["ticker"], [])
-            if trade_date <= generated_date and (generated_date - trade_date).days <= 7
+            if trade_date <= analysis_date and (analysis_date - trade_date).days <= 7
         ]
         if not any(abs(close - snapshot_price) <= 0.01 for close in recent_prices):
             raise DatasetValidationError(
@@ -290,10 +326,92 @@ def _validate_investment_reports(manifest: dict, data: dict[str, list[dict]]) ->
                 f"investment_reports row {row_number} is missing report sections: "
                 f"{', '.join(missing_sections)}."
             )
-        embedded_date = REPORT_GENERATED_AT_PATTERN.search(row["full_report"])
-        if embedded_date and date.fromisoformat(embedded_date.group(1)) != generated_date:
+        embedded_dates = REPORT_ANALYSIS_AS_OF_PATTERN.findall(row["full_report"])
+        if any(date.fromisoformat(value) != analysis_date for value in embedded_dates):
             raise DatasetValidationError(
-                f"investment_reports row {row_number} contains a conflicting generated date."
+                f"investment_reports row {row_number} contains a conflicting analysis date."
+            )
+
+        outputs = row["agent_outputs"]
+        metadata = row["generation_metadata"]
+        if not isinstance(outputs, list) or not outputs:
+            raise DatasetValidationError(
+                f"investment_reports row {row_number} agent_outputs must be a non-empty array."
+            )
+        if not isinstance(metadata, dict) or metadata.get("schema_version") != 2:
+            raise DatasetValidationError(
+                f"investment_reports row {row_number} has invalid generation_metadata."
+            )
+        if metadata.get("provenance_status") != "complete":
+            raise DatasetValidationError(
+                f"investment_reports row {row_number} provenance must be complete."
+            )
+        runs = metadata.get("agent_runs")
+        if not isinstance(runs, list) or not runs:
+            raise DatasetValidationError(
+                f"investment_reports row {row_number} agent_runs must be a non-empty array."
+            )
+        final_run_id = metadata.get("final_run_id")
+        final_runs = [run for run in runs if run.get("run_id") == final_run_id]
+        final_outputs = [output for output in outputs if output.get("run_id") == final_run_id]
+        if len(final_runs) != 1 or len(final_outputs) != 1:
+            raise DatasetValidationError(
+                f"investment_reports row {row_number} must identify exactly one final run."
+            )
+        final_run = final_runs[0]
+        final_output = final_outputs[0].get("output") or {}
+        if final_output.get("stance", "").upper() != row["conclusion"].upper():
+            raise DatasetValidationError(
+                f"investment_reports row {row_number} final output conflicts with conclusion."
+            )
+        if (
+            final_run.get("provider") != row["model_provider"]
+            or final_run.get("response_model") != row["model_name"]
+            or final_run.get("prompt_version") != row["prompt_version"]
+        ):
+            raise DatasetValidationError(
+                f"investment_reports row {row_number} final model columns conflict with final run."
+            )
+        required_run_fields = {
+            "run_id", "agent_key", "agent_version", "sequence", "depends_on",
+            "provider", "tier", "requested_model", "response_model", "prompt_version",
+            "temperature", "response_format", "finish_reason", "usage",
+        }
+        for run in runs:
+            if not required_run_fields <= run.keys():
+                raise DatasetValidationError(
+                    f"investment_reports row {row_number} has incomplete agent run metadata."
+                )
+            usage = run["usage"]
+            if not isinstance(usage, dict) or any(
+                not isinstance(usage.get(key), int) or usage[key] < 0
+                for key in ("input_tokens", "output_tokens", "total_tokens")
+            ):
+                raise DatasetValidationError(
+                    f"investment_reports row {row_number} has incomplete token usage."
+                )
+            if usage["total_tokens"] != usage["input_tokens"] + usage["output_tokens"]:
+                raise DatasetValidationError(
+                    f"investment_reports row {row_number} has inconsistent token usage."
+                )
+            if not run.get("response_model") or not run.get("finish_reason"):
+                raise DatasetValidationError(
+                    f"investment_reports row {row_number} lacks actual provider response metadata."
+                )
+            if run.get("provider") == "ollama" and not run.get("local_model_digest"):
+                raise DatasetValidationError(
+                    f"investment_reports row {row_number} lacks an Ollama model digest."
+                )
+        aggregate = metadata.get("aggregate_usage") or {}
+        expected_usage = {
+            key: sum(run["usage"][key] for run in runs)
+            for key in ("input_tokens", "output_tokens", "total_tokens")
+        }
+        if aggregate.get("calls") != len(runs) or any(
+            aggregate.get(key) != value for key, value in expected_usage.items()
+        ):
+            raise DatasetValidationError(
+                f"investment_reports row {row_number} aggregate usage does not match agent runs."
             )
 
         catalysts = snapshot.get("recent_catalysts", [])
@@ -409,11 +527,18 @@ def _upsert_rows(cursor, table: str, rows: list[dict]) -> None:
     if not rows:
         return
     from psycopg2 import sql
-    from psycopg2.extras import execute_values
+    from psycopg2.extras import Json, execute_values
 
     spec = TABLE_SPECS[table]
     columns = sorted(set().union(*(row.keys() for row in rows)))
-    values = [[row.get(column) for column in columns] for row in rows]
+    values = [
+        [
+            Json(value) if isinstance(value, (dict, list)) else value
+            for column in columns
+            for value in [row.get(column)]
+        ]
+        for row in rows
+    ]
     update_columns = [column for column in columns if column not in spec["conflict"]]
 
     statement = sql.SQL("INSERT INTO {table} ({columns}) VALUES %s ON CONFLICT ({conflict}) ").format(
@@ -433,13 +558,50 @@ def _upsert_rows(cursor, table: str, rows: list[dict]) -> None:
     execute_values(cursor, statement.as_string(cursor), values)
 
 
-def seed(fixture_dir: Path, allow_draft: bool = False) -> dict:
+def _apply_reports_preview(
+    manifest: dict,
+    data: dict,
+    reports_path: Path,
+) -> tuple[dict, dict]:
+    reports = _read_json(reports_path.resolve())
+    if not isinstance(reports, list) or any(not isinstance(row, dict) for row in reports):
+        raise DatasetValidationError("Reports preview must contain an array of objects.")
+    spec = TABLE_SPECS["investment_reports"]
+    ticker_set = set(manifest["tickers"])
+    for row_number, row in enumerate(reports, start=1):
+        unknown = set(row) - spec["allowed"]
+        missing = spec["required"] - row.keys()
+        if unknown or missing:
+            raise DatasetValidationError(
+                f"Invalid preview report row {row_number}; unknown={sorted(unknown)}, "
+                f"missing={sorted(missing)}."
+            )
+        if row["ticker"] not in ticker_set:
+            raise DatasetValidationError(
+                f"Preview report row {row_number} references ticker outside the manifest."
+            )
+    preview_manifest = copy.deepcopy(manifest)
+    preview_data = {**data, "investment_reports": reports}
+    preview_manifest["expectedRows"]["investment_reports"] = len(reports)
+    preview_manifest["datasetVersion"] = f"{manifest['datasetVersion']}-reports-preview"
+    preview_manifest["status"] = "draft"
+    _validate_investment_reports(preview_manifest, preview_data)
+    return preview_manifest, preview_data
+
+
+def seed(
+    fixture_dir: Path,
+    allow_draft: bool = False,
+    reports_preview: Path | None = None,
+) -> dict:
     import psycopg2
     from config import config
     from psycopg2 import sql
 
     assert_sample_seed_target()
     manifest, data = load_fixture(fixture_dir, allow_draft=allow_draft)
+    if reports_preview:
+        manifest, data = _apply_reports_preview(manifest, data, reports_preview)
     schema_sql = SCHEMA_PATH.read_text(encoding="utf-8")
 
     connection = psycopg2.connect(
@@ -500,12 +662,21 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Allow a local draft fixture; never use this in the published demo.",
     )
+    parser.add_argument(
+        "--reports-preview",
+        type=Path,
+        help="Temporarily seed validated staged reports without modifying the fixture.",
+    )
     return parser.parse_args()
 
 
 def main() -> None:
     args = parse_args()
-    manifest = seed(args.fixture_dir, allow_draft=args.allow_draft)
+    manifest = seed(
+        args.fixture_dir,
+        allow_draft=args.allow_draft,
+        reports_preview=args.reports_preview,
+    )
     print(f"Dataset: {manifest['datasetVersion']} ({manifest['status']})")
     print(f"Tickers declared: {len(manifest['tickers'])}")
     for table in TABLE_ORDER:
