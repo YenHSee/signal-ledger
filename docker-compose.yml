@@ -1,21 +1,100 @@
-version: "3.8"
-
 services:
   postgres-db:
-    image: postgres:15-alpine # Lightweight image for fast local startup
-    container_name: signal_ledger_postgres
+    image: postgres:15-alpine
+    profiles: ["live"]
     restart: always
     environment:
-      # Keep these local-development values aligned with the Python configuration.
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password123}
-      # PostgreSQL creates this database on the first startup.
       POSTGRES_DB: signal_ledger
     ports:
-      - "5433:5432" # host 5433 → container 5432 (set DB_PORT=5433 in .env)
+      - "5433:5432"
     volumes:
-      # Persist market data across container restarts.
       - postgres_data:/var/lib/postgresql/data
+
+  demo-db:
+    image: postgres:15-alpine
+    profiles: ["demo"]
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: signal_ledger_sample
+    ports:
+      - "5434:5432"
+    volumes:
+      - demo_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d signal_ledger_sample"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  demo-seed:
+    profiles: ["demo"]
+    build:
+      context: .
+      dockerfile: docker/demo/seeder.Dockerfile
+    environment:
+      APP_MODE: sample
+      DB_HOST: demo-db
+      DB_PORT: "5432"
+      DB_USER: postgres
+      DB_PASSWORD: password123
+      DB_NAME: signal_ledger_sample
+    command: ["--allow-draft"]
+    depends_on:
+      demo-db:
+        condition: service_healthy
+    restart: "no"
+
+  demo-api:
+    profiles: ["demo"]
+    build:
+      context: .
+      dockerfile: docker/demo/backend.Dockerfile
+    environment:
+      NODE_ENV: production
+      APP_MODE: sample
+      DB_HOST: demo-db
+      DB_PORT: "5432"
+      DB_USER: postgres
+      DB_PASSWORD: password123
+      DB_NAME: signal_ledger_sample
+      SAMPLE_DATASET_VERSION: v1-draft.6
+      SAMPLE_DATA_AS_OF: "2026-07-17"
+      SAMPLE_TICKER_COUNT: "10"
+      PORT: "4000"
+    depends_on:
+      demo-seed:
+        condition: service_completed_successfully
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:4000/api/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))",
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  demo-web:
+    profiles: ["demo"]
+    build:
+      context: .
+      dockerfile: docker/demo/frontend.Dockerfile
+      args:
+        VITE_API_BASE: /api
+    ports:
+      - "8080:80"
+    depends_on:
+      demo-api:
+        condition: service_healthy
+    restart: unless-stopped
 
 volumes:
   postgres_data:
+  demo_postgres_data:

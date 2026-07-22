@@ -1,0 +1,15 @@
+.git
+.github
+.DS_Store
+.env
+**/.env
+**/node_modules
+**/dist
+**/.turbo
+**/__pycache__
+**/.pytest_cache
+packages/data-python/.venv
+packages/data-python/data_cache
+packages/data-python/reports
+sample-data/*/.news-backfill.checkpoint.json
+sample-data/*/.investment_reports.checkpoint.json

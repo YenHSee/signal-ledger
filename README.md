@@ -8,12 +8,10 @@
 
 ## Project status
 
-SignalLedger is currently available as a public preview.
-
-The application can be run locally with user-provided data and AI credentials.
-A no-key Docker demo with seeded reports and market data is currently the main
-development priority. Until that is available, screenshots of the working
-application are included below.
+SignalLedger is currently available as a public preview. A local no-key Docker
+demo includes frozen 2026 YTD market data, news, and historical AI reports. The
+live pipeline remains available for developers who provide their own data and
+model credentials.
 
 ## Screenshots
 
@@ -75,9 +73,28 @@ types (`api-types`) are the contract between all layers.
 
 ## Quick Start
 
-> **No-key demo:** A seeded Docker environment that requires no external API
-> credentials is currently in development. The setup below runs the full live
-> data pipeline and may require provider credentials.
+### No-key sample demo
+
+The demo needs Docker only. It does not call Finnhub, Yahoo Finance, SEC, or an
+LLM while starting:
+
+```bash
+docker compose --profile demo up --build
+```
+
+Open <http://127.0.0.1:8080/stock/screener>. Compose waits for PostgreSQL, loads
+the frozen fixture, then starts the sample API and frontend. The terminal also
+prints this URL when the web container starts. It remains attached to the
+running services; add `-d` to run them in the background.
+
+```bash
+docker compose --profile demo down
+```
+
+The current fixture remains marked as a draft while redistribution review is
+pending. The demo profile deliberately enables the draft only for local review.
+
+### Live development
 
 **Prerequisites:** Node 22.12+, pnpm 9+, Python 3.11+, Docker
 
@@ -85,8 +102,8 @@ types (`api-types`) are the contract between all layers.
 # 1. Install dependencies
 pnpm install
 
-# 2. Start PostgreSQL (maps host port 5433 → container 5432)
-docker compose up -d
+# 2. Start live PostgreSQL (maps host port 5433 → container 5432)
+docker compose --profile live up -d
 
 # 3. Configure the Python data pipeline
 cp packages/data-python/.env.example packages/data-python/.env
@@ -133,9 +150,6 @@ Before going live:
   (`DB_*` for backend-node, `VITE_API_BASE` for frontend-web, API keys for data-python)
 - Store secrets in your host or GitHub Actions Secrets — never commit `.env`
 
-The upcoming no-key demo will use bundled seed data and will not call external
-market-data or LLM providers.
-
 See `.env.example` in each package for required variables.
 
 ## Roadmap
@@ -144,23 +158,23 @@ See `.env.example` in each package for required variables.
 investment calls can be inspected, compared, and verified against actual
 market performance.
 
-### Next up
+### Completed milestones
 
-- [ ] **No-key local demo** — provide a one-command Docker Compose setup with
+- [x] **No-key local demo** — provide a one-command Docker Compose setup with
       seeded market data, historical AI reports, news, and track-record examples.
 
       The goal is to let anyone explore the complete SignalLedger experience
       without creating external accounts or configuring API keys.
 
-      Planned flow:
+      Local flow:
 
       ```bash
       git clone https://github.com/YenHSee/signal-ledger.git
       cd signal-ledger
-      docker compose --profile demo up
+      docker compose --profile demo up --build
       ```
 
-      The demo environment will include:
+      The demo environment includes:
 
       - Preloaded PostgreSQL seed data
       - Sample S&P 500 screener results
@@ -173,10 +187,11 @@ market performance.
       The live data pipeline and AI report generation will remain optional
       extensions for users who provide their own API credentials.
 
-### Planned
-
 - [x] **Report timeline UI** — browse every report for a ticker from earliest to
       latest and compare price-at-generation with subsequent performance
+
+### Planned
+
 - [ ] **Bring your own LLM** — configure provider, API key, model, and optional
       OpenAI-compatible base URL without changing application code
 - [ ] **Pluggable analysis strategies** — define analyst persona, focus factors,

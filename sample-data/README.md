@@ -120,6 +120,20 @@ loads.
 
 ## Seed the draft locally
 
+The normal local demo path builds the seeder, API, and frontend with no external
+keys or per-process environment variables:
+
+```bash
+docker compose --profile demo up --build
+```
+
+Open <http://127.0.0.1:8080/stock/screener>. The isolated sample database is
+also exposed on host port `5434` for local inspection. Its database name is
+`signal_ledger_sample`.
+
+For seeder development without the full Docker demo, use the manual command
+below.
+
 With PostgreSQL available on host port `5433`:
 
 ```bash
@@ -131,5 +145,6 @@ DB_PASSWORD=password123 \
 python scripts/seed_sample_data.py --allow-draft
 ```
 
-Running the command again is idempotent. The final Docker demo will call the same
-seeder without `--allow-draft`, so an unfinished dataset cannot be published.
+Running the command again is idempotent. The local demo currently passes
+`--allow-draft` and displays its draft metadata. Remove that flag and change the
+fixture status to `ready` only after redistribution review is approved.
