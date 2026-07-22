@@ -38,7 +38,7 @@ model credentials.
   price at generation time
 - **Verifiable AI track record** — every historical call is plotted against
   what the price actually did afterwards
-- **Story-telling price chart** — 30-day chart overlaying AI signals, target
+- **Story-telling price chart** — historical chart overlaying AI signals, target
   price, and "notable move" markers (±2% day or 2× volume) linked to that
   day's news
 - **News intelligence** — per-ticker news archive (Finnhub), deduplicated and
@@ -75,24 +75,86 @@ types (`api-types`) are the contract between all layers.
 
 ### No-key sample demo
 
-The demo needs Docker only. It does not call Finnhub, Yahoo Finance, SEC, or an
-LLM while starting:
+You need Git and Docker Desktop (or Docker Engine with Compose v2). Node.js,
+Python, pnpm, provider accounts, and API keys are not required.
+
+Install and start:
 
 ```bash
+git clone https://github.com/YenHSee/signal-ledger.git
+cd signal-ledger
 docker compose --profile demo up --build
 ```
 
-Open <http://127.0.0.1:8080/stock/screener>. Compose waits for PostgreSQL, loads
-the frozen fixture, then starts the sample API and frontend. The terminal also
-prints this URL when the web container starts. It remains attached to the
-running services; add `-d` to run them in the background.
+The first build downloads the base images and installs dependencies, so it can
+take a few minutes. Wait until the terminal prints:
+
+```text
+SignalLedger demo is starting:
+  http://127.0.0.1:8080/stock/screener
+```
+
+Open <http://127.0.0.1:8080/stock/screener>. Compose waits for PostgreSQL,
+loads the frozen fixture, and starts the sample API and frontend in the correct
+order. The command remains attached because the application is running; this
+is expected. Press `Ctrl+C` to stop it, or start it in the background with:
+
+```bash
+docker compose --profile demo up --build -d
+```
+
+Check the running services and sample metadata:
+
+```bash
+docker compose --profile demo ps
+curl http://127.0.0.1:8080/api/meta
+```
+
+Stop the demo without deleting its database volume:
 
 ```bash
 docker compose --profile demo down
 ```
 
+The sample PostgreSQL database is exposed on `127.0.0.1:5434` for optional
+inspection (`postgres` / `password123`, database `signal_ledger_sample`). Ports
+`8080` and `5434` must be available.
+
+The demo does not call Finnhub, Yahoo Finance, SEC, or an LLM while starting.
 The current fixture remains marked as a draft while redistribution review is
-pending. The demo profile deliberately enables the draft only for local review.
+pending; the demo profile enables it only for local review. See the
+[Third-Party Data Notice](THIRD_PARTY_DATA_NOTICE.md) for source attribution and
+the distinction between the MIT-licensed code and third-party fixture material.
+
+### What is in the sample
+
+- 10 tickers: AAPL, MSFT, NVDA, GOOGL, AMZN, META, TSLA, AMD, JPM, and WMT
+- 1,350 daily prices covering 2026-01-02 through 2026-07-17
+- 200 curated YTD news records, at most 20 per ticker
+- 50 frozen historical reports: five per ticker, dated January 9, February 20,
+  March 31, May 15, and July 17, 2026
+- Point-in-time SEC 10-K/10-Q balance-sheet and cash-flow facts, relevant prior
+  news, 50/200-day moving averages, and previous-call interim verdicts
+
+Reports were generated ahead of time with DeepSeek from frozen point-in-time
+snapshots. Starting the demo only reads these records; it does not spend tokens
+or regenerate analysis. Snapshot validation rejects future prices, filings, and
+news relative to each report's `analysis_as_of` date.
+
+### Sample data limitations
+
+Historical consensus estimates are not reliably available from a free,
+redistributable source. Point-in-time report snapshots therefore do not backfill
+`forward_pe`, `peg_ratio`, `analyst_target_price`, or institutional ownership;
+the UI displays `—` when these fields are unavailable. They are not estimated
+or fabricated.
+
+Where possible, reports derive a clearly labelled trailing P/E from the latest
+SEC-filed annual diluted EPS and the frozen price. This is not presented as a
+reconstructed TTM or forward multiple. SEC balance-sheet and cash-flow values,
+historical prices, moving averages, news context, and model-generation metadata
+remain available. See [sample-data/README.md](sample-data/README.md) and the
+[v1 manifest](sample-data/v1/manifest.json) for provenance and acceptance rules.
 
 ### Live development
 
@@ -149,6 +211,10 @@ Before going live:
 - Copy each package's `.env.example` to `.env` and set production values
   (`DB_*` for backend-node, `VITE_API_BASE` for frontend-web, API keys for data-python)
 - Store secrets in your host or GitHub Actions Secrets — never commit `.env`
+- Treat self-hosted use with your own provider keys separately from a public
+  hosted service. Public display or redistribution may require a provider plan
+  that grants those rights; see the
+  [Third-Party Data Notice](THIRD_PARTY_DATA_NOTICE.md).
 
 See `.env.example` in each package for required variables.
 
@@ -189,6 +255,8 @@ market performance.
 
 - [x] **Report timeline UI** — browse every report for a ticker from earliest to
       latest and compare price-at-generation with subsequent performance
+- [x] **Recent catalysts in reports** — include archived stock news in report
+      generation so conclusions can reference actual events
 
 ### Planned
 
@@ -196,8 +264,6 @@ market performance.
       OpenAI-compatible base URL without changing application code
 - [ ] **Pluggable analysis strategies** — define analyst persona, focus factors,
       and prompt templates using YAML or Markdown presets
-- [ ] **Recent catalysts in reports** — include archived stock news in report
-      generation so conclusions can reference actual events
 - [ ] **IPO analysis module** — upload an official prospectus and generate a
       structured IPO-specific report covering business quality, valuation,
       financials, risk factors, use of proceeds, ownership, and lock-up terms
@@ -225,7 +291,8 @@ market performance.
 
 This is a research and educational tool. Nothing here is financial advice.
 Market data comes from unofficial/free APIs (yfinance, Finnhub free tier)
-and may be delayed or inaccurate. Do not commit API keys or `.env` files.
+and may be delayed or inaccurate. Third-party data is not licensed under the
+repository's MIT License. Do not commit API keys or `.env` files.
 
 ## License
 

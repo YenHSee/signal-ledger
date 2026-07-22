@@ -13,4 +13,3 @@ export interface HealthStatus {
   database: "connected";
   mode: AppMode;
 }
-

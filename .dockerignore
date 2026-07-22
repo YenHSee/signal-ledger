@@ -6,6 +6,7 @@
 **/node_modules
 **/dist
 **/.turbo
+.pnpm-store
 **/__pycache__
 **/.pytest_cache
 packages/data-python/.venv

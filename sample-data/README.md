@@ -30,6 +30,26 @@ SEC 10-K/10-Q facts and filing metadata. At each report date the builder selects
 only filings already public on that date. The browser-facing
 sample database still receives only the compact YTD tables above.
 
+## Known data limitations
+
+The sample does not reconstruct historical analyst-consensus datasets. In the
+point-in-time report snapshots, `forward_pe`, `peg_ratio`,
+`analyst_target_price`, and `percent_institutions` remain `null` when no free,
+redistributable historical source is available. The frontend renders these
+values as `—`; the report generator must not infer or fabricate them.
+
+When sufficient SEC data exists, `trailing_pe` is derived from the frozen price
+and the latest already-filed annual diluted EPS. Its snapshot metadata and the
+report Data Limitations section identify that basis; it is not a reconstructed
+TTM or a forward estimate. Point-in-time balance-sheet and cash-flow values come
+from SEC 10-K/10-Q filings that were public by the analysis date.
+
+The compact seeded price table begins on 2026-01-02. Non-seeded
+`report_inputs/<TICKER>.json` contains the earlier prices required to calculate
+50-day and 200-day moving averages without expanding the browser-facing chart.
+The frozen reports are illustrative AI research, not current analysis or
+financial advice.
+
 ## Frozen report acceptance
 
 Schema-v2 reports are accepted only when `analysis_as_of` falls inside the frozen price
